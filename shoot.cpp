@@ -11,14 +11,16 @@ shoot::shoot(ALLEGRO_DISPLAY *ext_display)
     al_init_image_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_init_primitives_addon();
 
+    //Writes Hello World to the screen
     ALLEGRO_FONT *this_font = al_load_font("fonts/LiberationMono-Bold.ttf", 24, 0);
     al_draw_text(this_font, al_map_rgb(255, 255, 255), 50, 50, 0, "Hello World");
 
-    //bullet = al_load_bitmap("sprites/bullet");
-    //al_convert_mask_to_alpha(bullet, al_map_rgb(106, 76, 48));
+    //Draws a pixel
+    al_draw_pixel(200, 200, al_map_rgb(255, 0, 0));
 
-    //al_draw_bitmap_region(bullet, 0, 0, imagewidth, imageheight, 0, 0, 0);
+    al_draw_circle(100, 100, 50, al_map_rgb(255, 0, 255), 2);
 
     al_flip_display();
 

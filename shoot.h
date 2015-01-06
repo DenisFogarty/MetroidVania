@@ -20,17 +20,6 @@ class shoot
 		ALLEGRO_DISPLAY *display	=	NULL;
         ALLEGRO_BITMAP  *bullet		=	NULL;
 
-        int imagewidth;
-        int imageheight;
-
-		float PLAY_X;
-		float PLAY_Y;
-		float CUR_X;
-		float CUR_Y;
-		bool READY;
-		bool DRAW_LINE;
-		float x1, y1, x2, y2;
-
     protected:
 };
 
