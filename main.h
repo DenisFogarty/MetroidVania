@@ -1,15 +1,16 @@
 #ifndef MAIN_H_INCLUDED
 #define MAIN_H_INCLUDED
 
-// classes example
 #include <iostream>
-#include <string>
-using namespace std;
+#include <stdio.h>
+
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
 
 class setup {
-    string testing;
+    std::string testing;
 public:
-    void set_string(string);
+    void set_string(std::string);
     void print_testing();
 };
 

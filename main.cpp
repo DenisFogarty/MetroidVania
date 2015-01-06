@@ -1,12 +1,6 @@
 #include "shoot.h"
 #include "main.h"
 
-#include <iostream>
-#include <stdio.h>
-
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-
 const float FPS = 60;
 float INC_X = 0;
 float INC_Y = 0;
@@ -63,7 +57,7 @@ int main() {
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
-	shoot shoot_data = shoot(display);
+	//shoot shoot_data = shoot(display);
 
     al_rest(3);
 }
