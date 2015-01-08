@@ -9,8 +9,6 @@ const int SCREEN_W = 600;
 const int SCREEN_H = 480;
 const int PLAYER_SIZE = 32;
 
-ALLEGRO_DISPLAY *setup::display;
-
 static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg);
 
 int main() {
@@ -35,30 +33,22 @@ int main() {
 		return -1;
 	}
 
-	setup::display = al_create_display(SCREEN_W, SCREEN_H);
-	if(!setup::display) {
-		fprintf(stderr, "Failed to initialize display");
-		al_destroy_timer(timer);
-		return -1;
-	}
-
 	event_queue = al_create_event_queue();
 	if(!event_queue) {
 		fprintf(stderr, "failed to create event_queue!\n");
-		al_destroy_display(setup::display);
+		//al_destroy_bitmap(foreground);
 		al_destroy_timer(timer);
 		return -1;
 	}
 
 	if(!al_install_mouse()) {
 		fprintf(stderr, "Failed to initialize mouse\n");
-		al_destroy_display(setup::display);
+		//al_destroy_bitmap(foreground);
 		al_destroy_timer(timer);
 		al_destroy_event_queue(event_queue);
 		return -1;
 	}
 
-	al_register_event_source(event_queue, al_get_display_event_source(setup::display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -72,13 +62,36 @@ int main() {
 	refresh_1 = al_create_thread(refresh_thread, &refresh_data);
 	al_start_thread(refresh_1);
 
-	//shoot shoot_data = shoot(setup::display);
+	//Locks refresh_data to prevent conflicts
+	al_lock_mutex(refresh_data.mutex);
 
-	al_rest(3);
+	//Loops until first thread is ready
+	while (!refresh_data.READY) {
+		al_wait_cond(refresh_data.cond, refresh_data.mutex);
+	}
+	al_unlock_mutex(refresh_data.mutex);
+
+
+	//shoot shoot_data = shoot();
+
+	al_rest(5);
 }
 
 static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg) {
-	al_set_target_bitmap(al_get_backbuffer(setup::display));
+	refresh *refresh_data = (refresh*) arg;
+
+	//Block sets data then broadcasts ready condition
+	{
+		al_lock_mutex(refresh_data->mutex);
+
+		refresh_data->READY = true;
+		al_broadcast_cond(refresh_data->cond);
+
+		al_unlock_mutex(refresh_data->mutex);
+	}
+
+
+	al_set_target_bitmap(al_get_backbuffer(refresh_data->display));
 
 	int i = 0;
 
@@ -88,5 +101,6 @@ static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg) {
 
 		al_rest(1/120);
 		i++;
+		std::cout << i << std::endl;
 	}
 }

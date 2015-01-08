@@ -1,9 +1,9 @@
 #include "shoot.h"
 
-shoot::shoot(ALLEGRO_DISPLAY *ext_display) {
-    display = ext_display;
+shoot::shoot(ALLEGRO_BITMAP *ext_bitmap) {
+    foreground = ext_bitmap;
 
-    al_set_target_bitmap(al_get_backbuffer(display));
+    al_set_target_bitmap(foreground);
 
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -41,6 +41,6 @@ void shoot::fire_line() {
 }
 
 shoot::~shoot() {
-    al_destroy_display(display);
+    al_destroy_bitmap(foreground);
     al_destroy_bitmap(bullet);
 }

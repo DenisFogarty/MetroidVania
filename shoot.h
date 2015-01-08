@@ -11,12 +11,12 @@
 
 class shoot {
 public:
-	shoot(ALLEGRO_DISPLAY *ext_display);
+	shoot(ALLEGRO_BITMAP *ext_bitmap);
 	virtual ~shoot();
 	void fire_line();
 
 private:
-	ALLEGRO_DISPLAY *display	=	NULL;
+	ALLEGRO_BITMAP *foreground	=	NULL;
 	ALLEGRO_BITMAP  *bullet		=	NULL;
 
 	float line_x;

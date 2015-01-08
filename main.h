@@ -9,7 +9,7 @@
 
 class setup {
 public:
-	static ALLEGRO_DISPLAY *display;
+
 private:
 
 protected:
@@ -17,14 +17,18 @@ protected:
 
 class refresh {
 public:
+	ALLEGRO_DISPLAY *display;
+	ALLEGRO_BITMAP *foreground;
 	ALLEGRO_MUTEX *mutex;
 	ALLEGRO_COND *cond;
-	bool ready;
+	bool READY;
 
 	refresh():
+		display(al_create_display(640, 480)),
+		foreground(al_create_bitmap(640, 480)),
 		mutex(al_create_mutex()),
 		cond(al_create_cond()),
-		ready(false)
+		READY(false)
 	{}
 
 	~refresh() {
