@@ -8,10 +8,29 @@
 #include <allegro5/allegro_primitives.h>
 
 class setup {
-    std::string testing;
 public:
-    void set_string(std::string);
-    void print_testing();
+	static ALLEGRO_DISPLAY *display;
+private:
+
+protected:
+};
+
+class refresh {
+public:
+	ALLEGRO_MUTEX *mutex;
+	ALLEGRO_COND *cond;
+	bool ready;
+
+	refresh():
+		mutex(al_create_mutex()),
+		cond(al_create_cond()),
+		ready(false)
+	{}
+
+	~refresh() {
+		al_destroy_mutex(mutex);
+		al_destroy_cond(cond);
+	}
 };
 
 #endif // MAIN_H_INCLUDED

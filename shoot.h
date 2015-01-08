@@ -9,21 +9,20 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-class shoot
-{
-    public:
-        shoot(ALLEGRO_DISPLAY *ext_display);
-        virtual ~shoot();
-        void fire_line();
+class shoot {
+public:
+	shoot(ALLEGRO_DISPLAY *ext_display);
+	virtual ~shoot();
+	void fire_line();
 
-    private:
-		ALLEGRO_DISPLAY *display	=	NULL;
-        ALLEGRO_BITMAP  *bullet		=	NULL;
+private:
+	ALLEGRO_DISPLAY *display	=	NULL;
+	ALLEGRO_BITMAP  *bullet		=	NULL;
 
-        float line_x;
-        float line_y;
+	float line_x;
+	float line_y;
 
-    protected:
+protected:
 };
 
 #endif // SHOOT_H

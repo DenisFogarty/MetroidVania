@@ -1,7 +1,6 @@
 #include "shoot.h"
 
-shoot::shoot(ALLEGRO_DISPLAY *ext_display)
-{
+shoot::shoot(ALLEGRO_DISPLAY *ext_display) {
     display = ext_display;
 
     al_set_target_bitmap(al_get_backbuffer(display));
@@ -33,16 +32,15 @@ void shoot::fire_line() {
 		line_x++;
 		line_y++;
 
-		al_flip_display();
+		//al_flip_display();
 
 		al_rest(.002);
 
-		al_clear_to_color(al_map_rgb(0, 0, 0));
+		//al_clear_to_color(al_map_rgb(0, 0, 0));
 	}
 }
 
-shoot::~shoot()
-{
+shoot::~shoot() {
     al_destroy_display(display);
     al_destroy_bitmap(bullet);
 }

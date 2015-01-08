@@ -7,7 +7,7 @@
 
 #include "logic.h"
 
-logic::logic() {
+logic::logic(ALLEGRO_DISPLAY *ext_display) {
 	game_logic = al_create_event_queue();
 	if(!game_logic) {
 		fprintf(stderr, "Failed to initialise game_logic");
