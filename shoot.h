@@ -16,7 +16,7 @@ public:
 	void fire_line();
 
 private:
-	ALLEGRO_BITMAP *foreground	=	NULL;
+	ALLEGRO_BITMAP	*foreground	=	NULL;
 	ALLEGRO_BITMAP  *bullet		=	NULL;
 
 	float line_x;

@@ -13,10 +13,10 @@ shoot::shoot(ALLEGRO_BITMAP *ext_bitmap) {
     al_init_primitives_addon();
 
     //Writes Hello World to the screen
-    ALLEGRO_FONT *this_font = al_load_font("fonts/Universum.ttf", 24, 0);
-    al_draw_text(this_font, al_map_rgb(255, 255, 255), 50, 50, 0, "Hello World");
+    //ALLEGRO_FONT *this_font = al_load_font("fonts/Universum.ttf", 24, 0);
+    //al_draw_text(this_font, al_map_rgb(255, 255, 255), 50, 50, 0, "Hello World");
+    al_draw_line(0, 0, 10, 10, al_map_rgb(0, 255, 0), 3);
 
-    al_flip_display();
 
     line_x = 0;
     line_y = 0;
@@ -28,13 +28,18 @@ shoot::shoot(ALLEGRO_BITMAP *ext_bitmap) {
 
 void shoot::fire_line() {
 	while(line_x < 640 || line_y < 480) {
-		al_draw_line(line_x, line_y, line_x + 5, line_y + 5, al_map_rgb(255, 0, 0), 3);
+		//al_set_target_bitmap(foreground);
+		al_lock_bitmap(foreground, ALLEGRO_PIXEL_FORMAT_RGB_888, ALLEGRO_LOCK_READWRITE);
+		{
+			al_draw_line(line_x, line_y, line_x + 5, line_y + 5, al_map_rgb(255, 0, 0), 3);
+		}
+		//al_unlock_bitmap(foreground);
 		line_x++;
 		line_y++;
 
 		//al_flip_display();
 
-		al_rest(.002);
+		al_rest(1.0/120.0);
 
 		//al_clear_to_color(al_map_rgb(0, 0, 0));
 	}
