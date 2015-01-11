@@ -62,6 +62,8 @@ int main() {
 	draw.display = al_create_display(640, 480);
 	draw.foreground = al_create_bitmap(640, 480);
 	draw.mutex = al_create_mutex();
+	*draw.READY = false;
+	draw.cond = al_create_cond();
 
 	//shoot shoot_data = shoot(display);
 	//logic logic_data = logic(display);
@@ -78,13 +80,13 @@ int main() {
 	//al_lock_mutex(refresh_data.mutex);
 
 	//Loops until first thread is ready
-	while (!refresh_data.READY) {
-		al_wait_cond(refresh_data.cond, refresh_data.mutex);
+	while (!draw.READY) {
+		al_wait_cond(draw.cond, draw.mutex);
 	}
-	al_unlock_mutex(refresh_data.mutex);
+	al_unlock_mutex(draw.mutex);
 
 
-	//shoot shoot_data = shoot(draw.foreground);
+	shoot shoot_data = shoot(draw.foreground, draw.mutex, draw.cond, draw.READY);
 
 	al_rest(5);
 }
@@ -95,13 +97,13 @@ static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg) {
 
 	//Block sets data then broadcasts ready condition
 	{
-		al_lock_mutex(refresh_data->mutex);
+		al_lock_mutex(draw.mutex);
 		std::cout << "mutex locked" << std::endl;
 
-		refresh_data->READY = true;
-		al_broadcast_cond(refresh_data->cond);
+		*draw.READY = true;
+		al_broadcast_cond(draw.cond);
 
-		al_unlock_mutex(refresh_data->mutex);
+		al_unlock_mutex(draw.mutex);
 		std::cout << "mutex unlocked" << std::endl;
 	}
 
@@ -114,8 +116,12 @@ static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg) {
 
 	while(!al_get_thread_should_stop(thread)) {
 		//al_clear_to_color(al_map_rgb(0, 0, 0));
+		al_lock_mutex(draw.mutex);
+		while (!draw.READY) {
+			al_wait_cond(draw.cond, draw.mutex);
+		}
 
-		al_lock_mutex(refresh_data->mutex);
+		*draw.READY = false;
 		std::cout << "mutex locked" << std::endl;
 		/*al_lock_bitmap(draw->foreground, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
 		{
@@ -123,13 +129,20 @@ static void *refresh_thread(ALLEGRO_THREAD *thread, void *arg) {
 		}*/
 		al_lock_bitmap(draw.foreground, ALLEGRO_PIXEL_FORMAT_RGB_888, ALLEGRO_LOCK_READWRITE);
 		std::cout << "bitmap locked" << std::endl;
-		al_unlock_mutex(refresh_data->mutex);
-		std::cout << "mutex unlocked" << std::endl;
-		al_unlock_bitmap(draw.foreground);
-		std::cout << "bitmap unlocked" << std::endl;
+
+		al_draw_bitmap(draw.foreground, 0, 0, 0);
+		std::cout << "bitmap drawn" << std::endl;
 
 		al_flip_display();
 		std::cout << "display flipped" << std::endl;
+
+		al_unlock_bitmap(draw.foreground);
+		std::cout << "bitmap unlocked" << std::endl;
+
+		al_unlock_mutex(draw.mutex);
+		*draw.READY = true;
+		al_broadcast_cond(draw.cond);
+		std::cout << "mutex unlocked" << std::endl;
 
 		al_rest(1.0/60.0);
 	}

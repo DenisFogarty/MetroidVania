@@ -10,8 +10,10 @@
 class draw_display {
 public:
 	ALLEGRO_MUTEX *mutex;
+	ALLEGRO_COND *cond;
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
+	bool *READY;
 private:
 
 protected:
