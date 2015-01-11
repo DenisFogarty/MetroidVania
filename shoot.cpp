@@ -20,7 +20,6 @@ shoot::shoot(ALLEGRO_BITMAP *ext_bitmap, ALLEGRO_MUTEX *ext_mutex, ALLEGRO_COND 
 	//al_draw_text(this_font, al_map_rgb(255, 255, 255), 50, 50, 0, "Hello World");
 	al_draw_line(0, 0, 10, 10, al_map_rgb(0, 255, 0), 3);
 
-
 	line_x = 0;
 	line_y = 0;
 

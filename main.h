@@ -9,32 +9,22 @@
 
 class draw_display {
 public:
-	ALLEGRO_MUTEX *mutex;
-	ALLEGRO_COND *cond;
+	draw_display();
+private:
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
-	bool *READY;
-private:
 
 protected:
+
 };
 
 class refresh {
 public:
-	ALLEGRO_MUTEX *mutex;
-	ALLEGRO_COND *cond;
-	bool READY;
 
-	refresh():
-		mutex(al_create_mutex()),
-		cond(al_create_cond()),
-		READY(false)
-	{}
+private:
 
-	~refresh() {
-		al_destroy_mutex(mutex);
-		al_destroy_cond(cond);
-	}
+protected:
+
 };
 
 #endif // MAIN_H_INCLUDED
