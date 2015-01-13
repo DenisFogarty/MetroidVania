@@ -12,6 +12,7 @@ public:
 	draw_display();
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
+	~draw_display();
 
 private:
 

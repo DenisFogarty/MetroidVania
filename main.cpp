@@ -104,12 +104,19 @@ int main() {
 	}
 
 	al_destroy_thread(shoot_thread);
+	al_destroy_cond(shoot_data.cond);
+	al_destroy_cond(shoot_data2.cond);
 }
 
 
 draw_display::draw_display() {
 	display = al_create_display(640, 480);
 	foreground = al_create_bitmap(640, 480);
+}
+
+draw_display::~draw_display() {
+	al_destroy_display(display);
+	al_destroy_bitmap(foreground);
 }
 
 
