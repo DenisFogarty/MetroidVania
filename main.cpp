@@ -57,11 +57,20 @@ int main() {
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
+	uint32_t version = al_get_allegro_version();
+
+	int major = version >> 24;
+	int minor = (version >> 16) &255;
+	int revision = (version >> 8) &255;
+	int release = version &255;
+
+
+	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
+
 
 	draw_display draw;
 	SHOOT shoot_data;
 	SHOOT2 shoot_data2;
-
 
 
 	shoot_thread = al_create_thread(shoot, &shoot_data);
@@ -87,7 +96,6 @@ int main() {
 		al_draw_line(shoot_data.x1, shoot_data.y1, shoot_data.x2, shoot_data.y2, al_map_rgb(255, 0, 0), 3);
 
 		al_unlock_mutex(shoot_data.mutex);
-
 
 		al_lock_mutex(shoot_data2.mutex);
 
@@ -131,10 +139,7 @@ static void *shoot(ALLEGRO_THREAD *thread, void *arg) {
 	while(!al_get_thread_should_stop(thread)) {
 		al_lock_mutex(shoot_data->mutex);
 
-		shoot_data->x1 += 1;
-		shoot_data->y1 += 1;
-		shoot_data->x2 += 1;
-		shoot_data->y2 += 1;
+		shoot_data->calc.calculate_position(&shoot_data->x1, &shoot_data->y1, &shoot_data->x2, &shoot_data->y2, 1);
 
 		al_unlock_mutex(shoot_data->mutex);
 

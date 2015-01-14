@@ -7,6 +7,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
+#include "shoot.h"
+
 class draw_display {
 public:
 	draw_display();
@@ -22,7 +24,7 @@ protected:
 
 class SHOOT {
 public:
-	int x1, y1, x2, y2;
+	float x1, y1, x2, y2;
 	ALLEGRO_MUTEX *mutex;
 	ALLEGRO_COND *cond;
 	bool READY;
@@ -35,8 +37,7 @@ public:
 		cond(al_create_cond()),
 		READY(false)
 	{}
-
-private:
+	shoot calc;
 
 protected:
 
@@ -44,7 +45,7 @@ protected:
 
 class SHOOT2 {
 public:
-	int x1, y1, x2, y2;
+	float x1, y1, x2, y2;
 	ALLEGRO_MUTEX *mutex;
 	ALLEGRO_COND *cond;
 	bool READY;
