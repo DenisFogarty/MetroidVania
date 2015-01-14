@@ -11,19 +11,9 @@
 
 class shoot {
 public:
-	shoot(ALLEGRO_BITMAP *ext_bitmap, ALLEGRO_MUTEX *ext_mutex, ALLEGRO_COND *ext_cond, bool *ext_ready);
-	virtual ~shoot();
-	void fire_line();
+	void calculate_position(float *x1, float *y1, float *x2, float *y2, float speed);
 
 private:
-	ALLEGRO_BITMAP	*foreground	=	NULL;
-	ALLEGRO_BITMAP  *bullet		=	NULL;
-	ALLEGRO_MUTEX	*mutex		=	NULL;
-	ALLEGRO_COND	*cond		=	NULL;
-	bool *READY;
-
-	float line_x;
-	float line_y;
 
 protected:
 };
