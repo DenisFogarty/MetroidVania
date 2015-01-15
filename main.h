@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -58,6 +59,7 @@ public:
 		cond(al_create_cond()),
 		READY(false)
 	{}
+	shoot calc;
 
 private:
 

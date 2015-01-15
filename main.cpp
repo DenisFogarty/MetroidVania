@@ -11,6 +11,9 @@ const int PLAYER_SIZE = 32;
 
 static void *shoot(ALLEGRO_THREAD *thread, void *arg);
 
+SHOOT2 shoot2;
+
+std::vector<SHOOT> bullets;
 
 int main() {
 	ALLEGRO_EVENT_QUEUE *event_queue    = NULL;
@@ -57,6 +60,7 @@ int main() {
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
+
 	uint32_t version = al_get_allegro_version();
 
 	int major = version >> 24;
@@ -70,7 +74,6 @@ int main() {
 
 	draw_display draw;
 	SHOOT shoot_data;
-	SHOOT2 shoot_data2;
 
 
 	shoot_thread = al_create_thread(shoot, &shoot_data);
@@ -81,7 +84,6 @@ int main() {
 		al_wait_cond(shoot_data.cond, shoot_data.mutex);
 	}
 	al_unlock_mutex(shoot_data.mutex);
-
 
 
 	al_set_target_bitmap(al_get_backbuffer(draw.display));
@@ -97,15 +99,22 @@ int main() {
 
 		al_unlock_mutex(shoot_data.mutex);
 
-		al_lock_mutex(shoot_data2.mutex);
 
-		al_draw_line(shoot_data2.x1, shoot_data2.y1, shoot_data2.x2, shoot_data2.y2, al_map_rgb(0, 255, 0), 3);
+		al_lock_mutex(bullets.at(0).mutex);
 
-		al_unlock_mutex(shoot_data2.mutex);
+		al_draw_line(bullets.at(0).x1, bullets.at(0).y1, bullets.at(0).x2, bullets.at(0).y2, al_map_rgb(0, 255, 0), 3);
 
+		al_unlock_mutex(bullets.at(0).mutex);
+
+
+		al_lock_mutex(bullets.at(1).mutex);
+
+		al_draw_line(bullets.at(1).x1, bullets.at(1).y1, bullets.at(1).x2, bullets.at(1).y2, al_map_rgb(0, 0, 255), 3);
+
+		al_unlock_mutex(bullets.at(1).mutex);
 
 		al_flip_display();
-
+//
 		i++;
 
 		al_rest(1.0/60.0);
@@ -113,7 +122,6 @@ int main() {
 
 	al_destroy_thread(shoot_thread);
 	al_destroy_cond(shoot_data.cond);
-	al_destroy_cond(shoot_data2.cond);
 }
 
 
@@ -131,6 +139,26 @@ draw_display::~draw_display() {
 static void *shoot(ALLEGRO_THREAD *thread, void *arg) {
 	SHOOT *shoot_data = (SHOOT*) arg;
 
+	SHOOT bullet;
+
+	bullets.push_back(bullet);
+	bullets.push_back(bullet);
+
+	float speedx = 4;
+	float speedy = 3;
+
+	float speedx2 = -4;
+	float speedy2 = 3;
+
+	float speedx3 = 0;
+	float speedy3 = 3;
+
+	bullets.at(0).x1 = 640;
+	bullets.at(0).x2 = 630;
+
+	bullets.at(1).x1 = 320;
+	bullets.at(1).x2 = 320;
+
 	al_lock_mutex(shoot_data->mutex);
 	shoot_data->READY = true;
 	al_broadcast_cond(shoot_data->cond);
@@ -139,11 +167,23 @@ static void *shoot(ALLEGRO_THREAD *thread, void *arg) {
 	while(!al_get_thread_should_stop(thread)) {
 		al_lock_mutex(shoot_data->mutex);
 
-		shoot_data->calc.calculate_position(&shoot_data->x1, &shoot_data->y1, &shoot_data->x2, &shoot_data->y2, 1);
+		shoot_data->calc.calculate_position(&shoot_data->x1, &shoot_data->y1, &shoot_data->x2, &shoot_data->y2, speedx, speedy);
 
 		al_unlock_mutex(shoot_data->mutex);
 
-		std::cout << shoot_data->x1 << std::endl;
+
+		al_lock_mutex(bullets.at(0).mutex);
+
+		bullets.at(0).calc.calculate_position(&bullets.at(0).x1, &bullets.at(0).y1, &bullets.at(0).x2, &bullets.at(0).y2, speedx2, speedy2);
+
+		al_unlock_mutex(bullets.at(0).mutex);
+
+
+		al_lock_mutex(bullets.at(1).mutex);
+
+		bullets.at(1).calc.calculate_position(&bullets.at(1).x1, &bullets.at(1).y1, &bullets.at(1).x2, &bullets.at(1).y2, speedx3, speedy3);
+
+		al_unlock_mutex(bullets.at(1).mutex);
 
 		al_rest(1.0/120.0);
 	}

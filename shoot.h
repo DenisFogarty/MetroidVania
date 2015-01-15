@@ -11,7 +11,7 @@
 
 class shoot {
 public:
-	void calculate_position(float *x1, float *y1, float *x2, float *y2, float speed);
+	void calculate_position(float *x1, float *y1, float *x2, float *y2, float speedx, float speedy);
 
 private:
 
