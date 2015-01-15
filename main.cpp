@@ -114,7 +114,7 @@ int main() {
 		al_unlock_mutex(bullets.at(1).mutex);
 
 		al_flip_display();
-//
+
 		i++;
 
 		al_rest(1.0/60.0);
