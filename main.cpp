@@ -90,7 +90,7 @@ int main() {
 
 	int i = 0;
 
-	while(i < 300) {
+	while(1) {
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 
 		al_lock_mutex(shoot_data.mutex);
@@ -114,7 +114,7 @@ int main() {
 		al_unlock_mutex(bullets.at(1).mutex);
 
 		al_flip_display();
-//
+
 		i++;
 
 		al_rest(1.0/60.0);
