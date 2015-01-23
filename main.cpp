@@ -1,5 +1,3 @@
-#include "shoot.h"
-#include "logic.h"
 #include "main.h"
 
 const float FPS = 60.0;
@@ -7,11 +5,8 @@ float INC_X = 0;
 float INC_Y = 0;
 const int SCREEN_W = 600;
 const int SCREEN_H = 480;
-const int PLAYER_SIZE = 32;
 
 static void *shoot(ALLEGRO_THREAD *thread, void *arg);
-
-SHOOT2 shoot2;
 
 std::vector<SHOOT> bullets;
 
@@ -56,9 +51,15 @@ int main() {
 		return -1;
 	}
 
+	draw_display draw;
+	SHOOT shoot_data;
+
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(draw.display));
+
+	ALLEGRO_EVENT ev;
 
 
 	uint32_t version = al_get_allegro_version();
@@ -70,10 +71,6 @@ int main() {
 
 
 	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
-
-
-	draw_display draw;
-	SHOOT shoot_data;
 
 
 	shoot_thread = al_create_thread(shoot, &shoot_data);
@@ -88,36 +85,33 @@ int main() {
 
 	al_set_target_bitmap(al_get_backbuffer(draw.display));
 
-	int i = 0;
+	al_start_timer(timer);
+
+	al_hide_mouse_cursor(draw.display);
 
 	while(1) {
-		al_clear_to_color(al_map_rgb(0, 0, 0));
+		al_wait_for_event(event_queue, &ev);
 
-		al_lock_mutex(shoot_data.mutex);
+		if(ev.type == ALLEGRO_EVENT_TIMER) {
 
-		al_draw_line(shoot_data.x1, shoot_data.y1, shoot_data.x2, shoot_data.y2, al_map_rgb(255, 0, 0), 3);
+			al_clear_to_color(al_map_rgb(0, 0, 0));
 
-		al_unlock_mutex(shoot_data.mutex);
+			int i = 0;
 
+			while(i < bullets.size()) {
+				al_lock_mutex(bullets.at(i).mutex);
 
-		al_lock_mutex(bullets.at(0).mutex);
+				al_draw_line(bullets.at(i).x1, bullets.at(i).y1, bullets.at(i).x2, bullets.at(i).y2, al_map_rgb(0, 255, 0), 3);
 
-		al_draw_line(bullets.at(0).x1, bullets.at(0).y1, bullets.at(0).x2, bullets.at(0).y2, al_map_rgb(0, 255, 0), 3);
+				al_unlock_mutex(bullets.at(i).mutex);
 
-		al_unlock_mutex(bullets.at(0).mutex);
+				i++;
+			}
 
-
-		al_lock_mutex(bullets.at(1).mutex);
-
-		al_draw_line(bullets.at(1).x1, bullets.at(1).y1, bullets.at(1).x2, bullets.at(1).y2, al_map_rgb(0, 0, 255), 3);
-
-		al_unlock_mutex(bullets.at(1).mutex);
-
-		al_flip_display();
-
-		i++;
-
-		al_rest(1.0/60.0);
+			al_flip_display();
+		}else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			break;
+		}
 	}
 
 	al_destroy_thread(shoot_thread);
@@ -126,9 +120,13 @@ int main() {
 
 
 draw_display::draw_display() {
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
 	display = al_create_display(640, 480);
+
 	foreground = al_create_bitmap(640, 480);
 }
+
 
 draw_display::~draw_display() {
 	al_destroy_display(display);
@@ -141,50 +139,61 @@ static void *shoot(ALLEGRO_THREAD *thread, void *arg) {
 
 	SHOOT bullet;
 
-	bullets.push_back(bullet);
-	bullets.push_back(bullet);
+	ALLEGRO_EVENT_QUEUE *game_event = al_create_event_queue();
+	ALLEGRO_TIMER *timer = al_create_timer(1.0/1000.0);
 
-	float speedx = 4;
-	float speedy = 3;
+	al_register_event_source(game_event, al_get_keyboard_event_source());
+	al_register_event_source(game_event, al_get_mouse_event_source());
+	al_register_event_source(game_event, al_get_timer_event_source(timer));
+	al_register_event_source(game_event, al_get_mouse_event_source());
 
-	float speedx2 = -4;
-	float speedy2 = 3;
-
-	float speedx3 = 0;
-	float speedy3 = 3;
-
-	bullets.at(0).x1 = 640;
-	bullets.at(0).x2 = 630;
-
-	bullets.at(1).x1 = 320;
-	bullets.at(1).x2 = 320;
+	float speedx = .4;
+	float speedy = .3;
 
 	al_lock_mutex(shoot_data->mutex);
 	shoot_data->READY = true;
 	al_broadcast_cond(shoot_data->cond);
 	al_unlock_mutex(shoot_data->mutex);
 
+	al_start_timer(timer);
+
+	ALLEGRO_EVENT ev;
+
+	bool move = false;
+
 	while(!al_get_thread_should_stop(thread)) {
-		al_lock_mutex(shoot_data->mutex);
+		al_wait_for_event(game_event, &ev);
 
-		shoot_data->calc.calculate_position(&shoot_data->x1, &shoot_data->y1, &shoot_data->x2, &shoot_data->y2, speedx, speedy);
+		if(ev.type != ALLEGRO_EVENT_TIMER) {
 
-		al_unlock_mutex(shoot_data->mutex);
+			if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+				move = true;
+			}
+			if(ev.type == ALLEGRO_EVENT_KEY_UP) {
+				move = false;
+			}
+			if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+				bullets.push_back(bullet);
+				std::cout << bullets.size() << std::endl;
+			}
 
+		} else {
 
-		al_lock_mutex(bullets.at(0).mutex);
+			uint32_t i = 0;
 
-		bullets.at(0).calc.calculate_position(&bullets.at(0).x1, &bullets.at(0).y1, &bullets.at(0).x2, &bullets.at(0).y2, speedx2, speedy2);
+			while(i < bullets.size()) {
+				al_lock_mutex(bullets.at(i).mutex);
 
-		al_unlock_mutex(bullets.at(0).mutex);
+				bullets.at(i).calc.calculate_position(&bullets.at(i).x1, &bullets.at(i).y1, &bullets.at(i).x2, &bullets.at(i).y2, speedx, speedy);
 
+				if(bullets.at(i).x1 > 640 || bullets.at(i).y1 > 480) {
+					bullets.erase(bullets.begin() + i);
+				}
 
-		al_lock_mutex(bullets.at(1).mutex);
+				al_unlock_mutex(bullets.at(i).mutex);
 
-		bullets.at(1).calc.calculate_position(&bullets.at(1).x1, &bullets.at(1).y1, &bullets.at(1).x2, &bullets.at(1).y2, speedx3, speedy3);
-
-		al_unlock_mutex(bullets.at(1).mutex);
-
-		al_rest(1.0/120.0);
+				i++;
+			}
+		}
 	}
 }
