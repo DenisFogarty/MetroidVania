@@ -8,6 +8,9 @@
 #ifndef CLASSLIST_H_
 #define CLASSLIST_H_
 
+#include <iostream>
+#include "main.h"
+
 class class_list {
 public:
 	class_list();
@@ -19,9 +22,12 @@ public:
 		node* next;
 	};
 
-	void add_class(class data);
+	void add_class(const SHOOT& data);
+	void remove_class(int position);
+	int size();
 
 private:
+	int num_nodes;
 	node* a;
 	node* temp;
 	node* b;
