@@ -12,21 +12,23 @@
 #include <allegro5/allegro_ttf.h>
 
 class bullet {
-private:
+public:
 	float x1, y1, x2, y2;
-	bullet(float ext_x1, float ext_y1, float ext_x2, float ext_y2, float direction_x, float direction_y);	//direction values also control speed
-	~bullet();
+	float direction_x, direction_y;		//Directions should also control speed
 };
 
 
 class bullets_data {			//Deals with adding, removing and storing bullets
 public:
 	void add_bullet(float ext_x1, float ext_x2, float ext_y1, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
+	void remove_bullet(int pos);
+	int get_size();
 
-private:
 	bullets_data();
+//	~bullets_data();
 
 	std::list <bullet> bullets;
+
 	void calculate_position();
 
 protected:
