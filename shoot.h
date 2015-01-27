@@ -2,6 +2,8 @@
 #define SHOOT_H
 
 #include <iostream>
+#include <list>
+#include "main.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -9,11 +11,25 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-class shoot {
+class bullet {
 public:
-	void calculate_position(float *x1, float *y1, float *x2, float *y2, float speedx, float speedy);
+	float x1, y1, x2, y2;
+	float direction_x, direction_y;		//Directions should also control speed
+};
 
-private:
+
+class bullets_data {			//Deals with adding, removing and storing bullets
+public:
+	void add_bullet(float ext_x1, float ext_x2, float ext_y1, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
+	void remove_bullet(int pos);
+	int get_size();
+
+	bullets_data();
+//	~bullets_data();
+
+	std::list <bullet> bullets;
+
+	void calculate_position();
 
 protected:
 };

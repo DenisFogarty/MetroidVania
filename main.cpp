@@ -1,44 +1,37 @@
-#include "shoot.h"
-#include "logic.h"
 #include "main.h"
 
-const float FPS = 60.0;
+const float FPS = 120.0;
 float INC_X = 0;
 float INC_Y = 0;
 const int SCREEN_W = 600;
 const int SCREEN_H = 480;
-const int PLAYER_SIZE = 32;
 
-static void *shoot(ALLEGRO_THREAD *thread, void *arg);
-
-SHOOT2 shoot2;
-
-std::vector<SHOOT> bullets;
 
 int main() {
 	ALLEGRO_EVENT_QUEUE *event_queue    = NULL;
 	ALLEGRO_TIMER       *timer		    = NULL;
-	ALLEGRO_THREAD		*shoot_thread	= NULL;
+	ALLEGRO_TIMER		*timer2			= NULL;
 
 	if(!al_init()) {
-		fprintf(stderr, "Failed to initialise Allegro");
+		fprintf(stderr, "Failed to initialise Allegro\n");
 		return -1;
 	}
 
 	if(!al_init_primitives_addon()) {
-		fprintf(stderr, "Failed to initialise Allegro Primitives");
+		fprintf(stderr, "Failed to initialise Allegro Primitives\n");
 	}
 
 	if(!al_install_keyboard()) {
-		fprintf(stderr, "Failed to install keyboard");
+		fprintf(stderr, "Failed to install keyboard\n");
 		return -1;
 	}
 
 	timer = al_create_timer(1.0/FPS);
 	if(!timer) {
-		fprintf(stderr, "Failed to initialize timer");
+		fprintf(stderr, "Failed to initialize timer\n");
 		return -1;
 	}
+	timer2 = al_create_timer(1.0/1000);
 
 	event_queue = al_create_event_queue();
 	if(!event_queue) {
@@ -56,9 +49,15 @@ int main() {
 		return -1;
 	}
 
+	draw_display draw;
+
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer2));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(draw.display));
+
+	ALLEGRO_EVENT ev;
 
 
 	uint32_t version = al_get_allegro_version();
@@ -72,119 +71,73 @@ int main() {
 	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
 
 
-	draw_display draw;
-	SHOOT shoot_data;
-
-
-	shoot_thread = al_create_thread(shoot, &shoot_data);
-	al_start_thread(shoot_thread);
-
-	al_lock_mutex(shoot_data.mutex);
-	while(!shoot_data.READY) {
-		al_wait_cond(shoot_data.cond, shoot_data.mutex);
-	}
-	al_unlock_mutex(shoot_data.mutex);
-
-
 	al_set_target_bitmap(al_get_backbuffer(draw.display));
 
-	int i = 0;
+	al_start_timer(timer);
+	al_start_timer(timer2);
 
-	while(1) {
-		al_clear_to_color(al_map_rgb(0, 0, 0));
+	al_hide_mouse_cursor(draw.display);
 
-		al_lock_mutex(shoot_data.mutex);
+	bullets_data add_bullets;
 
-		al_draw_line(shoot_data.x1, shoot_data.y1, shoot_data.x2, shoot_data.y2, al_map_rgb(255, 0, 0), 3);
+	while(draw.game_running) {
+		al_wait_for_event(event_queue, &ev);
 
-		al_unlock_mutex(shoot_data.mutex);
+		switch(ev.type)
+		{
 
+		case ALLEGRO_EVENT_TIMER:
 
-		al_lock_mutex(bullets.at(0).mutex);
+			if(ev.timer.source == timer) {
+				std::cout << add_bullets.get_size() << "\t";
+				add_bullets.remove_bullet((add_bullets.get_size())/2);
+				std::cout << add_bullets.get_size() << std::endl;
 
-		al_draw_line(bullets.at(0).x1, bullets.at(0).y1, bullets.at(0).x2, bullets.at(0).y2, al_map_rgb(0, 255, 0), 3);
+			} else {	//timer2
+				add_bullets.add_bullet(0, 0, 5, 5, 50, 50, 100, 100);
+			}
+			break;
 
-		al_unlock_mutex(bullets.at(0).mutex);
+		case ALLEGRO_EVENT_KEY_UP:
 
+			if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
 
-		al_lock_mutex(bullets.at(1).mutex);
+				al_stop_timer(timer);
+				al_stop_timer(timer2);
+				al_wait_for_event(event_queue, &ev);		//Clears current event (key_down, ALLEGRO_KEY_ESCAPE)
 
-		al_draw_line(bullets.at(1).x1, bullets.at(1).y1, bullets.at(1).x2, bullets.at(1).y2, al_map_rgb(0, 0, 255), 3);
+				while(ev.type != ALLEGRO_EVENT_KEY_UP || ev.keyboard.keycode != ALLEGRO_KEY_ESCAPE) {
+					al_wait_for_event(event_queue, &ev);
+				}
 
-		al_unlock_mutex(bullets.at(1).mutex);
+				al_start_timer(timer);
+				al_start_timer(timer2);
+			}
+			break;
 
-		al_flip_display();
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			draw.game_running = false;
+			break;
 
-		i++;
-
-		al_rest(1.0/60.0);
+		default:
+			break;
+		}
 	}
-
-	al_destroy_thread(shoot_thread);
-	al_destroy_cond(shoot_data.cond);
 }
 
 
 draw_display::draw_display() {
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
 	display = al_create_display(640, 480);
+
 	foreground = al_create_bitmap(640, 480);
+
+	game_running = true;
 }
+
 
 draw_display::~draw_display() {
 	al_destroy_display(display);
 	al_destroy_bitmap(foreground);
-}
-
-
-static void *shoot(ALLEGRO_THREAD *thread, void *arg) {
-	SHOOT *shoot_data = (SHOOT*) arg;
-
-	SHOOT bullet;
-
-	bullets.push_back(bullet);
-	bullets.push_back(bullet);
-
-	float speedx = 4;
-	float speedy = 3;
-
-	float speedx2 = -4;
-	float speedy2 = 3;
-
-	float speedx3 = 0;
-	float speedy3 = 3;
-
-	bullets.at(0).x1 = 640;
-	bullets.at(0).x2 = 630;
-
-	bullets.at(1).x1 = 320;
-	bullets.at(1).x2 = 320;
-
-	al_lock_mutex(shoot_data->mutex);
-	shoot_data->READY = true;
-	al_broadcast_cond(shoot_data->cond);
-	al_unlock_mutex(shoot_data->mutex);
-
-	while(!al_get_thread_should_stop(thread)) {
-		al_lock_mutex(shoot_data->mutex);
-
-		shoot_data->calc.calculate_position(&shoot_data->x1, &shoot_data->y1, &shoot_data->x2, &shoot_data->y2, speedx, speedy);
-
-		al_unlock_mutex(shoot_data->mutex);
-
-
-		al_lock_mutex(bullets.at(0).mutex);
-
-		bullets.at(0).calc.calculate_position(&bullets.at(0).x1, &bullets.at(0).y1, &bullets.at(0).x2, &bullets.at(0).y2, speedx2, speedy2);
-
-		al_unlock_mutex(bullets.at(0).mutex);
-
-
-		al_lock_mutex(bullets.at(1).mutex);
-
-		bullets.at(1).calc.calculate_position(&bullets.at(1).x1, &bullets.at(1).y1, &bullets.at(1).x2, &bullets.at(1).y2, speedx3, speedy3);
-
-		al_unlock_mutex(bullets.at(1).mutex);
-
-		al_rest(1.0/120.0);
-	}
 }
