@@ -6,10 +6,7 @@
 #include "main.h"
 
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
+
 
 class bullet {
 public:
@@ -20,17 +17,19 @@ public:
 
 class bullets_data {			//Deals with adding, removing and storing bullets
 public:
-	void add_bullet(float ext_x1, float ext_x2, float ext_y1, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
-	void remove_bullet(int pos);
+	void add_bullet(float ext_x1, float ext_y1, float ext_x2, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
+	void remove_bullet(uint pos);
+	void remove_bullet(std::list<bullet>::iterator bullet);
+	void calculate_position();
+	void draw_to_screen(ALLEGRO_DISPLAY&);
 	int get_size();
 
 	bullets_data();
-//	~bullets_data();
+	~bullets_data();
 
+	bullet new_bullet;
 	std::list <bullet> bullets;
-
-	void calculate_position();
-
+	std::list<bullet>::iterator bullet_iter;
 protected:
 };
 
