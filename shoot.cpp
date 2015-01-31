@@ -37,6 +37,7 @@ void bullets_data::remove_bullet(std::list<bullet>::iterator bullet) {
 }
 
 
+//Calculates the speed and direction of the bullet
 void bullets_data::calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y) {
 	traj_x = (cursor_x - player_x);
 	traj_y = (cursor_y - player_y);
@@ -69,7 +70,7 @@ void bullets_data::calculate_direction() {
 			bullet_iter->x2 += traj_x;
 			bullet_iter->y2 += traj_y;
 
-			if(bullet_iter->x1 > 640 || bullet_iter->y1 > 480|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
+			if(bullet_iter->x1 > 1920 || bullet_iter->y1 > 1080|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;

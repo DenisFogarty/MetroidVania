@@ -26,6 +26,11 @@ int main() {
 	}
 
 
+	draw_display draw;
+
+	draw.game_loop();
+
+
 	uint version = al_get_allegro_version();
 
 	int major = version >> 24;
@@ -34,16 +39,11 @@ int main() {
 	int release = version &255;
 
 	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
-
-
-	draw_display draw;
-
-	draw.game_loop();
 }
 
 
 draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
 	display = al_create_display(640, 480);
 	if(!display) {
@@ -60,10 +60,11 @@ draw_display::draw_display() {
 
 
 void draw_display::game_loop() {
-	ALLEGRO_EVENT_QUEUE *event_queue    = NULL;
-	ALLEGRO_TIMER       *refresh_timer		    = NULL;
-	ALLEGRO_TIMER		*game_timer			= NULL;
-	ALLEGRO_MOUSE_STATE	mouse_state;
+	ALLEGRO_EVENT_QUEUE 	*event_queue    = NULL;
+	ALLEGRO_TIMER       	*refresh_timer	= NULL;
+	ALLEGRO_TIMER			*game_timer		= NULL;
+
+	ALLEGRO_MOUSE_STATE		mouse_state;
 
 
 	refresh_timer = al_create_timer(1.0/FPS);
@@ -140,8 +141,10 @@ void draw_display::game_loop() {
 
 			if(mouse_state.buttons & 1) {
 				add_bullets.add_bullet(320, 240, 325, 245, 27, -4, 76.3, 459);
-			} else if (mouse_state.buttons & 2){
-				add_bullets.remove_bullet(3);
+			}
+
+			if (mouse_state.buttons & 2){
+				add_bullets.remove_bullet(0);
 			}
 			break;
 
