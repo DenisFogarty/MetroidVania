@@ -13,10 +13,13 @@
 class draw_display {
 public:
 	draw_display();
+	~draw_display();
+
+	void game_loop();
+
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
 	bool game_running;
-	~draw_display();
 
 private:
 

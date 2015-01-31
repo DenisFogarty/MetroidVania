@@ -10,8 +10,6 @@ void bullets_data::add_bullet(float ext_x1, float ext_y1, float ext_x2, float ex
 	new_bullet.y1 = ext_y1;
 	new_bullet.x2 = ext_x2;
 	new_bullet.y2 = ext_y2;
-
-	std::cout << new_bullet.x1;
 	bullets.push_back(new_bullet);
 }
 
@@ -36,12 +34,12 @@ void bullets_data::remove_bullet(std::list<bullet>::iterator bullet) {
 }
 
 
-int bullets_data::get_size() {
-	return bullets.size();
+void bullets_data::calculate_trajectory() {
+
 }
 
 
-void bullets_data::calculate_position() {
+void bullets_data::calculate_direction() {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {
@@ -51,13 +49,17 @@ void bullets_data::calculate_position() {
 			bullet_iter->y2 += .3;
 
 			if(bullet_iter->x1 > 640 || bullet_iter->y1 > 480|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
-				std::cout << "Test" << std::endl;
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;
 			}
 		}
 	}
+}
+
+
+int bullets_data::get_size() {
+	return bullets.size();
 }
 
 

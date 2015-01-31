@@ -6,11 +6,6 @@ const int SCREEN_H = 480;
 
 
 int main() {
-	ALLEGRO_EVENT_QUEUE *event_queue    = NULL;
-	ALLEGRO_TIMER       *timer		    = NULL;
-	ALLEGRO_TIMER		*timer2			= NULL;
-	ALLEGRO_MOUSE_STATE	mouse_state;
-
 	if(!al_init()) {
 		fprintf(stderr, "Failed to initialise Allegro\n");
 		return -1;
@@ -30,37 +25,6 @@ int main() {
 		return -1;
 	}
 
-	timer = al_create_timer(1.0/FPS);
-	if(!timer) {
-		fprintf(stderr, "Failed to initialize timer\n");
-		return -1;
-	}
-	timer2 = al_create_timer(1.0/1000);
-
-	event_queue = al_create_event_queue();
-	if(!event_queue) {
-		fprintf(stderr, "failed to create event_queue!\n");
-		al_destroy_timer(timer);
-		return -1;
-	}
-
-	if(!al_install_mouse()) {
-		fprintf(stderr, "Failed to initialize mouse\n");
-		al_destroy_timer(timer);
-		al_destroy_event_queue(event_queue);
-		return -1;
-	}
-
-	draw_display draw;
-
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_register_event_source(event_queue, al_get_timer_event_source(timer2));
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_register_event_source(event_queue, al_get_mouse_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(draw.display));
-
-	ALLEGRO_EVENT ev;
-
 
 	uint version = al_get_allegro_version();
 
@@ -69,50 +33,105 @@ int main() {
 	int revision = (version >> 8) &255;
 	int release = version &255;
 
-
 	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
 
 
-	al_set_target_bitmap(al_get_backbuffer(draw.display));
+	draw_display draw;
 
-	al_start_timer(timer);
-	al_start_timer(timer2);
+	draw.game_loop();
+}
 
-	al_hide_mouse_cursor(draw.display);
+
+draw_display::draw_display() {
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
+	display = al_create_display(640, 480);
+	if(!display) {
+		fprintf(stderr, "Failed to initialise the display/n");
+	}
+
+	foreground = al_create_bitmap(640, 480);
+	if(!foreground) {
+		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
+	}
+
+	game_running = true;
+}
+
+
+void draw_display::game_loop() {
+	ALLEGRO_EVENT_QUEUE *event_queue    = NULL;
+	ALLEGRO_TIMER       *refresh_timer		    = NULL;
+	ALLEGRO_TIMER		*game_timer			= NULL;
+	ALLEGRO_MOUSE_STATE	mouse_state;
+
+
+	refresh_timer = al_create_timer(1.0/FPS);
+	if(!refresh_timer) {
+		fprintf(stderr, "Failed to initialise refresh timer\n");
+	}
+
+	game_timer = al_create_timer(1.0/1000);
+	if(!game_timer) {
+		fprintf(stderr, "Failed to initialise game timer/n");
+	}
+
+	event_queue = al_create_event_queue();
+	if(!event_queue) {
+		fprintf(stderr, "failed to create event_queue!\n");
+		al_destroy_timer(refresh_timer);
+	}
+
+
+	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
+	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+
+	ALLEGRO_EVENT ev;
+
+	al_set_target_bitmap(al_get_backbuffer(display));
+
+	al_hide_mouse_cursor(display);
 
 	bullets_data add_bullets;
 
-	//Main game logic
-	while(draw.game_running) {
+	al_start_timer(refresh_timer);
+	al_start_timer(game_timer);
+
+
+	//Main game loop
+	while(game_running) {
 		al_wait_for_event(event_queue, &ev);
 
 		switch(ev.type)
 		{
 
 		case ALLEGRO_EVENT_TIMER:
-			if(ev.timer.source == timer) {
+			if(ev.timer.source == refresh_timer) {
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 
-				add_bullets.draw_to_screen(*draw.display);
+				add_bullets.draw_to_screen(*display);
 
 				al_flip_display();
 
-			} else {	//timer2
-				add_bullets.calculate_position();
+			} else {	//game_timer
+				add_bullets.calculate_direction();
 			}
 			break;
 
 		case ALLEGRO_EVENT_KEY_UP:
 			if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
 
-				al_stop_timer(timer);
+				al_stop_timer(refresh_timer);
 				al_wait_for_event(event_queue, &ev);		//Clears current event (key_down, ALLEGRO_KEY_ESCAPE)
 
 				while(ev.type != ALLEGRO_EVENT_KEY_UP || ev.keyboard.keycode != ALLEGRO_KEY_ESCAPE) {
 					al_wait_for_event(event_queue, &ev);
 				}
 
-				al_start_timer(timer);
+				al_start_timer(refresh_timer);
 			}
 			break;
 
@@ -127,24 +146,13 @@ int main() {
 			break;
 
 		case ALLEGRO_EVENT_DISPLAY_CLOSE:
-			draw.game_running = false;
+			game_running = false;
 			break;
 
 		default:
 			break;
 		}
 	}
-}
-
-
-draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-
-	display = al_create_display(640, 480);
-
-	foreground = al_create_bitmap(640, 480);
-
-	game_running = true;
 }
 
 
