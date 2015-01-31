@@ -139,7 +139,7 @@ void draw_display::game_loop() {
 			al_get_mouse_state(&mouse_state);
 
 			if(mouse_state.buttons & 1) {
-				add_bullets.add_bullet(0, 0, 5, 5, 0, 0, 50, 50);
+				add_bullets.add_bullet(320, 240, 325, 245, 27, -4, 76.3, 459);
 			} else if (mouse_state.buttons & 2){
 				add_bullets.remove_bullet(3);
 			}

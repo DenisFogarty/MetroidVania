@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <math.h>
 #include "main.h"
 
 #include <allegro5/allegro.h>
@@ -21,7 +22,7 @@ public:
 	void add_bullet(float ext_x1, float ext_y1, float ext_x2, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
-	void calculate_trajectory();
+	void calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y);
 	void calculate_direction();
 	void draw_to_screen(ALLEGRO_DISPLAY&);
 	int get_size();
@@ -33,6 +34,8 @@ private:
 	bullet new_bullet;
 	std::list <bullet> bullets;
 	std::list<bullet>::iterator bullet_iter;
+	float sum;
+	float traj_x, traj_y;
 protected:
 };
 
