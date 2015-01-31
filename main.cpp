@@ -139,11 +139,11 @@ void draw_display::game_loop() {
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 			al_get_mouse_state(&mouse_state);
 
-			if(mouse_state.buttons & 1) {
+			if(al_mouse_button_down(&mouse_state, 1)) {
 				add_bullets.add_bullet(320, 240, 325, 245, 27, -4, 76.3, 459);
 			}
 
-			if (mouse_state.buttons & 2){
+			if (al_mouse_button_down(&mouse_state, 2)){
 				add_bullets.remove_bullet(0);
 			}
 			break;

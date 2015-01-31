@@ -9,6 +9,7 @@
 #include <allegro5/allegro_primitives.h>
 
 #include "shoot.h"
+#include "movement.h"
 
 class draw_display {
 public:
