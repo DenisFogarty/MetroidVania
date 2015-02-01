@@ -7,11 +7,11 @@ bullets_data::bullets_data() {
 }
 
 
-void bullets_data::add_bullet(float ext_x1, float ext_y1, float ext_x2, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y) {
-	new_bullet.x1 = ext_x1;
-	new_bullet.y1 = ext_y1;
-	new_bullet.x2 = ext_x2;
-	new_bullet.y2 = ext_y2;
+void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
+	new_bullet.x1 = player_x;
+	new_bullet.y1 = player_y;
+	new_bullet.x2 = player_x + 5;
+	new_bullet.y2 = player_y + 5;
 	calculate_trajectory(player_x, player_y, cursor_x, cursor_y);
 	bullets.push_back(new_bullet);
 }
@@ -56,8 +56,8 @@ void bullets_data::calculate_trajectory(float player_x, float player_y, float cu
 	}
 
 
-	traj_x = traj_x*.4;
-	traj_y = traj_y*.3;
+	new_bullet.direction_x = traj_x*.4;
+	new_bullet.direction_y = traj_y*.4;
 }
 
 
@@ -65,12 +65,12 @@ void bullets_data::calculate_direction() {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {
-			bullet_iter->x1 += traj_x;
-			bullet_iter->y1 += traj_y;
-			bullet_iter->x2 += traj_x;
-			bullet_iter->y2 += traj_y;
+			bullet_iter->x1 += bullet_iter->direction_x;
+			bullet_iter->y1 += bullet_iter->direction_y;
+			bullet_iter->x2 += bullet_iter->direction_x;
+			bullet_iter->y2 += bullet_iter->direction_y;
 
-			if(bullet_iter->x1 > 1920 || bullet_iter->y1 > 1080|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
+			if(bullet_iter->x1 > 640 || bullet_iter->y1 > 480|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;

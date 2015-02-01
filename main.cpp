@@ -43,7 +43,7 @@ int main() {
 
 
 draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
 	display = al_create_display(640, 480);
 	if(!display) {
@@ -54,6 +54,9 @@ draw_display::draw_display() {
 	if(!foreground) {
 		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
 	}
+
+	mouse_x = 0;
+	mouse_y = 0;
 
 	game_running = true;
 }
@@ -115,6 +118,8 @@ void draw_display::game_loop() {
 
 				add_bullets.draw_to_screen(*display);
 
+				al_draw_filled_rectangle(mouse_x, mouse_y, mouse_x + 10, mouse_y + 10, al_map_rgb(255, 255, 0));
+
 				al_flip_display();
 
 			} else {	//game_timer
@@ -136,15 +141,16 @@ void draw_display::game_loop() {
 			}
 			break;
 
+		case ALLEGRO_EVENT_MOUSE_AXES:
+			mouse_x = ev.mouse.x;
+			mouse_y = ev.mouse.y;
+			break;
+
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 			al_get_mouse_state(&mouse_state);
 
 			if(al_mouse_button_down(&mouse_state, 1)) {
-				add_bullets.add_bullet(320, 240, 325, 245, 27, -4, 76.3, 459);
-			}
-
-			if (al_mouse_button_down(&mouse_state, 2)){
-				add_bullets.remove_bullet(0);
+				add_bullets.add_bullet(0, 0, mouse_x, mouse_y);
 			}
 			break;
 

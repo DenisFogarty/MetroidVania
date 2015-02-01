@@ -18,11 +18,12 @@ public:
 
 	void game_loop();
 
+private:
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
-	bool game_running;
 
-private:
+	bool game_running;
+	float mouse_x, mouse_y;
 
 protected:
 

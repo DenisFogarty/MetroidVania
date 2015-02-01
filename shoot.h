@@ -19,7 +19,7 @@ private:
 
 class bullets_data {			//Deals with adding, removing and storing bullets
 public:
-	void add_bullet(float ext_x1, float ext_y1, float ext_x2, float ext_y2, float player_x, float player_y, float cursor_x, float cursor_y);
+	void add_bullet(float player_x, float player_y, float cursor_x, float cursor_y);
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
 	void calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y);
