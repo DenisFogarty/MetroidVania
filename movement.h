@@ -7,7 +7,10 @@
 
 #define left 	0
 #define right	1
-#define stop	2
+#define up		2
+#define down	3
+#define stop_x	4
+#define stop_y	5
 
 class movement {
 public:
@@ -22,7 +25,8 @@ public:
 
 private:
 	float player_x, player_y;
-	float movement_speed;
+	float movement_x;
+	float movement_y;
 };
 
 #endif /* MOVEMENT_H_ */

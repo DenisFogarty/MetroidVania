@@ -61,6 +61,14 @@ draw_display::draw_display() {
 	char_x = 0;
 	char_y = 0;
 
+	num_x_buttons_pressed = 0;
+	num_y_buttons_pressed = 0;
+
+	left_pressed = false;
+	right_pressed = false;
+	up_pressed = false;
+	down_pressed = false;
+
 	game_running = true;
 }
 
@@ -138,14 +146,26 @@ void draw_display::game_loop() {
 		case ALLEGRO_EVENT_KEY_DOWN:
 			if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
 				char_move.set_direction(right);
+				right_pressed = true;
+				num_x_buttons_pressed += 1;
 			}
 
 			if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
 				char_move.set_direction(left);
+				left_pressed = true;
+				num_x_buttons_pressed += 1;
+			}
+
+			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
+				char_move.set_direction(up);
+				up_pressed = true;
+				num_y_buttons_pressed += 1;
 			}
 
 			if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
-				char_move.set_direction(stop);
+				char_move.set_direction(down);
+				down_pressed = true;
+				num_y_buttons_pressed += 1;
 			}
 
 			break;
@@ -161,6 +181,41 @@ void draw_display::game_loop() {
 				}
 
 				al_start_timer(refresh_timer);
+			}
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
+				num_y_buttons_pressed -= 1;
+				up_pressed = false;
+				if(down_pressed) {
+					char_move.set_direction(down);
+				}
+			}
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
+				num_x_buttons_pressed -= 1;
+				left_pressed = false;
+				if(right_pressed) {
+					char_move.set_direction(right);
+				}
+			}
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
+				num_y_buttons_pressed -= 1;
+				down_pressed = false;
+				if(up_pressed) {
+					char_move.set_direction(up);
+				}
+			}
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
+				num_x_buttons_pressed -= 1;
+				right_pressed = false;
+				if(left_pressed) {
+					char_move.set_direction(left);
+				}
+			}
+
+			if(num_x_buttons_pressed == 0) {
+				char_move.set_direction(stop_x);
+			}
+			if(num_y_buttons_pressed == 0) {
+				char_move.set_direction(stop_y);
 			}
 
 			break;
