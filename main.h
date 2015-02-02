@@ -1,5 +1,6 @@
 #ifndef MAIN_H_INCLUDED
 #define MAIN_H_INCLUDED
+#define ALLEGRO_STATICLINK
 
 #include <iostream>
 #include <stdio.h>
@@ -24,6 +25,7 @@ private:
 
 	bool game_running;
 	float mouse_x, mouse_y;
+	float char_x, char_y;
 
 protected:
 

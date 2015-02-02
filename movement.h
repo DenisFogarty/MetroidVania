@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
 
-#define left 0
-#define right 1
+#define left 	0
+#define right	1
+#define stop	2
 
 class movement {
 public:
@@ -13,6 +15,8 @@ public:
 	virtual ~movement();
 
 	void set_direction(int direction);
+	void calculate_movement();
+	void draw_character(ALLEGRO_DISPLAY &display);
 	int get_x();
 	int get_y();
 
