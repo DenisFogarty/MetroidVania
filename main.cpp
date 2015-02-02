@@ -69,6 +69,8 @@ draw_display::draw_display() {
 	up_pressed = false;
 	down_pressed = false;
 
+	paused = false;
+
 	game_running = true;
 }
 
@@ -136,7 +138,7 @@ void draw_display::game_loop() {
 
 				al_flip_display();
 
-			} else {	//game_timer
+			} else if (ev.timer.source == game_timer && !paused){	//game_timer
 				add_bullets.calculate_direction();
 				char_move.calculate_movement();
 			}
@@ -144,10 +146,10 @@ void draw_display::game_loop() {
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
-			if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
-				char_move.set_direction(right);
-				right_pressed = true;
-				num_x_buttons_pressed += 1;
+			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
+				char_move.set_direction(up);
+				up_pressed = true;
+				num_y_buttons_pressed += 1;
 			}
 
 			if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
@@ -156,16 +158,16 @@ void draw_display::game_loop() {
 				num_x_buttons_pressed += 1;
 			}
 
-			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
-				char_move.set_direction(up);
-				up_pressed = true;
-				num_y_buttons_pressed += 1;
-			}
-
 			if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
 				char_move.set_direction(down);
 				down_pressed = true;
 				num_y_buttons_pressed += 1;
+			}
+
+			if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
+				char_move.set_direction(right);
+				right_pressed = true;
+				num_x_buttons_pressed += 1;
 			}
 
 			break;
@@ -173,14 +175,12 @@ void draw_display::game_loop() {
 		case ALLEGRO_EVENT_KEY_UP:
 			if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
 
-				al_stop_timer(refresh_timer);
-				al_wait_for_event(event_queue, &ev);		//Clears current event (key_down, ALLEGRO_KEY_ESCAPE)
-
-				while(ev.type != ALLEGRO_EVENT_KEY_UP || ev.keyboard.keycode != ALLEGRO_KEY_ESCAPE) {
-					al_wait_for_event(event_queue, &ev);
+				if(!paused) {
+					paused = true;
 				}
-
-				al_start_timer(refresh_timer);
+				else {
+					paused = false;
+				}
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
 				num_y_buttons_pressed -= 1;
@@ -221,18 +221,23 @@ void draw_display::game_loop() {
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_AXES:
-			mouse_x = ev.mouse.x;
-			mouse_y = ev.mouse.y;
+			if(ev.mouse.x != char_x || ev.mouse.y != char_y) {
+				mouse_x = ev.mouse.x;
+				mouse_y = ev.mouse.y;
+			}
 
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-			al_get_mouse_state(&mouse_state);
-
-			if(al_mouse_button_down(&mouse_state, 1)) {
+			if(!paused) {
 				char_x = char_move.get_x();
 				char_y = char_move.get_y();
-				add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
+
+				al_get_mouse_state(&mouse_state);
+
+				if(al_mouse_button_down(&mouse_state, 1)) {
+					add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
+				}
 			}
 
 			break;
@@ -246,13 +251,15 @@ void draw_display::game_loop() {
 			break;
 		}
 
-		al_get_mouse_state(&mouse_state);
-
-		if(al_mouse_button_down(&mouse_state, 1)) {
-			char_x = char_move.get_x();
-			char_y = char_move.get_y();
-			add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
-		}
+		//		if(!paused) {
+		//			al_get_mouse_state(&mouse_state);
+		//
+		//			if(al_mouse_button_down(&mouse_state, 1)) {
+		//				char_x = char_move.get_x();
+		//				char_y = char_move.get_y();
+		//				add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
+		//			}
+		//		}
 	}
 }
 

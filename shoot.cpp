@@ -8,11 +8,11 @@ bullets_data::bullets_data() {
 
 
 void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
-	new_bullet.x1 = player_x + 7;
-	new_bullet.y1 = player_y + 7;
-	new_bullet.x2 = player_x + 15;
-	new_bullet.y2 = player_y + 15;
-	calculate_trajectory(player_x + 10, player_y + 10, cursor_x, cursor_y);
+	new_bullet.x1 = player_x + 8;
+	new_bullet.y1 = player_y + 8;
+	new_bullet.x2 = player_x + 13;
+	new_bullet.y2 = player_y + 13;
+	calculate_trajectory(player_x, player_y, cursor_x, cursor_y);
 	bullets.push_back(new_bullet);
 }
 

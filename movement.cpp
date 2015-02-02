@@ -21,7 +21,8 @@ void movement::set_direction(int direction) {
 	else if(direction == 3) {
 		movement_y = .2;
 	}
-	else if(direction == 4) {
+
+	if(direction == 4) {
 		movement_x = 0;
 	}
 	else if(direction == 5) {
@@ -33,6 +34,15 @@ void movement::set_direction(int direction) {
 void movement::calculate_movement() {
 	player_x += movement_x;
 	player_y += movement_y;
+
+	if(player_x <= 0 || player_x >= 620) {
+		set_direction(stop_x);
+		player_x = (int)player_x;
+	}
+	if(player_y <= 0 || player_y >= 460) {
+		set_direction(stop_y);
+		player_y = (int)player_y;
+	}
 }
 
 

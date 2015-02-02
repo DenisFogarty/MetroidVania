@@ -30,6 +30,7 @@ private:
 	int num_y_buttons_pressed;
 	bool up_pressed, down_pressed;
 	bool left_pressed, right_pressed;
+	bool paused;
 
 protected:
 
