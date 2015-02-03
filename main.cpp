@@ -4,6 +4,7 @@ const float FPS = 120.0;
 const int SCREEN_W = 600;
 const int SCREEN_H = 480;
 
+draw_display draw;
 
 int main() {
 	if(!al_init()) {
@@ -24,9 +25,6 @@ int main() {
 		fprintf(stderr, "Failed to install mouse\n");
 		return -1;
 	}
-
-
-	draw_display draw;
 
 	draw.game_loop();
 
@@ -152,18 +150,12 @@ void draw_display::game_loop() {
 			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
 				char_move.set_direction(up);
 				up_pressed = true;
-//				num_y_buttons_pressed += 1;
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
 				char_move.set_direction(left);
 				left_pressed = true;
 				num_x_buttons_pressed += 1;
 			}
-//			if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
-//				char_move.set_direction(down);
-//				down_pressed = true;
-//				num_y_buttons_pressed += 1;
-//			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
 				char_move.set_direction(right);
 				right_pressed = true;
@@ -182,11 +174,7 @@ void draw_display::game_loop() {
 				}
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
-//				num_y_buttons_pressed -= 1;
 				up_pressed = false;
-//				if(down_pressed) {
-//					char_move.set_direction(down);
-//				}
 				char_move.set_direction(down);
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
@@ -196,13 +184,6 @@ void draw_display::game_loop() {
 					char_move.set_direction(right);
 				}
 			}
-//			else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
-//				num_y_buttons_pressed -= 1;
-//				down_pressed = false;
-//				if(up_pressed) {
-//					char_move.set_direction(up);
-//				}
-//			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
 				num_x_buttons_pressed -= 1;
 				right_pressed = false;
@@ -214,9 +195,6 @@ void draw_display::game_loop() {
 			if(num_x_buttons_pressed == 0) {
 				char_move.set_direction(stop_x);
 			}
-//			if(num_y_buttons_pressed == 0) {
-//				char_move.set_direction(stop_y);
-//			}
 
 			break;
 
@@ -252,16 +230,6 @@ void draw_display::game_loop() {
 		default:
 			break;
 		}
-
-//		if(!paused) {
-//			al_get_mouse_state(&mouse_state);
-//
-//			if(al_mouse_button_down(&mouse_state, 1)) {
-//				char_x = char_move.get_x();
-//				char_y = char_move.get_y();
-//				add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
-//			}
-//		}
 	}
 }
 

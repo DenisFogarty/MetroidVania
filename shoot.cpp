@@ -4,6 +4,9 @@ bullets_data::bullets_data() {
 	sum = 0;
 	traj_x = 0;
 	traj_y = 0;
+
+//	bullet_start_x = draw.get_char_width()/5;
+//	bullet_start_y = draw.get_char_height();
 }
 
 
