@@ -27,6 +27,7 @@ private:
 	float player_x, player_y;
 	float movement_x;
 	float movement_y;
+	float char_height, char_width;
 };
 
 #endif /* MOVEMENT_H_ */

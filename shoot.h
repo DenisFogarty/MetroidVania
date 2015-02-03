@@ -36,6 +36,8 @@ private:
 	std::list<bullet>::iterator bullet_iter;
 	float sum;
 	float traj_x, traj_y;
+	float bullet_start_x, bullet_start_y;
+
 protected:
 };
 

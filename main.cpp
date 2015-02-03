@@ -43,7 +43,7 @@ int main() {
 
 
 draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
 	display = al_create_display(640, 480);
 	if(!display) {
@@ -57,9 +57,12 @@ draw_display::draw_display() {
 
 	mouse_x = 0;
 	mouse_y = 0;
+	cursor_size = 10;
 
 	char_x = 0;
 	char_y = 0;
+	char_height = 40;
+	char_width = 20;
 
 	num_x_buttons_pressed = 0;
 	num_y_buttons_pressed = 0;
@@ -134,7 +137,7 @@ void draw_display::game_loop() {
 
 				char_move.draw_character(*display);
 
-				al_draw_filled_rectangle(mouse_x, mouse_y, mouse_x + 10, mouse_y + 10, al_map_rgb(255, 255, 0));
+				al_draw_filled_rectangle(mouse_x, mouse_y, mouse_x + cursor_size, mouse_y + cursor_size, al_map_rgb(255, 255, 0));
 
 				al_flip_display();
 
@@ -149,22 +152,19 @@ void draw_display::game_loop() {
 			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
 				char_move.set_direction(up);
 				up_pressed = true;
-				num_y_buttons_pressed += 1;
+//				num_y_buttons_pressed += 1;
 			}
-
-			if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
 				char_move.set_direction(left);
 				left_pressed = true;
 				num_x_buttons_pressed += 1;
 			}
-
-			if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
-				char_move.set_direction(down);
-				down_pressed = true;
-				num_y_buttons_pressed += 1;
-			}
-
-			if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
+//			if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
+//				char_move.set_direction(down);
+//				down_pressed = true;
+//				num_y_buttons_pressed += 1;
+//			}
+			else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
 				char_move.set_direction(right);
 				right_pressed = true;
 				num_x_buttons_pressed += 1;
@@ -174,7 +174,6 @@ void draw_display::game_loop() {
 
 		case ALLEGRO_EVENT_KEY_UP:
 			if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-
 				if(!paused) {
 					paused = true;
 				}
@@ -183,11 +182,12 @@ void draw_display::game_loop() {
 				}
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
-				num_y_buttons_pressed -= 1;
+//				num_y_buttons_pressed -= 1;
 				up_pressed = false;
-				if(down_pressed) {
-					char_move.set_direction(down);
-				}
+//				if(down_pressed) {
+//					char_move.set_direction(down);
+//				}
+				char_move.set_direction(down);
 			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
 				num_x_buttons_pressed -= 1;
@@ -196,13 +196,13 @@ void draw_display::game_loop() {
 					char_move.set_direction(right);
 				}
 			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
-				num_y_buttons_pressed -= 1;
-				down_pressed = false;
-				if(up_pressed) {
-					char_move.set_direction(up);
-				}
-			}
+//			else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
+//				num_y_buttons_pressed -= 1;
+//				down_pressed = false;
+//				if(up_pressed) {
+//					char_move.set_direction(up);
+//				}
+//			}
 			else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
 				num_x_buttons_pressed -= 1;
 				right_pressed = false;
@@ -214,13 +214,15 @@ void draw_display::game_loop() {
 			if(num_x_buttons_pressed == 0) {
 				char_move.set_direction(stop_x);
 			}
-			if(num_y_buttons_pressed == 0) {
-				char_move.set_direction(stop_y);
-			}
+//			if(num_y_buttons_pressed == 0) {
+//				char_move.set_direction(stop_y);
+//			}
 
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_AXES:
+			char_x = char_move.get_x();
+			char_y = char_move.get_y();
 			if(ev.mouse.x != char_x || ev.mouse.y != char_y) {
 				mouse_x = ev.mouse.x;
 				mouse_y = ev.mouse.y;
@@ -251,16 +253,25 @@ void draw_display::game_loop() {
 			break;
 		}
 
-		//		if(!paused) {
-		//			al_get_mouse_state(&mouse_state);
-		//
-		//			if(al_mouse_button_down(&mouse_state, 1)) {
-		//				char_x = char_move.get_x();
-		//				char_y = char_move.get_y();
-		//				add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
-		//			}
-		//		}
+//		if(!paused) {
+//			al_get_mouse_state(&mouse_state);
+//
+//			if(al_mouse_button_down(&mouse_state, 1)) {
+//				char_x = char_move.get_x();
+//				char_y = char_move.get_y();
+//				add_bullets.add_bullet(char_x, char_y, mouse_x, mouse_y);
+//			}
+//		}
 	}
+}
+
+
+float draw_display::get_char_height() {
+	return char_height;
+}
+
+float draw_display::get_char_width() {
+	return char_width;
 }
 
 
