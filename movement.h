@@ -13,6 +13,7 @@
 #define stop_y	5
 
 class movement {
+	friend class bullets_data;
 public:
 	movement();
 	virtual ~movement();

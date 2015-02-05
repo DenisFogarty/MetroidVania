@@ -17,8 +17,6 @@ public:
 	~draw_display();
 
 	void game_loop();
-	float get_char_height();
-	float get_char_width();
 
 private:
 	ALLEGRO_DISPLAY *display;
@@ -30,7 +28,6 @@ private:
 	float cursor_size;
 
 	float char_x, char_y;
-	float char_height, char_width;
 
 	int num_x_buttons_pressed;
 	int num_y_buttons_pressed;
