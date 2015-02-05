@@ -28,6 +28,7 @@ int main() {
 
 	draw.game_loop();
 
+	draw_display draw;
 
 	uint version = al_get_allegro_version();
 
@@ -37,6 +38,8 @@ int main() {
 	int release = version &255;
 
 	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
+
+	draw.game_loop();
 }
 
 
@@ -120,12 +123,14 @@ void draw_display::game_loop() {
 
 	//Main game loop
 	while(game_running) {
+		std::cout << "Game running" << std::endl;
 		al_wait_for_event(event_queue, &ev);
 
 		switch(ev.type)
 		{
 
 		case ALLEGRO_EVENT_TIMER:
+			std::cout << "Timer" << std::endl;
 			if(ev.timer.source == refresh_timer) {
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 
