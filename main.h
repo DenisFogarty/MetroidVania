@@ -7,6 +7,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 
 #include "shoot.h"
 #include "movement.h"
@@ -21,11 +22,14 @@ public:
 private:
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *foreground;
+	ALLEGRO_BITMAP *cursor;
 
 	bool game_running;
 
 	float mouse_x, mouse_y;
 	float cursor_size;
+	float cursor_middle;
+	float cursor_color_r, cursor_color_g, cursor_color_b;
 
 	float char_x, char_y;
 

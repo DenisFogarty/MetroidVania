@@ -4,8 +4,6 @@ const float FPS = 120.0;
 const int SCREEN_W = 600;
 const int SCREEN_H = 480;
 
-draw_display draw;
-
 int main() {
 	if(!al_init()) {
 		fprintf(stderr, "Failed to initialise Allegro\n");
@@ -16,6 +14,8 @@ int main() {
 		fprintf(stderr, "Failed to initialise Allegro Primitives\n");
 	}
 
+	al_init_image_addon();
+
 	if(!al_install_keyboard()) {
 		fprintf(stderr, "Failed to install keyboard\n");
 		return -1;
@@ -25,8 +25,6 @@ int main() {
 		fprintf(stderr, "Failed to install mouse\n");
 		return -1;
 	}
-
-	draw.game_loop();
 
 	draw_display draw;
 
@@ -51,14 +49,43 @@ draw_display::draw_display() {
 		fprintf(stderr, "Failed to initialise the display/n");
 	}
 
-	foreground = al_create_bitmap(640, 480);
+
+	foreground = al_load_bitmap("sprites/land.png");
 	if(!foreground) {
 		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
 	}
 
-	mouse_x = 0;
-	mouse_y = 0;
-	cursor_size = 10;
+
+	{//The following creates the in-game cursor
+		mouse_x = 0;
+		mouse_y = 0;
+		cursor_size = 16;
+		cursor_middle = cursor_size/2;
+
+		cursor_color_r = 255;
+		cursor_color_g = 0;
+		cursor_color_b = 0;
+
+		cursor = al_create_bitmap(cursor_size, cursor_size);
+		if(!cursor) {
+			fprintf(stderr, "Failed to initialise the bitmap cursor/n");
+		}
+
+		al_set_target_bitmap(cursor);
+
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+		al_convert_mask_to_alpha(cursor, al_map_rgb(0, 0, 0));
+
+		al_draw_circle(cursor_middle, cursor_middle, cursor_middle - 1, al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b), 2);
+
+		al_draw_pixel(cursor_middle,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+		al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+		al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+		al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+	}
+
+
+	al_set_target_bitmap(al_get_backbuffer(display));
 
 	char_x = 0;
 	char_y = 0;
@@ -123,22 +150,22 @@ void draw_display::game_loop() {
 
 	//Main game loop
 	while(game_running) {
-		std::cout << "Game running" << std::endl;
 		al_wait_for_event(event_queue, &ev);
 
 		switch(ev.type)
 		{
 
 		case ALLEGRO_EVENT_TIMER:
-			std::cout << "Timer" << std::endl;
 			if(ev.timer.source == refresh_timer) {
 				al_clear_to_color(al_map_rgb(0, 0, 0));
+
+				al_draw_bitmap(foreground, 0, 0, 0);
 
 				add_bullets.draw_to_screen(*display);
 
 				char_move.draw_character(*display);
 
-				al_draw_filled_rectangle(mouse_x, mouse_y, mouse_x + cursor_size, mouse_y + cursor_size, al_map_rgb(255, 255, 0));
+				al_draw_bitmap(cursor, mouse_x, mouse_y, 0);
 
 				al_flip_display();
 
