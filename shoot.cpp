@@ -7,6 +7,8 @@ bullets_data::bullets_data() {
 
 	bullet_start_x = 40/5;
 	bullet_start_y = 20;
+
+	bullet_bit = al_load_bitmap("sprites/bullet.png");
 }
 
 
@@ -92,7 +94,7 @@ void bullets_data::draw_to_screen(ALLEGRO_DISPLAY&) {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {
-			al_draw_line(bullet_iter->x1, bullet_iter->y1, bullet_iter->x2, bullet_iter->y2, al_map_rgb(255, 0, 0), 5);
+			al_draw_rotated_bitmap(bullet_bit, 8, 5, bullet_iter->x1, bullet_iter->y1, ALLEGRO_PI*sum, 0);
 			bullet_iter++;
 		}
 	}

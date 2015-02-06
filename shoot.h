@@ -4,9 +4,10 @@
 #include <iostream>
 #include <list>
 #include <math.h>
-#include "main.h"
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 
 
 class bullet {
@@ -31,6 +32,8 @@ public:
 	~bullets_data();
 
 private:
+	ALLEGRO_BITMAP *bullet_bit;
+
 	bullet new_bullet;
 	std::list <bullet> bullets;
 	std::list<bullet>::iterator bullet_iter;
