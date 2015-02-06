@@ -38,11 +38,11 @@ void movement::calculate_movement() {
 	player_x += movement_x;
 	player_y += movement_y;
 
-	if(player_x <= 0 || player_x >= 1920 - char_width) {
+	if(player_x <= 0 || player_x >= 640 - char_width) {
 		set_direction(stop_x);
 		player_x = (int)player_x;
 	}
-	if(player_y <= 0 || player_y >= 1080 - char_height) {
+	if(player_y <= 0 || player_y >= 480 - char_height) {
 		set_direction(stop_y);
 		player_y = (int)player_y;
 	}
@@ -50,7 +50,7 @@ void movement::calculate_movement() {
 
 
 void movement::draw_character(ALLEGRO_DISPLAY &display) {
-	al_draw_filled_rectangle(player_x, player_y, player_x + char_width, player_y + char_height, al_map_rgb(255, 0, 0));
+	al_draw_filled_rectangle(player_x, player_y, player_x + char_width, player_y + char_height, al_map_rgb(255, 0, 255));
 }
 
 

@@ -4,6 +4,9 @@ bullets_data::bullets_data() {
 	sum = 0;
 	traj_x = 0;
 	traj_y = 0;
+
+	bullet_start_x = 40/5;
+	bullet_start_y = 20;
 }
 
 
@@ -70,7 +73,7 @@ void bullets_data::calculate_direction() {
 			bullet_iter->x2 += bullet_iter->direction_x;
 			bullet_iter->y2 += bullet_iter->direction_y;
 
-			if(bullet_iter->x1 > 1920 || bullet_iter->y1 > 1080|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
+			if(bullet_iter->x1 > 640 || bullet_iter->y1 > 480|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;
