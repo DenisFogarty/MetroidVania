@@ -15,6 +15,7 @@ class bullet {
 private:
 	float x1, y1, x2, y2;
 	float direction_x, direction_y;		//Directions should also control speed
+	float angle;
 };
 
 
@@ -25,6 +26,7 @@ public:
 	void remove_bullet(std::list<bullet>::iterator bullet);
 	void calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y);
 	void calculate_direction();
+	void calculate_angle(float adjacent, float player_y, float cursor_y);
 	void draw_to_screen(ALLEGRO_DISPLAY&);
 	int get_size();
 
@@ -37,7 +39,7 @@ private:
 	bullet new_bullet;
 	std::list <bullet> bullets;
 	std::list<bullet>::iterator bullet_iter;
-	float sum;
+	float hypotenuse;
 	float traj_x, traj_y;
 	float bullet_start_x, bullet_start_y;
 
