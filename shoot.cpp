@@ -5,18 +5,18 @@ bullets_data::bullets_data() {
 	traj_x = 0;
 	traj_y = 0;
 
-	bullet_start_x = 40/5;
-	bullet_start_y = 20;
+	bullet_start_x = 13;
+	bullet_start_y = 40/5;
 
 	bullet_bit = al_load_bitmap("sprites/bullet.png");
 }
 
 
 void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
-	new_bullet.x1 = player_x + 8;
-	new_bullet.y1 = player_y + 8;
-	new_bullet.x2 = player_x + 13;
-	new_bullet.y2 = player_y + 13;
+	new_bullet.x1 = player_x + bullet_start_x;
+	new_bullet.y1 = player_y + bullet_start_y;
+	new_bullet.x2 = player_x + bullet_start_x;
+	new_bullet.y2 = player_y + bullet_start_y;
 	calculate_trajectory(player_x, player_y, cursor_x, cursor_y);
 	calculate_angle(cursor_x - player_x, player_y, cursor_y);
 	bullets.push_back(new_bullet);
@@ -76,7 +76,7 @@ void bullets_data::calculate_direction() {
 			bullet_iter->x2 += bullet_iter->direction_x;
 			bullet_iter->y2 += bullet_iter->direction_y;
 
-			if(bullet_iter->x1 > 640 || bullet_iter->y1 > 480|| bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
+			if(bullet_iter->x1 > 1920 || bullet_iter->y1 > 1080 || bullet_iter->x2 < 1 || bullet_iter->y2 < 1) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;
@@ -97,9 +97,7 @@ void bullets_data::calculate_angle(float adjacent, float player_y, float cursor_
 	 * If the angle is in the bottom two quadrants, the angle needs to become a minus
 	 */
 	if(cursor_y < player_y) {
-		std::cout << "Test" << std::endl;
 		new_bullet.angle *= -1;
-		std::cout << new_bullet.angle << std::endl;
 	}
 }
 
@@ -121,5 +119,5 @@ void bullets_data::draw_to_screen(ALLEGRO_DISPLAY&) {
 
 
 bullets_data::~bullets_data() {
-
+	al_destroy_bitmap(bullet_bit);
 }
