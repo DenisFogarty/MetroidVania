@@ -12,12 +12,16 @@
 #include "shoot.h"
 #include "movement.h"
 
+#define screenwidth 640
+#define screenheight 480
+
 class draw_display {
 public:
 	draw_display();
 	~draw_display();
 
 	void game_loop();
+	void camera_update(float* camera_position, float x, float y, float width, float height);
 
 private:
 	ALLEGRO_DISPLAY *display;
@@ -40,6 +44,8 @@ private:
 	bool left_pressed, right_pressed;
 
 	bool paused;
+
+	float camera_position[2];
 
 protected:
 

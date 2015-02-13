@@ -19,10 +19,10 @@ void movement::set_direction(int direction) {
 		movement_x = .2;
 	}
 	else if(direction == 2) {
-		movement_y = -.3;
+		movement_y = -.2;
 	}
 	else if(direction == 3) {
-		movement_y = .3;
+		movement_y = .2;
 	}
 
 	if(direction == 4) {
@@ -40,11 +40,11 @@ void movement::calculate_movement() {
 
 	if(player_x <= 0 || player_x >= 1920 - char_width) {
 		set_direction(stop_x);
-		player_x = (int)player_x;
+		player_x = (int)player_x;	//If the character is slightly off screen, casting it as an int returns them back to the screen
 	}
 	if(player_y <= 0 || player_y >= 1080 - char_height) {
 		set_direction(stop_y);
-		player_y = (int)player_y;
+		player_y = (int)player_y;	//If the character is slightly off screen, casting it as an int returns them back to the screen
 	}
 }
 
