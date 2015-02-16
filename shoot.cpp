@@ -90,7 +90,6 @@ void bullets_data::calculate_angle(float adjacent, float player_y, float cursor_
 
 	float cos = adjacent/hypotenuse;
 	new_bullet.angle = acos(cos);
-	std::cout << new_bullet.angle << std::endl;
 
 	/*
 	 * If the angle is in the top two quadrants, nothing needs to be changed
@@ -99,6 +98,7 @@ void bullets_data::calculate_angle(float adjacent, float player_y, float cursor_
 	if(cursor_y < player_y) {
 		new_bullet.angle *= -1;
 	}
+	std::cout << new_bullet.angle << std::endl;
 }
 
 

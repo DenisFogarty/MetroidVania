@@ -24,9 +24,16 @@ public:
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 
 private:
-	ALLEGRO_DISPLAY *display;
-	ALLEGRO_BITMAP *foreground;
-	ALLEGRO_BITMAP *cursor;
+	ALLEGRO_DISPLAY			*display;
+	ALLEGRO_BITMAP			*foreground;
+	ALLEGRO_BITMAP			*cursor;
+	ALLEGRO_EVENT_QUEUE 	*event_queue    = NULL;
+	ALLEGRO_TIMER       	*refresh_timer	= NULL;
+	ALLEGRO_TIMER			*game_timer		= NULL;
+
+	ALLEGRO_MOUSE_STATE		mouse_state;
+	ALLEGRO_TRANSFORM		camera;
+	ALLEGRO_EVENT			ev;
 
 	bool game_running;
 
@@ -48,6 +55,13 @@ private:
 	float camera_position[2];
 
 protected:
+	void timer();
+	void key_down();
+	void key_up();
+	void mouse_down();
+
+	bullets_data add_bullets;
+	movement char_move;
 
 };
 

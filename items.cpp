@@ -8,11 +8,16 @@
 #include "items.h"
 
 items::items() {
-	// TODO Auto-generated constructor stub
 
 }
 
+
+void items::add_item_coords(float x, float y, float angle) {
+
+}
+
+
 items::~items() {
-	// TODO Auto-generated destructor stub
+
 }
 

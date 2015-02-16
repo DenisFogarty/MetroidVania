@@ -125,13 +125,126 @@ void draw_display::camera_update(float* camera_position, float x, float y, float
 }
 
 
-void draw_display::game_loop() {
-	ALLEGRO_EVENT_QUEUE 	*event_queue    = NULL;
-	ALLEGRO_TIMER       	*refresh_timer	= NULL;
-	ALLEGRO_TIMER			*game_timer		= NULL;
+void draw_display::timer() {
+	if(ev.timer.source == refresh_timer) {
+		al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	ALLEGRO_MOUSE_STATE		mouse_state;
-	ALLEGRO_TRANSFORM		camera;
+		al_draw_bitmap(foreground, 0, 0, 0);
+
+		add_bullets.draw_to_screen(*display);
+
+		char_move.draw_character(*display);
+
+		char_x = char_move.get_x();
+		char_y = char_move.get_y();
+
+		camera_update(camera_position, char_x, char_y, 20, 40);
+
+		al_identity_transform(&camera);
+		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);
+		al_use_transform(&camera);
+
+		al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+
+		al_flip_display();
+
+	} else if (ev.timer.source == game_timer && !paused){	//game_timer
+		add_bullets.calculate_direction();
+		char_move.calculate_movement();
+	}
+}
+
+
+void draw_display::key_down() {
+	if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
+		char_move.set_direction(up);
+		up_pressed = true;
+		num_y_buttons_pressed += 1;
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
+		char_move.set_direction(left);
+		left_pressed = true;
+		num_x_buttons_pressed += 1;
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
+		char_move.set_direction(down);
+		down_pressed = true;
+		num_y_buttons_pressed += 1;
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
+		char_move.set_direction(right);
+		right_pressed = true;
+		num_x_buttons_pressed += 1;
+	}
+}
+
+
+void draw_display::key_up() {
+	if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+		if(!paused) {
+			paused = true;
+		}
+		else {
+			paused = false;
+		}
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
+		num_y_buttons_pressed -= 1;
+		up_pressed = false;
+		if(down_pressed) {
+			char_move.set_direction(down);
+		}
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
+		num_x_buttons_pressed -= 1;
+		left_pressed = false;
+		if(right_pressed) {
+			char_move.set_direction(right);
+		}
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
+		num_x_buttons_pressed -= 1;
+		right_pressed = false;
+		if(left_pressed) {
+			char_move.set_direction(left);
+		}
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
+		num_y_buttons_pressed -= 1;
+		down_pressed = false;
+		if(up_pressed) {
+			char_move.set_direction(up);
+		}
+	}
+
+
+	if(num_x_buttons_pressed == 0) {
+		char_move.set_direction(stop_x);
+	}
+	if(num_y_buttons_pressed == 0) {
+		char_move.set_direction(stop_y);
+	}
+}
+
+
+void draw_display::mouse_down() {
+	if(!paused) {
+		char_x = char_move.get_x();
+		char_y = char_move.get_y();
+
+		mouse_x = ev.mouse.x;
+		mouse_y = ev.mouse.y;
+
+		al_get_mouse_state(&mouse_state);
+
+		if(al_mouse_button_down(&mouse_state, 1)) {
+			add_bullets.add_bullet(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
+		}
+	}
+}
+
+
+void draw_display::game_loop() {
 
 
 	refresh_timer = al_create_timer(1.0/FPS);
@@ -157,14 +270,9 @@ void draw_display::game_loop() {
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 
-	ALLEGRO_EVENT ev;
-
 	al_set_target_bitmap(al_get_backbuffer(display));
 
 	al_hide_mouse_cursor(display);
-
-	bullets_data add_bullets;
-	movement char_move;
 
 	al_start_timer(refresh_timer);
 	al_start_timer(game_timer);
@@ -178,105 +286,17 @@ void draw_display::game_loop() {
 		{
 
 		case ALLEGRO_EVENT_TIMER:
-			if(ev.timer.source == refresh_timer) {
-				al_clear_to_color(al_map_rgb(0, 0, 0));
-
-				al_draw_bitmap(foreground, 0, 0, 0);
-
-				add_bullets.draw_to_screen(*display);
-
-				char_move.draw_character(*display);
-
-				char_x = char_move.get_x();
-				char_y = char_move.get_y();
-
-				camera_update(camera_position, char_x, char_y, 20, 40);
-
-				al_identity_transform(&camera);
-				al_translate_transform(&camera, -camera_position[0], -camera_position[1]);
-				al_use_transform(&camera);
-
-				al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
-
-				al_flip_display();
-
-			} else if (ev.timer.source == game_timer && !paused){	//game_timer
-				add_bullets.calculate_direction();
-				char_move.calculate_movement();
-			}
+			timer();
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
-			if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
-				char_move.set_direction(up);
-				up_pressed = true;
-				num_y_buttons_pressed += 1;
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
-				char_move.set_direction(left);
-				left_pressed = true;
-				num_x_buttons_pressed += 1;
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
-				char_move.set_direction(down);
-				down_pressed = true;
-				num_y_buttons_pressed += 1;
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
-				char_move.set_direction(right);
-				right_pressed = true;
-				num_x_buttons_pressed += 1;
-			}
+			key_down();
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_UP:
-			if(ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-				if(!paused) {
-					paused = true;
-				}
-				else {
-					paused = false;
-				}
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
-				num_y_buttons_pressed -= 1;
-				up_pressed = false;
-				if(down_pressed) {
-					char_move.set_direction(down);
-				}
-				//				char_move.set_direction(down);
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
-				num_x_buttons_pressed -= 1;
-				left_pressed = false;
-				if(right_pressed) {
-					char_move.set_direction(right);
-				}
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
-				num_x_buttons_pressed -= 1;
-				right_pressed = false;
-				if(left_pressed) {
-					char_move.set_direction(left);
-				}
-			}
-			else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
-				num_y_buttons_pressed -= 1;
-				down_pressed = false;
-				if(up_pressed) {
-					char_move.set_direction(up);
-				}
-			}
-
-
-			if(num_x_buttons_pressed == 0) {
-				char_move.set_direction(stop_x);
-			}
-			if(num_y_buttons_pressed == 0) {
-				char_move.set_direction(stop_y);
-			}
+			key_up();
 
 			break;
 
@@ -287,19 +307,7 @@ void draw_display::game_loop() {
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-			if(!paused) {
-				char_x = char_move.get_x();
-				char_y = char_move.get_y();
-
-				mouse_x = ev.mouse.x;
-				mouse_y = ev.mouse.y;
-
-				al_get_mouse_state(&mouse_state);
-
-				if(al_mouse_button_down(&mouse_state, 1)) {
-					add_bullets.add_bullet(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
-				}
-			}
+			mouse_down();
 
 			break;
 
