@@ -24,9 +24,7 @@ public:
 	void add_bullet(float player_x, float player_y, float cursor_x, float cursor_y);
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
-	void calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y);
-	void calculate_direction();
-	void calculate_angle(float adjacent, float player_y, float cursor_y);
+	void calculate_movement();
 	void draw_to_screen(ALLEGRO_DISPLAY&);
 	int get_size();
 
@@ -34,6 +32,9 @@ public:
 	~bullets_data();
 
 private:
+	void calculate_trajectory(float player_x, float player_y, float cursor_x, float cursor_y);
+	void calculate_angle(float adjacent, float hypotenuse, float player_y, float cursor_y);
+
 	ALLEGRO_BITMAP *bullet_bit;
 
 	bullet new_bullet;

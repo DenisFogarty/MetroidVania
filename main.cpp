@@ -82,8 +82,6 @@ draw_display::draw_display() {
 		al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 		al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 		al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-
-		//		al_set_system_mouse_cursor(display, ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION);
 	}
 
 
@@ -141,7 +139,7 @@ void draw_display::timer() {
 		camera_update(camera_position, char_x, char_y, 20, 40);
 
 		al_identity_transform(&camera);
-		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);
+		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Pushes all objects on the screen to be pushed back
 		al_use_transform(&camera);
 
 		al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
@@ -149,7 +147,7 @@ void draw_display::timer() {
 		al_flip_display();
 
 	} else if (ev.timer.source == game_timer && !paused){	//game_timer
-		add_bullets.calculate_direction();
+		add_bullets.calculate_movement();
 		char_move.calculate_movement();
 	}
 }
@@ -245,7 +243,6 @@ void draw_display::mouse_down() {
 
 
 void draw_display::game_loop() {
-
 
 	refresh_timer = al_create_timer(1.0/FPS);
 	if(!refresh_timer) {
