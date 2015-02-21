@@ -98,6 +98,8 @@ draw_display::draw_display() {
 	up_pressed = false;
 	down_pressed = false;
 
+	basic = true;
+
 	paused = false;
 
 	game_running = true;
@@ -174,6 +176,13 @@ void draw_display::key_down() {
 		right_pressed = true;
 		num_x_buttons_pressed += 1;
 	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_R) {
+		if(basic) {
+			basic = false;
+		} else {
+			basic = true;
+		}
+	}
 }
 
 
@@ -236,7 +245,11 @@ void draw_display::mouse_down() {
 		al_get_mouse_state(&mouse_state);
 
 		if(al_mouse_button_down(&mouse_state, 1)) {
-			add_bullets.add_bullet(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
+			if(basic) {
+				add_bullets.add_basic(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
+			} else {
+				add_bullets.add_rocket(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
+			}
 		}
 	}
 }

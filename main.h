@@ -50,6 +50,8 @@ private:
 	bool up_pressed, down_pressed;
 	bool left_pressed, right_pressed;
 
+	bool basic;
+
 	bool paused;
 
 	float camera_position[2];

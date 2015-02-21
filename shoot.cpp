@@ -12,6 +12,22 @@ bullets_data::bullets_data() {
 }
 
 
+void bullets_data::add_rocket(float player_x, float player_y, float cursor_x, float cursor_y) {
+	new_bullet.speed = .4;
+	new_bullet.damage = 80;
+	new_bullet.blast_radius = 10;
+	add_bullet(player_x, player_y, cursor_x, cursor_y);
+}
+
+
+void bullets_data::add_basic(float player_x, float player_y, float cursor_x, float cursor_y) {
+	new_bullet.speed = 2;
+	new_bullet.damage = 20;
+	new_bullet.blast_radius = 0;
+	add_bullet(player_x, player_y, cursor_x, cursor_y);
+}
+
+
 void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
 	new_bullet.x1 = player_x + bullet_start_x;
 	new_bullet.y1 = player_y + bullet_start_y;
@@ -54,8 +70,8 @@ void bullets_data::calculate_trajectory(float player_x, float player_y, float cu
 	traj_x = traj_x/hypotenuse;
 	traj_y = traj_y/hypotenuse;
 
-	new_bullet.direction_x = traj_x*.4;
-	new_bullet.direction_y = traj_y*.4;
+	new_bullet.direction_x = traj_x * new_bullet.speed;
+	new_bullet.direction_y = traj_y * new_bullet.speed;
 }
 
 

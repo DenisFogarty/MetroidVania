@@ -16,11 +16,28 @@ private:
 	float x1, y1, x2, y2;
 	float direction_x, direction_y;		//Directions should also control speed
 	float angle;
+	float speed;
+	float damage;
+	float blast_radius;
+};
+
+class basic : bullet {
+	const float speed = 1;
+	const float damage = 20;
+	const float blast_radius = 0;
+};
+
+class rocket : bullet {
+	const float speed = .4;
+	const float damage = 60;
+	const float blast_radius = 10;
 };
 
 
 class bullets_data {			//Deals with adding, removing and storing bullets
 public:
+	void add_rocket(float player_x, float player_y, float cursor_x, float cursor_y);
+	void add_basic(float player_x, float player_y, float cursor_x, float cursor_y);
 	void add_bullet(float player_x, float player_y, float cursor_x, float cursor_y);
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
@@ -38,6 +55,7 @@ private:
 	ALLEGRO_BITMAP *bullet_bit;
 
 	bullet new_bullet;
+
 	std::list <bullet> bullets;
 	std::list<bullet>::iterator bullet_iter;
 	float hypotenuse;
