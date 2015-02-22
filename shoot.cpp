@@ -4,6 +4,7 @@ bullets_data::bullets_data() {
 	hypotenuse = 0;
 	traj_x = 0;
 	traj_y = 0;
+	angle = 0;
 
 	bullet_start_x = 13;
 	bullet_start_y = 40/5;
@@ -13,7 +14,7 @@ bullets_data::bullets_data() {
 
 
 void bullets_data::add_rocket(float player_x, float player_y, float cursor_x, float cursor_y) {
-	new_bullet.speed = .4;
+	new_bullet.speed = .7;
 	new_bullet.damage = 80;
 	new_bullet.blast_radius = 10;
 	add_bullet(player_x, player_y, cursor_x, cursor_y);
@@ -21,7 +22,7 @@ void bullets_data::add_rocket(float player_x, float player_y, float cursor_x, fl
 
 
 void bullets_data::add_basic(float player_x, float player_y, float cursor_x, float cursor_y) {
-	new_bullet.speed = 2;
+	new_bullet.speed = 1.2;
 	new_bullet.damage = 20;
 	new_bullet.blast_radius = 0;
 	add_bullet(player_x, player_y, cursor_x, cursor_y);
@@ -33,8 +34,16 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	new_bullet.y1 = player_y + bullet_start_y;
 	new_bullet.x2 = player_x + bullet_start_x;
 	new_bullet.y2 = player_y + bullet_start_y;
-	calculate_trajectory(player_x, player_y, cursor_x, cursor_y);
-	calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
+
+	hypotenuse = calculate.calculate_hypotenuse(player_x, player_y, cursor_x, cursor_y);
+	std::cout << player_x << " " << player_y << " " << cursor_x << " " << cursor_y << std::endl;
+	std::cout << hypotenuse << std::endl;
+	traj_x = calculate.calculate_trajectory_x(player_x, cursor_x, hypotenuse);
+	std::cout << traj_x << std::endl;
+	traj_y = calculate.calculate_trajectory_y(player_y, cursor_y, hypotenuse);
+	std::cout << traj_y << std::endl;
+	angle = calculate.calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
+	std::cout << angle << std::endl;
 	bullets.push_back(new_bullet);
 }
 
@@ -114,7 +123,7 @@ void bullets_data::draw_to_screen(ALLEGRO_DISPLAY&) {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {
-			al_draw_rotated_bitmap(bullet_bit, 8, 5, bullet_iter->x1, bullet_iter->y1, bullet_iter->angle, 0);
+			al_draw_rotated_bitmap(bullet_bit, 0, 0, bullet_iter->x1, bullet_iter->y1, bullet_iter->angle, 0);
 			bullet_iter++;
 		}
 	}

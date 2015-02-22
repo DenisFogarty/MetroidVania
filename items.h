@@ -16,6 +16,10 @@ class items {
 public:
 	items();
 
+	float x1, y1, x2, y2;
+	float damage;
+	float angle;
+
 	void add_item_coords(float x, float y, float angle = 0);
 
 	virtual ~items();

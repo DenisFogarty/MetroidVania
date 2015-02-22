@@ -8,7 +8,14 @@
 #include "items.h"
 
 items::items() {
+	x1 = 0;
+	y1 = 0;
+	x2 = 0;
+	y2 = 0;
 
+	damage = 0;
+
+	angle = 0;
 }
 
 
