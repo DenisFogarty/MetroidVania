@@ -38,12 +38,12 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	hypotenuse = calculate.calculate_hypotenuse(player_x, player_y, cursor_x, cursor_y);
 
 	traj_x = calculate.calculate_trajectory_x(player_x, cursor_x, hypotenuse);
-	traj_x *= new_bullet.speed;
+	new_bullet.direction_x = traj_x * new_bullet.speed;
 
 	traj_y = calculate.calculate_trajectory_y(player_y, cursor_y, hypotenuse);
-	traj_y *= new_bullet.speed;
+	new_bullet.direction_y = traj_y *= new_bullet.speed;
 
-	angle = calculate.calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
+	new_bullet.angle = calculate.calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
 
 	bullets.push_back(new_bullet);
 }
