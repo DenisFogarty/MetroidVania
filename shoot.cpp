@@ -36,14 +36,15 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	new_bullet.y2 = player_y + bullet_start_y;
 
 	hypotenuse = calculate.calculate_hypotenuse(player_x, player_y, cursor_x, cursor_y);
-	std::cout << player_x << " " << player_y << " " << cursor_x << " " << cursor_y << std::endl;
-	std::cout << hypotenuse << std::endl;
+
 	traj_x = calculate.calculate_trajectory_x(player_x, cursor_x, hypotenuse);
-	std::cout << traj_x << std::endl;
+	traj_x *= new_bullet.speed;
+
 	traj_y = calculate.calculate_trajectory_y(player_y, cursor_y, hypotenuse);
-	std::cout << traj_y << std::endl;
+	traj_y *= new_bullet.speed;
+
 	angle = calculate.calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
-	std::cout << angle << std::endl;
+
 	bullets.push_back(new_bullet);
 }
 
