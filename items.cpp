@@ -7,24 +7,39 @@
 
 #include "items.h"
 
-items::items() {
-	x1 = 0;
-	y1 = 0;
-	x2 = 0;
-	y2 = 0;
+item::item() {
+	x = 0;
+	y = 0;
+
+	width = 0;
+	height = 0;
 
 	damage = 0;
 
 	angle = 0;
+
+	item_sprite = NULL;
 }
 
 
-void items::add_item_coords(float x, float y, float angle) {
+items_data::items_data() {
+	items = std::vector<item>();
+}
+
+
+void items_data::add_items(float x, float y, float angle) {
+	new_item.x = 50;
+	new_item.y = 50;
+
+	new_item.item_sprite = al_load_bitmap("sprites/box.png");
+}
+
+
+item::~item() {
 
 }
 
 
-items::~items() {
+items_data::~items_data() {
 
 }
-

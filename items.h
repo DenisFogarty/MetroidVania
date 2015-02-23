@@ -12,21 +12,36 @@
 #include <vector>
 #include <allegro5/allegro.h>
 
-class items {
+class item {
 public:
-	items();
+	item();
 
-	float x1, y1, x2, y2;
+	float x, y;
+	float width, height;
 	float damage;
 	float angle;
 
-	void add_item_coords(float x, float y, float angle = 0);
+	ALLEGRO_BITMAP *item_sprite;
 
-	virtual ~items();
+	virtual ~item();
 
 private:
 
 
+};
+
+
+class items_data {
+public:
+	items_data();
+
+	void add_items(float x, float y, float angle);
+	item new_item;
+
+	~items_data();
+
+private:
+	std::vector <item> items;
 };
 
 #endif /* ITEMS_H_ */

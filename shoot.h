@@ -13,9 +13,10 @@
 #include "calculations.h"
 
 
-class bullet : items {
+class bullet : item {
 	friend class bullets_data;
 private:
+	float x2, y2;
 	float direction_x, direction_y;		//Directions should also control speed
 	float angle;
 	float speed;
