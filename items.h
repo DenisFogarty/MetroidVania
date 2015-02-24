@@ -27,21 +27,24 @@ public:
 
 private:
 
-
 };
 
 
 class items_data {
+	friend class collision;
 public:
 	items_data();
 
 	void add_items(float x, float y, float angle);
-	item new_item;
+	void draw_items();
 
 	~items_data();
 
 private:
-	std::vector <item> items;
+	static std::vector <item> items;
+	int num_items;
+	item new_item;
+	item current_item;
 };
 
 #endif /* ITEMS_H_ */

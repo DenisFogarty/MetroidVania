@@ -28,8 +28,6 @@ float calculations::calculate_hypotenuse(float x1, float y1, float x2, float y2)
 
 	hypotenuse = sqrt((x*x) + (y*y));
 
-	std::cout << x << "\n" << y << "\n" << hypotenuse << std::endl;
-
 	return hypotenuse;
 }
 
@@ -64,7 +62,6 @@ float calculations::calculate_angle(float adjacent, float hypotenuse, float play
 	if(cursor_y < player_y) {
 		angle *= -1;
 	}
-	std::cout << angle << std::endl;
 
 	return angle;
 }

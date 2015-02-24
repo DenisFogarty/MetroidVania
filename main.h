@@ -11,6 +11,7 @@
 
 #include "shoot.h"
 #include "movement.h"
+#include "items.h"
 
 #define screenwidth 640
 #define screenheight 480
@@ -56,7 +57,6 @@ private:
 
 	float camera_position[2];
 
-protected:
 	void timer();
 	void key_down();
 	void key_up();
@@ -64,6 +64,7 @@ protected:
 
 	bullets_data add_bullets;
 	movement char_move;
+	items_data add_item;
 
 };
 

@@ -28,6 +28,9 @@ void bullets_data::add_basic(float player_x, float player_y, float cursor_x, flo
 }
 
 
+/*
+ * After determining the bullet type, this function is called
+ */
 void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
 	new_bullet.x = player_x + bullet_start_x;
 	new_bullet.y = player_y + bullet_start_y;
@@ -77,7 +80,8 @@ void bullets_data::calculate_movement() {
 			bullet_iter->x2 += bullet_iter->direction_x;
 			bullet_iter->y2 += bullet_iter->direction_y;
 
-			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0) {
+			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
+				detect_collision.detect_collision(bullet_iter->x, bullet_iter->y, 17, 10, 0)) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;

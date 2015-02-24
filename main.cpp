@@ -133,6 +133,8 @@ void draw_display::timer() {
 
 		add_bullets.draw_to_screen(*display);
 
+		add_item.draw_items();
+
 		char_move.draw_character(*display);
 
 		char_x = char_move.get_x();
@@ -182,6 +184,9 @@ void draw_display::key_down() {
 		} else {
 			basic = true;
 		}
+	}
+	else if(ev.keyboard.keycode == ALLEGRO_KEY_G) {
+		add_item.add_items(100, 100, 0);
 	}
 }
 
@@ -286,6 +291,9 @@ void draw_display::game_loop() {
 
 	al_start_timer(refresh_timer);
 	al_start_timer(game_timer);
+
+	add_item.add_items(50, 50, 0);
+	add_item.add_items(250, 250, 0);
 
 
 	//Main game loop

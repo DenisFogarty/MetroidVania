@@ -11,6 +11,7 @@
 
 #include "items.h"
 #include "calculations.h"
+#include "collision.h"
 
 
 class bullet : item {
@@ -53,6 +54,8 @@ private:
 	float bullet_start_x, bullet_start_y;
 
 	calculations calculate;
+
+	collision detect_collision;
 
 protected:
 };
