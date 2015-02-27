@@ -34,8 +34,6 @@ void bullets_data::add_basic(float player_x, float player_y, float cursor_x, flo
 void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, float cursor_y) {
 	new_bullet.x = player_x + bullet_start_x;
 	new_bullet.y = player_y + bullet_start_y;
-	new_bullet.x2 = player_x + bullet_start_x;
-	new_bullet.y2 = player_y + bullet_start_y;
 
 	hypotenuse = calculate.calculate_hypotenuse(player_x, player_y, cursor_x, cursor_y);
 
@@ -46,6 +44,24 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	new_bullet.direction_y = traj_y *= new_bullet.speed;
 
 	new_bullet.angle = calculate.calculate_angle(cursor_x - player_x, hypotenuse, player_y, cursor_y);
+
+	new_bullet.width = al_get_bitmap_width(bullet_bit);
+	new_bullet.height = al_get_bitmap_height(bullet_bit);
+
+	/*
+	 * Top left = x, y
+	 * Top right = x2, y2
+	 * Bottom left = x3, y3
+	 * Bottom right = x4, y4
+	 */
+	new_bullet.x2 = new_bullet.x + new_bullet.width * cos(new_bullet.angle);
+	new_bullet.y2 = new_bullet.y + new_bullet.width * sin(new_bullet.angle);
+
+	new_bullet.x3 = new_bullet.x + new_bullet.height * cos(new_bullet.angle);
+	new_bullet.y3 = new_bullet.y + new_bullet.height * sin(new_bullet.angle);
+
+	new_bullet.x4 = new_bullet.x2 + new_bullet.height * cos(new_bullet.angle);
+	new_bullet.y4 = new_bullet.y2 + new_bullet.height * sin(new_bullet.angle);
 
 	bullets.push_back(new_bullet);
 }
@@ -81,7 +97,7 @@ void bullets_data::calculate_movement() {
 			bullet_iter->y2 += bullet_iter->direction_y;
 
 			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
-				detect_collision.detect_collision(bullet_iter->x, bullet_iter->y, 17, 10, 0)) {
+					detect_collision.detect_collision(bullet_iter->x, bullet_iter->y, 17, 10, 0)) {
 				remove_bullet(bullet_iter);
 			} else {
 				bullet_iter++;

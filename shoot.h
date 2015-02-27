@@ -17,11 +17,12 @@
 class bullet : item {
 	friend class bullets_data;
 private:
-	float x2, y2;
+	float x2, y2, x3, y3, x4, y4;
 	float direction_x, direction_y;		//Directions should also control speed
 	float angle;
 	float speed;
 	float blast_radius;
+	float width, height;
 };
 
 
