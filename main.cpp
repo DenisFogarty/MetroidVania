@@ -256,6 +256,9 @@ void draw_display::mouse_down() {
 				add_bullets.add_rocket(char_x, char_y, mouse_x + camera_position[0], mouse_y + camera_position[1]);
 			}
 		}
+		else if(al_mouse_button_down(&mouse_state, 2)) {
+			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+		}
 	}
 }
 

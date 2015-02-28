@@ -57,11 +57,11 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	new_bullet.x2 = new_bullet.x + new_bullet.width * cos(new_bullet.angle);
 	new_bullet.y2 = new_bullet.y + new_bullet.width * sin(new_bullet.angle);
 
-	new_bullet.x3 = new_bullet.x + new_bullet.height * cos(new_bullet.angle);
-	new_bullet.y3 = new_bullet.y + new_bullet.height * sin(new_bullet.angle);
+	new_bullet.x3 = new_bullet.x + new_bullet.height * cos(new_bullet.angle + 1.57);	//1.57 rads = 90 degrees, need to add this for calculation of lower points
+	new_bullet.y3 = new_bullet.y + new_bullet.height * sin(new_bullet.angle + 1.57);
 
-	new_bullet.x4 = new_bullet.x2 + new_bullet.height * cos(new_bullet.angle);
-	new_bullet.y4 = new_bullet.y2 + new_bullet.height * sin(new_bullet.angle);
+	new_bullet.x4 = new_bullet.x2 + new_bullet.height * cos(new_bullet.angle + 1.57);
+	new_bullet.y4 = new_bullet.y2 + new_bullet.height * sin(new_bullet.angle + 1.57);
 
 	bullets.push_back(new_bullet);
 }
@@ -95,10 +95,19 @@ void bullets_data::calculate_movement() {
 			bullet_iter->y += bullet_iter->direction_y;
 			bullet_iter->x2 += bullet_iter->direction_x;
 			bullet_iter->y2 += bullet_iter->direction_y;
+			bullet_iter->x3 += bullet_iter->direction_x;
+			bullet_iter->y3 += bullet_iter->direction_y;
+			bullet_iter->x4 += bullet_iter->direction_x;
+			bullet_iter->y4 += bullet_iter->direction_y;
 
 			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
-					detect_collision.detect_collision(bullet_iter->x, bullet_iter->y, 17, 10, 0)) {
+					detect_collision.detect_collision(bullet_iter->x, bullet_iter->y,
+							bullet_iter->x2, bullet_iter->y2,
+							bullet_iter->x3, bullet_iter->y3,
+							bullet_iter->x4, bullet_iter->y4, 17, 10, 0)) {
+
 				remove_bullet(bullet_iter);
+
 			} else {
 				bullet_iter++;
 			}
