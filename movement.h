@@ -31,7 +31,8 @@ private:
 	float movement_y;
 	float gravity;
 	float char_height, char_width;
-	float time, orig_time;
+	float jump_split;
+	bool jump;
 };
 
 #endif /* MOVEMENT_H_ */

@@ -233,9 +233,6 @@ void draw_display::key_up() {
 	if(num_x_buttons_pressed == 0) {
 		char_move.set_direction(stop_x);
 	}
-	if(num_y_buttons_pressed == 0) {
-		char_move.set_direction(stop_y);
-	}
 }
 
 
