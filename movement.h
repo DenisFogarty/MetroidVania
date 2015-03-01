@@ -6,12 +6,13 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#define left 	0
-#define right	1
-#define up		2
-#define down	3
-#define stop_x	4
-#define stop_y	5
+#define left 		0
+#define right		1
+#define up			2
+#define down		3
+#define stop_x		4
+#define stop_y		5
+#define stop_jump	6
 
 class movement {
 public:

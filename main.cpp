@@ -203,9 +203,7 @@ void draw_display::key_up() {
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
 		num_y_buttons_pressed -= 1;
 		up_pressed = false;
-		if(down_pressed) {
-			char_move.set_direction(down);
-		}
+		char_move.set_direction(stop_jump);
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
 		num_x_buttons_pressed -= 1;

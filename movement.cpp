@@ -23,6 +23,9 @@ void movement::set_direction(int direction) {
 	else if(direction == 1){
 		movement_x = 0.2;
 	}
+	/*
+	 * The bool 'jump' will be false when the ground is hit
+	 */
 	else if(direction == 2 && jump == false) {
 		movement_y = -0.5;
 		jump = true;
@@ -31,8 +34,15 @@ void movement::set_direction(int direction) {
 	if(direction == 4) {
 		movement_x = 0;
 	}
-	else if(direction == 5) {
-		movement_y = 0;
+
+	/*
+	 * If jumping is cancelled, the 'movement_y' variable is set to the current gravity * split, which sends the player moving down
+	 * This makes the downward momentum slower the closer they are to the ground. This makes the jumping feel more fluid
+	 */
+	if(direction == 6) {
+		if(movement_y < 0.0) {
+			movement_y = jump_split * gravity;
+		}
 	}
 }
 
@@ -47,11 +57,12 @@ void movement::calculate_movement() {
 
 	if(player_x <= 0 || player_x >= 1920 - char_width) {
 		set_direction(stop_x);
-		player_x = (int)player_x;	//If the character is slightly off screen, casting it as an int returns them back to the screen
+		player_x = (int)player_x;	//If the character is slightly off screen, casting it as an int returns them back to the screen. Remove this
 	}
 	if(player_y <= 0 || player_y >= 1080 - char_height) {
 		set_direction(stop_y);
-		player_y = (int)player_y;	//If the character is slightly off screen, casting it as an int returns them back to the screen
+		player_y = (int)player_y;	//If the character is slightly off screen, casting it as an int returns them back to the screen. Remove this
+		jump = false;
 	}
 }
 
@@ -59,9 +70,8 @@ void movement::calculate_movement() {
 void movement::calculate_jump() {
 	movement_y += jump_split * gravity;
 
-	if(movement_y > 0.5) {
-		movement_y = 0.5;
-		jump = false;
+	if(movement_y > 0.25) {
+		movement_y = 0.25;
 	}
 }
 
