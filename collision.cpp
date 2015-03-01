@@ -18,7 +18,7 @@ bool collision::detect_collision(float x1, float y1, float x2, float y2, float x
 
 	/*
 	 * Checks all four point of the bullet and determines if any of them are hitting any item
-	 * This only checks the x and y values, so anything hitting the bullet from the side will not be detected
+	 * This only checks the 4 points of a box, so anything hitting the bullet from the side will not be detected
 	 * This shouldn't be an issue, and greatly reduces the computation needed
 	 */
 	for(i = 0; i < p_items->size(); i++) {

@@ -2,6 +2,7 @@
 #define MOVEMENT_H_
 
 #include <iostream>
+#include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
@@ -19,6 +20,7 @@ public:
 
 	void set_direction(int direction);
 	void calculate_movement();
+	void calculate_jump();
 	void draw_character(ALLEGRO_DISPLAY &display);
 	int get_x();
 	int get_y();
@@ -27,7 +29,9 @@ private:
 	float player_x, player_y;
 	float movement_x;
 	float movement_y;
+	float gravity;
 	float char_height, char_width;
+	float time, orig_time;
 };
 
 #endif /* MOVEMENT_H_ */

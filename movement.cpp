@@ -5,24 +5,28 @@ movement::movement() {
 	player_y = 230;
 	movement_x = 0;
 	movement_y = 0;
+	gravity = -0.3;
 
 	char_height = 40;
 	char_width = 20;
+
+	orig_time = al_get_time();
+	time = orig_time;
 }
 
 
 void movement::set_direction(int direction) {
 	if(direction == 0) {
-		movement_x = -.2;
+		movement_x = -0.2;
 	}
 	else if(direction == 1){
-		movement_x = .2;
+		movement_x = 0.2;
 	}
 	else if(direction == 2) {
-		movement_y = -.2;
+		movement_y = -0.6;
 	}
 	else if(direction == 3) {
-		movement_y = .2;
+		movement_y = 0.5;
 	}
 
 	if(direction == 4) {
@@ -46,6 +50,14 @@ void movement::calculate_movement() {
 		set_direction(stop_y);
 		player_y = (int)player_y;	//If the character is slightly off screen, casting it as an int returns them back to the screen
 	}
+}
+
+
+void movement::calculate_jump() {
+	time = al_get_time() - orig_time;
+	gravity *= time;
+
+	player_y += movement_y * gravity;
 }
 
 
