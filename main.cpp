@@ -1,6 +1,6 @@
 #include "main.h"
 
-const float FPS = 120.0;
+const float FPS = 60.0;
 const int SCREEN_W = 600;
 const int SCREEN_H = 480;
 
@@ -90,13 +90,9 @@ draw_display::draw_display() {
 	char_x = 0;
 	char_y = 0;
 
-	num_x_buttons_pressed = 0;
-	num_y_buttons_pressed = 0;
 
 	left_pressed = false;
 	right_pressed = false;
-	up_pressed = false;
-	down_pressed = false;
 
 	basic = true;
 
@@ -143,7 +139,7 @@ void draw_display::timer() {
 		camera_update(camera_position, char_x, char_y, 20, 40);
 
 		al_identity_transform(&camera);
-		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Pushes all objects on the screen to be pushed back
+		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
 		al_use_transform(&camera);
 
 		al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
@@ -160,23 +156,14 @@ void draw_display::timer() {
 void draw_display::key_down() {
 	if(ev.keyboard.keycode == ALLEGRO_KEY_W) {
 		char_move.set_direction(up);
-		up_pressed = true;
-		num_y_buttons_pressed += 1;
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_A) {
 		char_move.set_direction(left);
 		left_pressed = true;
-		num_x_buttons_pressed += 1;
-	}
-	else if(ev.keyboard.keycode == ALLEGRO_KEY_S) {
-		char_move.set_direction(down);
-		down_pressed = true;
-		num_y_buttons_pressed += 1;
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
 		char_move.set_direction(right);
 		right_pressed = true;
-		num_x_buttons_pressed += 1;
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_R) {
 		if(basic) {
@@ -201,35 +188,25 @@ void draw_display::key_up() {
 		}
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_W){
-		num_y_buttons_pressed -= 1;
-		up_pressed = false;
 		char_move.set_direction(stop_jump);
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_A){
-		num_x_buttons_pressed -= 1;
 		left_pressed = false;
 		if(right_pressed) {
 			char_move.set_direction(right);
 		}
+		else {
+			char_move.set_direction(stop_x);
+		}
 	}
 	else if(ev.keyboard.keycode == ALLEGRO_KEY_D){
-		num_x_buttons_pressed -= 1;
 		right_pressed = false;
 		if(left_pressed) {
 			char_move.set_direction(left);
 		}
-	}
-	else if(ev.keyboard.keycode == ALLEGRO_KEY_S){
-		num_y_buttons_pressed -= 1;
-		down_pressed = false;
-		if(up_pressed) {
-			char_move.set_direction(up);
+		else {
+			char_move.set_direction(stop_x);
 		}
-	}
-
-
-	if(num_x_buttons_pressed == 0) {
-		char_move.set_direction(stop_x);
 	}
 }
 
