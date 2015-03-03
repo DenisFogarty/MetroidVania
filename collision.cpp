@@ -14,7 +14,7 @@ collision::collision() {
 }
 
 
-bool collision::detect_collision(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float width, float height, float angle) {
+bool collision::detect_collision(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 
 	/*
 	 * Checks all four point of the bullet and determines if any of them are hitting any item
@@ -22,7 +22,9 @@ bool collision::detect_collision(float x1, float y1, float x2, float y2, float x
 	 * This shouldn't be an issue, and greatly reduces the computation needed
 	 */
 	for(i = 0; i < p_items->size(); i++) {
+
 		current_item = (*p_items)[i];
+
 		if((x1 >= current_item.x &&
 				y1 >= current_item.y &&
 				x1 <= (current_item.x + current_item.width) &&
@@ -52,6 +54,30 @@ bool collision::detect_collision(float x1, float y1, float x2, float y2, float x
 }
 
 
+bool collision::detect_collision(float x, float y, float width, float height) {
+	for(i = 0; i < p_items->size(); i++) {
+
+		current_item = (*p_items)[i];
+
+		if(x + width >= current_item.x &&
+				y + height >= current_item.y &&
+				x <= current_item.x + current_item.width &&
+				y <= current_item.y + current_item.height) {
+
+			return true;
+
+		}
+	}
+
+	return false;
+}
+
+
+float collision::get_item_y() {
+	return current_item.y;
+}
+
+
 collision::~collision() {
-	// TODO Auto-generated destructor stub
+
 }

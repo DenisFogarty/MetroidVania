@@ -104,7 +104,7 @@ void bullets_data::calculate_movement() {
 					detect_collision.detect_collision(bullet_iter->x, bullet_iter->y,
 							bullet_iter->x2, bullet_iter->y2,
 							bullet_iter->x3, bullet_iter->y3,
-							bullet_iter->x4, bullet_iter->y4, 17, 10, 0)) {
+							bullet_iter->x4, bullet_iter->y4)) {
 
 				remove_bullet(bullet_iter);
 

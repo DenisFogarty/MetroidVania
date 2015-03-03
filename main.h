@@ -13,9 +13,6 @@
 #include "movement.h"
 #include "items.h"
 
-#define screenwidth 640
-#define screenheight 480
-
 class draw_display {
 public:
 	draw_display();

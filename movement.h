@@ -6,6 +6,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
+#include "collision.h"
+
 #define left 		0
 #define right		1
 #define up			2
@@ -32,8 +34,8 @@ private:
 	float movement_y;
 	float gravity;
 	float char_height, char_width;
-	float jump_split;
 	bool jump;
+	collision detect_collision;
 };
 
 #endif /* MOVEMENT_H_ */

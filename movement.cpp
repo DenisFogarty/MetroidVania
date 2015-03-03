@@ -5,12 +5,10 @@ movement::movement() {
 	player_y = 230;
 	movement_x = 0;
 	movement_y = 0.5;
-	gravity = 0.25;
+	gravity = 0.00125;
 
 	char_height = 40;
 	char_width = 20;
-
-	jump_split = 0.005;
 
 	jump = false;
 }
@@ -41,7 +39,7 @@ void movement::set_direction(int direction) {
 	 */
 	if(direction == 6) {
 		if(movement_y < 0.0) {
-			movement_y = jump_split * gravity;
+			movement_y = gravity;
 		}
 	}
 }
@@ -61,17 +59,21 @@ void movement::calculate_movement() {
 	}
 	if(player_y <= 0 || player_y >= 1080 - char_height) {
 		set_direction(stop_y);
-		player_y = (int)player_y;	//If the character is slightly off screen, casting it as an int returns them back to the screen. Remove this
+		player_y = 1080 - char_height;
+		jump = false;
+	}
+	if(detect_collision.detect_collision(player_x, player_y, 20, 40)) {
+		player_y = detect_collision.get_item_y() -40;
 		jump = false;
 	}
 }
 
 
 void movement::calculate_jump() {
-	movement_y += jump_split * gravity;
+	movement_y += gravity;
 
-	if(movement_y > 0.25) {
-		movement_y = 0.25;
+	if(movement_y > .75) {
+		movement_y = .75;
 	}
 }
 

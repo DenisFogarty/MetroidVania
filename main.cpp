@@ -1,12 +1,13 @@
 #include "main.h"
 
-const float FPS = 60.0;
-const int SCREEN_W = 600;
-const int SCREEN_H = 480;
+float FPS = 60.0;
+float GAME_UPDATE = 1000;
+float SCREEN_WIDTH = 640.0;
+float SCREEN_HEIGHT = 480.0;
 
 int main() {
 	if(!al_init()) {
-		fprintf(stderr, "Failed to initialise Allegro\n");
+		fprintf(stderr, "Faile20d to initialise Allegro\n");
 		return -1;
 	}
 
@@ -44,7 +45,7 @@ int main() {
 draw_display::draw_display() {
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
-	display = al_create_display(screenwidth, screenheight);
+	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if(!display) {
 		fprintf(stderr, "Failed to initialise the display/n");
 	}
@@ -103,8 +104,8 @@ draw_display::draw_display() {
 
 
 void draw_display::camera_update(float* camera_position, float x, float y, float width, float height) {
-	camera_position[0] = -(screenwidth / 2) + (x + width / 2);
-	camera_position[1] = -(screenheight / 2) + (y + height / 2);
+	camera_position[0] = -(SCREEN_WIDTH / 2) + (x + width / 2);
+	camera_position[1] = -(SCREEN_HEIGHT / 2) + (y + height / 2);
 
 	if(camera_position[0] < 0) {
 		camera_position[0] = 0;
@@ -242,7 +243,7 @@ void draw_display::game_loop() {
 		fprintf(stderr, "Failed to initialise refresh timer\n");
 	}
 
-	game_timer = al_create_timer(1.0/1000);
+	game_timer = al_create_timer(1.0/GAME_UPDATE);
 	if(!game_timer) {
 		fprintf(stderr, "Failed to initialise game timer/n");
 	}
