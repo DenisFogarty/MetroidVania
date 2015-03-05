@@ -27,6 +27,7 @@ void movement::set_direction(int direction) {
 	else if(direction == 2 && jump == false) {
 		movement_y = -0.5;
 		jump = true;
+		ground = false;
 	}
 
 	if(direction == 4) {
@@ -39,7 +40,7 @@ void movement::set_direction(int direction) {
 	 */
 	if(direction == 6) {
 		if(movement_y < 0.0) {
-			movement_y = gravity;
+			movement_y = gravity * 2;
 		}
 	}
 }
@@ -57,14 +58,55 @@ void movement::calculate_movement() {
 		set_direction(stop_x);
 		player_x = (int)player_x;	//If the character is slightly off screen, casting it as an int returns them back to the screen. Remove this
 	}
+
 	if(player_y <= 0 || player_y >= 1080 - char_height) {
 		set_direction(stop_y);
 		player_y = 1080 - char_height;
 		jump = false;
 	}
-	if(detect_collision.detect_collision(player_x, player_y, 20, 40)) {
-		player_y = detect_collision.get_item_y() -40;
-		jump = false;
+
+
+	if(detect_collision.detect_collision(player_x, player_y, char_width, char_height)) {
+		/*
+		 * Checks if the player has collided with the left side of an object
+		 */
+		if(player_y + char_height - 1 > detect_collision.get_item_y() &&
+				player_y < detect_collision.get_item_y() + detect_collision.get_item_height() - 1 &&
+				player_x < detect_collision.get_item_x()) {
+
+			player_x = detect_collision.get_item_x() - char_width;
+		}
+
+		/*
+		 * Checks if the player has collided with the right side of an object
+		 */
+		else if(player_y + char_height - 1 > detect_collision.get_item_y() &&
+				player_y < detect_collision.get_item_y() + detect_collision.get_item_height() - 1 &&
+				player_x + char_width - 1 > detect_collision.get_item_x() + detect_collision.get_item_width() - 1) {
+
+			player_x = detect_collision.get_item_x() + detect_collision.get_item_width();
+		}
+
+		/*
+		 * Checks if the player has collided with the left side of an object
+		 */
+		else if(player_x + char_width - 1 > detect_collision.get_item_x() &&
+				player_x < detect_collision.get_item_x() + detect_collision.get_item_width() - 1 &&
+				player_y + char_height - 1 > detect_collision.get_item_y() + detect_collision.get_item_height() - 1) {
+
+			movement_y = gravity * 4;
+		}
+
+		/*
+		 * Checks if the player has hit ground
+		 */
+		else if(player_x + char_width - 1 > detect_collision.get_item_x() &&
+				player_x < detect_collision.get_item_x() + detect_collision.get_item_width() - 1 &&
+				player_y < detect_collision.get_item_y()) {
+
+			jump = false;
+			player_y = detect_collision.get_item_y() - char_height;
+		}
 	}
 }
 

@@ -35,6 +35,7 @@ private:
 	float gravity;
 	float char_height, char_width;
 	bool jump;
+	bool ground;
 	collision detect_collision;
 };
 

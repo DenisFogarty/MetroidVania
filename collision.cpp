@@ -64,6 +64,7 @@ bool collision::detect_collision(float x, float y, float width, float height) {
 				x <= current_item.x + current_item.width &&
 				y <= current_item.y + current_item.height) {
 
+			std::cout << "Hit object " << i << std::endl;
 			return true;
 
 		}
@@ -73,8 +74,20 @@ bool collision::detect_collision(float x, float y, float width, float height) {
 }
 
 
+float collision::get_item_x() {
+	return current_item.x;
+}
+
 float collision::get_item_y() {
 	return current_item.y;
+}
+
+float collision::get_item_width() {
+	return current_item.width;
+}
+
+float collision::get_item_height() {
+	return current_item.height;
 }
 
 
