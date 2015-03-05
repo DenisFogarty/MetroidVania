@@ -101,7 +101,7 @@ void bullets_data::calculate_movement() {
 			bullet_iter->y4 += bullet_iter->direction_y;
 
 			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
-					detect_collision.detect_collision(bullet_iter->x, bullet_iter->y,
+					detect_collision.detect_rotated_collision(bullet_iter->x, bullet_iter->y,
 							bullet_iter->x2, bullet_iter->y2,
 							bullet_iter->x3, bullet_iter->y3,
 							bullet_iter->x4, bullet_iter->y4)) {

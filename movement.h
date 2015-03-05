@@ -7,6 +7,7 @@
 #include <allegro5/allegro_primitives.h>
 
 #include "collision.h"
+#include "items.h"
 
 #define left 		0
 #define right		1
@@ -37,6 +38,9 @@ private:
 	bool jump;
 	bool ground;
 	collision detect_collision;
+	std::vector<item>* p_items;
+	item current_item;
+	uint i;
 };
 
 #endif /* MOVEMENT_H_ */

@@ -38,6 +38,8 @@ public:
 	void add_items(float x, float y, float angle);
 	void draw_items();
 
+	static std::vector<item>* get_item_vector();
+
 	~items_data();
 
 private:

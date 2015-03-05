@@ -11,6 +11,10 @@ movement::movement() {
 	char_width = 20;
 
 	jump = false;
+	ground = true;
+
+	p_items = items_data::get_item_vector();
+	i = 0;
 }
 
 
@@ -66,46 +70,51 @@ void movement::calculate_movement() {
 	}
 
 
-	if(detect_collision.detect_collision(player_x, player_y, char_width, char_height)) {
-		/*
-		 * Checks if the player has collided with the left side of an object
-		 */
-		if(player_y + char_height - 1 > detect_collision.get_item_y() &&
-				player_y < detect_collision.get_item_y() + detect_collision.get_item_height() - 1 &&
-				player_x < detect_collision.get_item_x()) {
+	for(i = 0; i < p_items->size(); i++) {
 
-			player_x = detect_collision.get_item_x() - char_width;
-		}
+		current_item = (*p_items)[i];
+		if(detect_collision.detect_collision(player_x, player_y, char_width, char_height, current_item.x, current_item.y, current_item.width, current_item.height)) {
+			/*
+			 * Checks if the player has collided with the left side of an object
+			 */
+			if(player_y + char_height - 1 > current_item.y &&
+					player_y < current_item.y + current_item.height - 1 &&
+					player_x < current_item.x) {
 
-		/*
-		 * Checks if the player has collided with the right side of an object
-		 */
-		else if(player_y + char_height - 1 > detect_collision.get_item_y() &&
-				player_y < detect_collision.get_item_y() + detect_collision.get_item_height() - 1 &&
-				player_x + char_width - 1 > detect_collision.get_item_x() + detect_collision.get_item_width() - 1) {
+				player_x = current_item.x - char_width;
+			}
 
-			player_x = detect_collision.get_item_x() + detect_collision.get_item_width();
-		}
+			/*
+			 * Checks if the player has collided with the right side of an object
+			 */
+			else if(player_y + char_height - 1 > current_item.y &&
+					player_y < current_item.y + current_item.height - 1 &&
+					player_x + char_width - 1 > current_item.x + current_item.width - 1) {
 
-		/*
-		 * Checks if the player has collided with the left side of an object
-		 */
-		else if(player_x + char_width - 1 > detect_collision.get_item_x() &&
-				player_x < detect_collision.get_item_x() + detect_collision.get_item_width() - 1 &&
-				player_y + char_height - 1 > detect_collision.get_item_y() + detect_collision.get_item_height() - 1) {
+				player_x = current_item.x + current_item.width;
+			}
 
-			movement_y = gravity * 4;
-		}
+			/*
+			 * Checks if the player has collided with the underside of an object
+			 */
+			else if(player_x + char_width - 1 > current_item.x &&
+					player_x < current_item.x + current_item.width - 1 &&
+					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
 
-		/*
-		 * Checks if the player has hit ground
-		 */
-		else if(player_x + char_width - 1 > detect_collision.get_item_x() &&
-				player_x < detect_collision.get_item_x() + detect_collision.get_item_width() - 1 &&
-				player_y < detect_collision.get_item_y()) {
+				movement_y = gravity * 4;
+			}
 
-			jump = false;
-			player_y = detect_collision.get_item_y() - char_height;
+			/*
+			 * Checks if the player has hit ground
+			 */
+			else if(player_x + char_width - 1 > current_item.x &&
+					player_x < current_item.x + current_item.width - 1 &&
+					player_y < current_item.y) {
+
+				std::cout << "Hit ground" <<std::endl;
+				jump = false;
+				player_y = current_item.y - char_height;
+			}
 		}
 	}
 }

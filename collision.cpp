@@ -14,7 +14,7 @@ collision::collision() {
 }
 
 
-bool collision::detect_collision(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+bool collision::detect_rotated_collision(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 
 	/*
 	 * Checks all four point of the bullet and determines if any of them are hitting any item
@@ -54,20 +54,15 @@ bool collision::detect_collision(float x1, float y1, float x2, float y2, float x
 }
 
 
-bool collision::detect_collision(float x, float y, float width, float height) {
-	for(i = 0; i < p_items->size(); i++) {
+bool collision::detect_collision(float x, float y, float width, float height, float item_x, float item_y, float item_width, float item_height) {
 
-		current_item = (*p_items)[i];
+	if(x + width >= item_x &&
+			y + height >= item_y &&
+			x <= item_x + item_width &&
+			y <= item_y + item_height) {
 
-		if(x + width >= current_item.x &&
-				y + height >= current_item.y &&
-				x <= current_item.x + current_item.width &&
-				y <= current_item.y + current_item.height) {
+		return true;
 
-			std::cout << "Hit object " << i << std::endl;
-			return true;
-
-		}
 	}
 
 	return false;

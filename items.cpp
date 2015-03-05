@@ -7,6 +7,8 @@
 
 #include "items.h"
 
+std::vector<item> items_data::items;
+
 item::item() {
 	x = 0;
 	y = 0;
@@ -20,9 +22,6 @@ item::item() {
 
 	item_sprite = NULL;
 }
-
-
-std::vector<item> items_data::items;
 
 
 items_data::items_data() {
@@ -41,6 +40,11 @@ void items_data::add_items(float x, float y, float angle) {
 
 	items.push_back(new_item);
 	num_items++;
+}
+
+
+std::vector<item>* items_data::get_item_vector() {
+	return &items;
 }
 
 
