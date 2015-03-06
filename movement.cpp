@@ -1,14 +1,21 @@
 #include "movement.h"
 
 movement::movement() {
+	character = al_load_bitmap("sprites/running.png");
+
+	dir = STOP;
+
+	num_sprite = 0;
+	prev_time = 0;
+
 	player_x = 0;
 	player_y = 230;
 	movement_x = 0;
 	movement_y = 0.5;
 	gravity = 0.00125;
 
-	char_height = 40;
-	char_width = 20;
+	char_height = 43;
+	char_width = 35;
 
 	jump = false;
 	ground = true;
@@ -21,14 +28,19 @@ movement::movement() {
 void movement::set_direction(int direction) {
 	if(direction == 0) {
 		movement_x = -0.2;
+		dir = LEFT;
+		num_sprite = 0;
 	}
 	else if(direction == 1){
 		movement_x = 0.2;
+		dir = RIGHT;
+		num_sprite = 0;
 	}
+
 	/*
 	 * The bool 'jump' will be false when the ground is hit
 	 */
-	else if(direction == 2 && jump == false) {
+	if(direction == 2 && jump == false) {
 		movement_y = -0.5;
 		jump = true;
 		ground = false;
@@ -36,6 +48,11 @@ void movement::set_direction(int direction) {
 
 	if(direction == 4) {
 		movement_x = 0;
+		if(dir == RIGHT) {
+			dir = STOP;
+		} else {
+			dir = STOP_LEFT;
+		}
 	}
 
 	/*
@@ -101,7 +118,7 @@ void movement::calculate_movement() {
 					player_x < current_item.x + current_item.width - 1 &&
 					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
 
-				movement_y = gravity * 4;
+				movement_y = gravity * 20;
 			}
 
 			/*
@@ -111,7 +128,6 @@ void movement::calculate_movement() {
 					player_x < current_item.x + current_item.width - 1 &&
 					player_y < current_item.y) {
 
-				std::cout << "Hit ground" <<std::endl;
 				jump = false;
 				player_y = current_item.y - char_height;
 			}
@@ -130,7 +146,16 @@ void movement::calculate_jump() {
 
 
 void movement::draw_character(ALLEGRO_DISPLAY &display) {
-	al_draw_filled_rectangle(player_x, player_y, player_x + char_width, player_y + char_height, al_map_rgb(255, 0, 255));
+	al_draw_bitmap_region(character, pos_sprite[dir][num_sprite], dir*43, 35, 43, player_x, player_y, 0);
+
+	if(al_get_time() - prev_time > .05) {
+		prev_time = al_get_time();
+		num_sprite++;
+	}
+
+	if(num_sprite > 9) {
+		num_sprite = 0;
+	}
 }
 
 

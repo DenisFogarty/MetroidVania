@@ -30,6 +30,15 @@ public:
 	int get_y();
 
 private:
+	ALLEGRO_BITMAP *character;
+
+	uint dir;
+	enum dir_sprite {STOP, RIGHT, STOP_LEFT, LEFT};
+	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};
+	uint num_sprite;
+
+	float prev_time;
+
 	float player_x, player_y;
 	float movement_x;
 	float movement_y;

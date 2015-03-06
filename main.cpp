@@ -7,7 +7,7 @@ float SCREEN_HEIGHT = 480.0;
 
 int main() {
 	if(!al_init()) {
-		fprintf(stderr, "Faile20d to initialise Allegro\n");
+		fprintf(stderr, "Failed to initialise Allegro\n");
 		return -1;
 	}
 
