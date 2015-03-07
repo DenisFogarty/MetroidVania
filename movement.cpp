@@ -12,10 +12,10 @@ movement::movement() {
 	player_y = 30;
 	movement_x = 0;
 	movement_y = 0.5;
-	move_speed = 200.0/1000.0;	//200 pixels/s
+	move_speed = 300.0/1000.0;	//300 pixels/s
 
-	velocity = -300.0;
-	gravity = 300.0;
+	velocity = -600.0;
+	gravity = 1200.0;
 
 	char_height = 43;
 	char_width = 35;
@@ -59,19 +59,19 @@ void movement::set_direction(int direction) {
 
 	if(direction == 6) {
 		if(movement_y < 0.0) {
-			movement_y *= -1;
+			velocity *= -0.5;
 		}
 	}
 }
 
 
 void movement::calculate_movement() {
-	player_x += movement_x;
-	player_y += movement_y;
-
 	if(jump) {
 		calculate_jump();
 	}
+
+	player_x += movement_x;
+	player_y += movement_y;
 
 	if(player_x <= 0 || player_x >= 1920 - char_width) {
 		set_direction(stop_x);
@@ -80,9 +80,9 @@ void movement::calculate_movement() {
 
 	if(player_y <= 0 || player_y >= 1080 - char_height) {
 		set_direction(stop_y);
-		player_y = 1080 - char_height;
+		player_y = 1080.0 - char_height;
 		jump = false;
-		velocity = -300;
+		velocity = -600.0;
 	}
 
 
@@ -117,7 +117,8 @@ void movement::calculate_movement() {
 					player_x < current_item.x + current_item.width - 1 &&
 					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
 
-				movement_y *= -1;
+				player_y += .01;
+				velocity *= -0.5;
 			}
 
 			/*
@@ -129,13 +130,16 @@ void movement::calculate_movement() {
 
 				jump = false;
 				player_y = current_item.y - char_height;
-				velocity = -300;
+				velocity = -600;
 			}
 		}
 	}
 }
 
 
+/*
+ * This should always be running
+ */
 void movement::calculate_jump() {
 	movement_y = (1.0/1000) * velocity;
 	velocity += (1.0/1000) * gravity;
