@@ -3,16 +3,19 @@
 movement::movement() {
 	character = al_load_bitmap("sprites/running.png");
 
-	dir = STOP;
+	dir = STOP_RIGHT;
 
 	num_sprite = 0;
 	prev_time = 0;
 
 	player_x = 0;
-	player_y = 230;
+	player_y = 30;
 	movement_x = 0;
 	movement_y = 0.5;
-	gravity = 0.00125;
+	move_speed = 200.0/1000.0;	//200 pixels/s
+
+	velocity = -300.0;
+	gravity = 300.0;
 
 	char_height = 43;
 	char_width = 35;
@@ -27,12 +30,12 @@ movement::movement() {
 
 void movement::set_direction(int direction) {
 	if(direction == 0) {
-		movement_x = -0.2;
+		movement_x = -move_speed;
 		dir = LEFT;
 		num_sprite = 0;
 	}
 	else if(direction == 1){
-		movement_x = 0.2;
+		movement_x = move_speed;
 		dir = RIGHT;
 		num_sprite = 0;
 	}
@@ -41,27 +44,22 @@ void movement::set_direction(int direction) {
 	 * The bool 'jump' will be false when the ground is hit
 	 */
 	if(direction == 2 && jump == false) {
-		movement_y = -0.5;
+		movement_y = (1.0/1000) * velocity;
 		jump = true;
-		ground = false;
 	}
 
 	if(direction == 4) {
 		movement_x = 0;
 		if(dir == RIGHT) {
-			dir = STOP;
+			dir = STOP_RIGHT;
 		} else {
 			dir = STOP_LEFT;
 		}
 	}
 
-	/*
-	 * If jumping is cancelled, the 'movement_y' variable is set to the current gravity * split, which sends the player moving down
-	 * This makes the downward momentum slower the closer they are to the ground. This makes the jumping feel more fluid
-	 */
 	if(direction == 6) {
 		if(movement_y < 0.0) {
-			movement_y = gravity * 2;
+			movement_y *= -1;
 		}
 	}
 }
@@ -84,6 +82,7 @@ void movement::calculate_movement() {
 		set_direction(stop_y);
 		player_y = 1080 - char_height;
 		jump = false;
+		velocity = -300;
 	}
 
 
@@ -118,7 +117,7 @@ void movement::calculate_movement() {
 					player_x < current_item.x + current_item.width - 1 &&
 					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
 
-				movement_y = gravity * 20;
+				movement_y *= -1;
 			}
 
 			/*
@@ -130,6 +129,7 @@ void movement::calculate_movement() {
 
 				jump = false;
 				player_y = current_item.y - char_height;
+				velocity = -300;
 			}
 		}
 	}
@@ -137,11 +137,8 @@ void movement::calculate_movement() {
 
 
 void movement::calculate_jump() {
-	movement_y += gravity;
-
-	if(movement_y > .75) {
-		movement_y = .75;
-	}
+	movement_y = (1.0/1000) * velocity;
+	velocity += (1.0/1000) * gravity;
 }
 
 
