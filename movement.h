@@ -24,7 +24,7 @@ public:
 
 	void set_direction(int direction);
 	void calculate_movement();
-	void calculate_jump();
+	void calculate_fall();
 	void draw_character(ALLEGRO_DISPLAY &display);
 	int get_x();
 	int get_y();
