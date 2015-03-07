@@ -142,6 +142,10 @@ void movement::calculate_movement() {
 void movement::calculate_fall() {
 	movement_y = (1.0/1000) * velocity;
 	velocity += (1.0/1000) * gravity;
+
+	if(movement_y > 2400.0/1000) {
+		movement_y = 2400.0/1000;
+	}
 }
 
 
