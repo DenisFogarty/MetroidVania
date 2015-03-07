@@ -3,6 +3,8 @@
 movement::movement() {
 	character = al_load_bitmap("sprites/running.png");
 
+	update_speed = 500.0;
+
 	dir = STOP_RIGHT;
 
 	num_sprite = 0;
@@ -12,7 +14,7 @@ movement::movement() {
 	player_y = 30;
 	movement_x = 0;
 	movement_y = 0;
-	move_speed = 300.0/1000.0;	//300 pixels/s
+	move_speed = 300.0/update_speed;	//300 pixels/s
 
 	velocity = 400.0;
 	gravity = 1400.0;
@@ -45,7 +47,7 @@ void movement::set_direction(int direction) {
 	 */
 	if(direction == 2 && jump == false) {
 		velocity = -600;
-		movement_y = (1.0/1000) * velocity;
+		movement_y = (1.0/update_speed) * velocity;
 		jump = true;
 	}
 
@@ -60,7 +62,7 @@ void movement::set_direction(int direction) {
 
 	if(direction == 6) {
 		if(movement_y < 0.0) {
-			velocity *= -0.5;
+			velocity = 10;
 		}
 	}
 }
@@ -117,7 +119,7 @@ void movement::calculate_movement() {
 					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
 
 				player_y = current_item.y + current_item.height;
-				velocity *= -.5;
+				velocity = 10;
 			}
 
 			/*
@@ -140,11 +142,11 @@ void movement::calculate_movement() {
  * This should always be running
  */
 void movement::calculate_fall() {
-	movement_y = (1.0/1000) * velocity;
-	velocity += (1.0/1000) * gravity;
+	movement_y = (1.0/update_speed) * velocity;
+	velocity += (1.0/update_speed) * gravity;
 
-	if(movement_y > 2400.0/1000) {
-		movement_y = 2400.0/1000;
+	if(movement_y > 1200.0/update_speed) {
+		movement_y = 1200.0/update_speed;
 	}
 }
 

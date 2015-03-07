@@ -32,6 +32,8 @@ public:
 private:
 	ALLEGRO_BITMAP *character;
 
+	float update_speed;
+
 	uint dir;
 	enum dir_sprite {STOP_RIGHT, RIGHT, STOP_LEFT, LEFT};
 	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};

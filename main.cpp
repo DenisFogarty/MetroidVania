@@ -1,7 +1,7 @@
 #include "main.h"
 
 float FPS = 60.0;
-float GAME_UPDATE = 1000;
+float GAME_UPDATE = 500;
 float SCREEN_WIDTH = 640.0;
 float SCREEN_HEIGHT = 480.0;
 
