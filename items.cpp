@@ -33,10 +33,10 @@ void items_data::add_items(float x, float y, float angle) {
 	new_item.x = x;
 	new_item.y = y;
 
-	new_item.item_sprite = al_load_bitmap("sprites/box.png");
+	new_item.item_sprite = al_load_bitmap("sprites/blocks.png");
 
-	new_item.width = al_get_bitmap_width(new_item.item_sprite);
-	new_item.height = al_get_bitmap_height(new_item.item_sprite);
+	new_item.width = 16;
+	new_item.height = 16;
 
 	items.push_back(new_item);
 	num_items++;
@@ -51,7 +51,7 @@ std::vector<item>* items_data::get_item_vector() {
 void items_data::draw_items() {
 	for (int i = 0; i < num_items; i++) {
 		current_item = items[i];
-		al_draw_bitmap(current_item.item_sprite, current_item.x, current_item.y, 0);
+		al_draw_bitmap_region(current_item.item_sprite, 8, 8, 16, 16, current_item.x, current_item.y, 0);
 	}
 }
 
