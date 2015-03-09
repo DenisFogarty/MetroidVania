@@ -238,82 +238,84 @@ void draw_display::mouse_down() {
 
 void draw_display::game_loop() {
 
-	refresh_timer = al_create_timer(1.0/FPS);
-	if(!refresh_timer) {
-		fprintf(stderr, "Failed to initialise refresh timer\n");
-	}
+	add_sprites.load_sprites();
 
-	game_timer = al_create_timer(1.0/GAME_UPDATE);
-	if(!game_timer) {
-		fprintf(stderr, "Failed to initialise game timer/n");
-	}
-
-	event_queue = al_create_event_queue();
-	if(!event_queue) {
-		fprintf(stderr, "failed to create event_queue!\n");
-		al_destroy_timer(refresh_timer);
-	}
-
-
-	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
-	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_register_event_source(event_queue, al_get_mouse_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(display));
-
-	al_set_target_bitmap(al_get_backbuffer(display));
-
-	al_hide_mouse_cursor(display);
-
-	al_start_timer(refresh_timer);
-	al_start_timer(game_timer);
-
-	add_item.add_items(50, 50, 0);
-	add_item.add_items(250, 250, 0);
-
-
-	//Main game loop
-	while(game_running) {
-		al_wait_for_event(event_queue, &ev);
-
-		switch(ev.type)
-		{
-
-		case ALLEGRO_EVENT_TIMER:
-			timer();
-
-			break;
-
-		case ALLEGRO_EVENT_KEY_DOWN:
-			key_down();
-
-			break;
-
-		case ALLEGRO_EVENT_KEY_UP:
-			key_up();
-
-			break;
-
-		case ALLEGRO_EVENT_MOUSE_AXES:
-			mouse_x = ev.mouse.x;
-			mouse_y = ev.mouse.y;
-
-			break;
-
-		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-			mouse_down();
-
-			break;
-
-		case ALLEGRO_EVENT_DISPLAY_CLOSE:
-			game_running = false;
-
-			break;
-
-		default:
-			break;
-		}
-	}
+//	refresh_timer = al_create_timer(1.0/FPS);
+//	if(!refresh_timer) {
+//		fprintf(stderr, "Failed to initialise refresh timer\n");
+//	}
+//
+//	game_timer = al_create_timer(1.0/GAME_UPDATE);
+//	if(!game_timer) {
+//		fprintf(stderr, "Failed to initialise game timer/n");
+//	}
+//
+//	event_queue = al_create_event_queue();
+//	if(!event_queue) {
+//		fprintf(stderr, "failed to create event_queue!\n");
+//		al_destroy_timer(refresh_timer);
+//	}
+//
+//
+//	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
+//	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+//	al_register_event_source(event_queue, al_get_keyboard_event_source());
+//	al_register_event_source(event_queue, al_get_mouse_event_source());
+//	al_register_event_source(event_queue, al_get_display_event_source(display));
+//
+//	al_set_target_bitmap(al_get_backbuffer(display));
+//
+//	al_hide_mouse_cursor(display);
+//
+//	al_start_timer(refresh_timer);
+//	al_start_timer(game_timer);
+//
+//	add_item.add_items(50, 50, 0);
+//	add_item.add_items(250, 250, 0);
+//
+//
+//	//Main game loop
+//	while(game_running) {
+//		al_wait_for_event(event_queue, &ev);
+//
+//		switch(ev.type)
+//		{
+//
+//		case ALLEGRO_EVENT_TIMER:
+//			timer();
+//
+//			break;
+//
+//		case ALLEGRO_EVENT_KEY_DOWN:
+//			key_down();
+//
+//			break;
+//
+//		case ALLEGRO_EVENT_KEY_UP:
+//			key_up();
+//
+//			break;
+//
+//		case ALLEGRO_EVENT_MOUSE_AXES:
+//			mouse_x = ev.mouse.x;
+//			mouse_y = ev.mouse.y;
+//
+//			break;
+//
+//		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+//			mouse_down();
+//
+//			break;
+//
+//		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+//			game_running = false;
+//
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
 }
 
 

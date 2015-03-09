@@ -9,21 +9,6 @@
 
 std::vector<item> items_data::items;
 
-item::item() {
-	x = 0;
-	y = 0;
-
-	width = 0;
-	height = 0;
-
-	damage = 0;
-
-	angle = 0;
-
-	item_sprite = NULL;
-}
-
-
 items_data::items_data() {
 	num_items = 0;
 }
@@ -53,11 +38,6 @@ void items_data::draw_items() {
 		current_item = items[i];
 		al_draw_bitmap_region(current_item.item_sprite, 8, 8, 16, 16, current_item.x, current_item.y, 0);
 	}
-}
-
-
-item::~item() {
-
 }
 
 

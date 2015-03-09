@@ -14,16 +14,12 @@
 
 class item {
 public:
-	item();
-
 	float x, y;
 	float width, height;
 	float damage;
 	float angle;
 
 	ALLEGRO_BITMAP *item_sprite;
-
-	virtual ~item();
 
 private:
 

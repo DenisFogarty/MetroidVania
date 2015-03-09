@@ -12,6 +12,7 @@
 #include "shoot.h"
 #include "movement.h"
 #include "items.h"
+#include "sprites.h"
 
 class draw_display {
 public:
@@ -58,6 +59,7 @@ private:
 	bullets_data add_bullets;
 	movement char_move;
 	items_data add_item;
+	sprites add_sprites;
 
 };
 
