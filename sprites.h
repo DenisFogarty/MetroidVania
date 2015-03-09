@@ -22,7 +22,6 @@ public:
 	bool collision;
 	float sheet_pos_x;
 	float sheet_pos_y;
-	int rows, cols;
 };
 
 
@@ -42,7 +41,6 @@ private:
 
 	std::string type;
 	std::string blocks;
-	std::string file_name;
 
 	char block_no[10];
 	char int_string[3];
@@ -51,7 +49,11 @@ private:
 	int cols;
 
 	sprite new_sprite_block;
-	static std::vector <sprite> list_sprite_blocks;
+	sprite new_sprite;
+	std::vector<sprite> block_sprites;
+	static std::vector <std::vector<sprite>> list_sprites;
+	float sprite_offset_x;
+	float sprite_offset_y;
 
 	int i, j, k;
 

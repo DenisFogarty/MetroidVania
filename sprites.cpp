@@ -7,7 +7,7 @@
 
 #include "sprites.h"
 
-std::vector <sprite> sprites::list_sprite_blocks;
+std::vector <std::vector<sprite>> sprites::list_sprites;
 
 sprites::sprites() {
 	config_sprites = al_load_config_file("blocks.conf");
@@ -16,7 +16,9 @@ sprites::sprites() {
 
 	blocks = al_get_config_value(config_sprites, "", "blocks");
 
-	file_name = al_get_config_value(config_sprites, "", "file");
+	const char* file_name = al_get_config_value(config_sprites, "", "file");
+
+	sprite_sheet = al_load_bitmap(file_name);
 
 	block_no[0] = 'b';
 	block_no[1] = 'l';
@@ -28,6 +30,9 @@ sprites::sprites() {
 	i = 0, j = 0, k = 0;
 
 	rows = 0, cols = 0;
+
+	sprite_offset_x = 0;
+	sprite_offset_y = 0;
 }
 
 void sprites::load_sprites() {
@@ -40,23 +45,33 @@ void sprites::load_sprites() {
 
 		strcat(block_no, int_string);
 
-		printf("%s\n", block_no);
-
-		rows = std::stoi(al_get_config_value(config_sprites, block_no, "rows"));
-
-		cols = std::stoi(al_get_config_value(config_sprites, block_no, "cols"));
-
 		new_sprite_block.sheet_pos_x = std::stoi(al_get_config_value(config_sprites, block_no, "startx"));
 		new_sprite_block.sheet_pos_y = std::stoi(al_get_config_value(config_sprites, block_no, "starty"));
 		new_sprite_block.width = std::stoi(al_get_config_value(config_sprites, block_no, "width"));
 		new_sprite_block.height = std::stoi(al_get_config_value(config_sprites, block_no, "height"));
-		new_sprite_block.rows = std::stoi(al_get_config_value(config_sprites, block_no, "rows"));
-		new_sprite_block.cols = std::stoi(al_get_config_value(config_sprites, block_no, "cols"));
+		rows = std::stoi(al_get_config_value(config_sprites, block_no, "rows"));
+		cols = std::stoi(al_get_config_value(config_sprites, block_no, "cols"));
 
-		list_sprite_blocks.push_back(new_sprite_block);
+		for(j = 0; j < rows; j++) {
+			for(k = 0; k < cols; k++) {
+				new_sprite.sheet_pos_x = new_sprite_block.sheet_pos_x + sprite_offset_x;
+				new_sprite.sheet_pos_y = new_sprite_block.sheet_pos_y + sprite_offset_y;
+				new_sprite.width = new_sprite_block.width;
+				new_sprite.height = new_sprite_block.height;
+
+				sprite_offset_x += new_sprite_block.width;
+
+				std::cout << new_sprite.sheet_pos_x << " ";
+				std::cout << new_sprite.sheet_pos_y << std::endl;
+
+			}
+			sprite_offset_y += new_sprite_block.height;
+		}
+		sprite_offset_x = 0;
+		sprite_offset_y = 0;
 	}
 }
 
 sprites::~sprites() {
-	// TODO Auto-generated destructor stub
+
 }
