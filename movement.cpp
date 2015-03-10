@@ -92,9 +92,21 @@ void movement::calculate_movement() {
 		current_item = (*p_items)[i];
 		if(detect_collision.detect_collision(player_x, player_y, char_width, char_height, current_item.x, current_item.y, current_item.width, current_item.height)) {
 			/*
+			 * Checks if the player has hit ground
+			 */
+			if(player_x + char_width - 1 > current_item.x &&
+					player_x < current_item.x + current_item.width - 1 &&
+					player_y < current_item.y) {
+
+				jump = false;
+				player_y = current_item.y - char_height;
+				velocity = 400;
+			}
+
+			/*
 			 * Checks if the player has collided with the left side of an object
 			 */
-			if(player_y + char_height - 1 > current_item.y &&
+			else if(player_y + char_height - 1 > current_item.y &&
 					player_y < current_item.y + current_item.height - 1 &&
 					player_x < current_item.x) {
 
@@ -120,18 +132,6 @@ void movement::calculate_movement() {
 
 				player_y = current_item.y + current_item.height;
 				velocity = 10;
-			}
-
-			/*
-			 * Checks if the player has hit ground
-			 */
-			else if(player_x + char_width - 1 > current_item.x &&
-					player_x < current_item.x + current_item.width - 1 &&
-					player_y < current_item.y) {
-
-				jump = false;
-				player_y = current_item.y - char_height;
-				velocity = 400;
 			}
 		}
 	}

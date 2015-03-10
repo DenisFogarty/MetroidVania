@@ -237,7 +237,6 @@ void draw_display::mouse_down() {
 
 
 void draw_display::game_loop() {
-
 	refresh_timer = al_create_timer(1.0/FPS);
 	if(!refresh_timer) {
 		fprintf(stderr, "Failed to initialise refresh timer\n");
@@ -270,6 +269,8 @@ void draw_display::game_loop() {
 
 	add_item.add_items(50, 50, 0);
 	add_item.add_items(250, 250, 0);
+
+	add_sprites.load_sprites();
 
 
 	//Main game loop
