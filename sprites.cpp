@@ -8,7 +8,6 @@
 #include "sprites.h"
 
 std::vector<std::vector<sprite>> sprites::sprite_list;
-std::vector<ALLEGRO_BITMAP*> sprites::sprite_sheet_list;
 
 sprites::sprites() {
 	config_sprites = al_load_config_file("blocks.conf");
@@ -43,7 +42,6 @@ sprites::sprites() {
 
 void sprites::load_sprites() {
 	new_sprite.sheet_no = 0;
-	sprite_sheet_list.push_back(sprite_sheet);
 
 	for(i = 1; i <= std::stoi(blocks); i++) {
 
@@ -54,6 +52,10 @@ void sprites::load_sprites() {
 
 		strcat(block_no, int_string);
 
+		/*
+		 * Stores the information from the config files in memory
+		 * Also saves individual bitmaps of each sprite
+		 */
 		new_sprite_block.sheet_pos_x = std::stoi(al_get_config_value(config_sprites, block_no, "startx"));
 		new_sprite_block.sheet_pos_y = std::stoi(al_get_config_value(config_sprites, block_no, "starty"));
 		new_sprite_block.width = std::stoi(al_get_config_value(config_sprites, block_no, "width"));
@@ -73,21 +75,24 @@ void sprites::load_sprites() {
 				std::cout << new_sprite.sheet_pos_x << " ";
 				std::cout << new_sprite.sheet_pos_y << std::endl;
 
-				sprite_list.at(curr_block).push_back(new_sprite);
+				new_sprite.item_sprite = al_create_sub_bitmap(sprite_sheet, new_sprite.sheet_pos_x, new_sprite.sheet_pos_y, new_sprite.width, new_sprite.height);
+
+				sprite_block.push_back(new_sprite);
 			}
 			sprite_offset_y += new_sprite_block.height;
+			sprite_offset_x = 0;
 		}
+
 		sprite_offset_x = 0;
 		sprite_offset_y = 0;
 	}
 	curr_block++;
+	sprite_list.push_back(sprite_block);
 }
 
-
-ALLEGRO_BITMAP* sprites::get_sprite_sheet(int pos) {
-	return sprite_sheet_list.at(pos);
+void sprites::draw_sprite() {
+	al_draw_bitmap(sprite_sheet, 200, 1000, 0);
 }
-
 
 std::vector<std::vector<sprite>>* sprites::get_sprite_list() {
 	return &sprite_list;

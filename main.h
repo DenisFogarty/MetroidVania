@@ -13,6 +13,7 @@
 #include "movement.h"
 #include "items.h"
 #include "sprites.h"
+#include "level.h"
 
 class draw_display {
 public:
@@ -60,6 +61,9 @@ private:
 	movement char_move;
 	items_data add_item;
 	sprites add_sprites;
+	level load_level;
+
+	int next;
 
 };
 

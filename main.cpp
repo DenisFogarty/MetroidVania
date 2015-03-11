@@ -100,6 +100,8 @@ draw_display::draw_display() {
 	paused = false;
 
 	game_running = true;
+
+	next = 0;
 }
 
 
@@ -131,6 +133,10 @@ void draw_display::timer() {
 		add_bullets.draw_to_screen(*display);
 
 		add_item.draw_items();
+
+		//		add_sprites.draw_sprite();
+
+		load_level.draw_sprites(next);
 
 		char_move.draw_character(*display);
 
@@ -230,7 +236,8 @@ void draw_display::mouse_down() {
 			}
 		}
 		else if(al_mouse_button_down(&mouse_state, 2)) {
-			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+			//			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+			next++;
 		}
 	}
 }
@@ -271,6 +278,8 @@ void draw_display::game_loop() {
 	add_item.add_items(250, 250, 0);
 
 	add_sprites.load_sprites();
+
+	load_level.load_sprites();
 
 
 	//Main game loop

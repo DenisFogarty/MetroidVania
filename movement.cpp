@@ -10,8 +10,8 @@ movement::movement() {
 	num_sprite = 0;
 	prev_time = 0;
 
-	player_x = 0;
-	player_y = 30;
+	player_x = 10;
+	player_y = 1080-43;
 	movement_x = 0;
 	movement_y = 0;
 	move_speed = 300.0/update_speed;	//300 pixels/s

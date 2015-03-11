@@ -31,14 +31,14 @@ public:
 	sprites();
 
 	void load_sprites();
-	static ALLEGRO_BITMAP* get_sprite_sheet(int pos);
+	void draw_sprite();
+
 	static std::vector<std::vector<sprite>>* get_sprite_list();
 
 private:
 	ALLEGRO_BITMAP *sprite_sheet;
 	ALLEGRO_CONFIG *config_sprites;
 
-	static std::vector<ALLEGRO_BITMAP*> sprite_sheet_list;
 	int sheets;
 
 	std::string type;
@@ -52,7 +52,7 @@ private:
 
 	sprite new_sprite_block;
 	sprite new_sprite;
-	std::vector<sprite> block_sprites;
+	std::vector<sprite> sprite_block;
 	static std::vector<std::vector<sprite>> sprite_list;
 	float sprite_offset_x;
 	float sprite_offset_y;
