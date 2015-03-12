@@ -237,7 +237,7 @@ void draw_display::mouse_down() {
 		}
 		else if(al_mouse_button_down(&mouse_state, 2)) {
 			//			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
-			add_item.add_items(mouse_x, mouse_y, 0);
+			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 		}
 	}
 }

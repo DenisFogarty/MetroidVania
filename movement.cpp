@@ -104,6 +104,17 @@ void movement::calculate_movement() {
 			}
 
 			/*
+			 * Checks if the player has collided with the underside of an object
+			 */
+			else if(player_x + char_width - 1 > current_item.x &&
+					player_x < current_item.x + current_item.width - 1 &&
+					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
+
+				player_y = current_item.y + current_item.height;
+				velocity = 10;
+			}
+
+			/*
 			 * Checks if the player has collided with the left side of an object
 			 */
 			else if(player_y + char_height - 1 > current_item.y &&
@@ -121,17 +132,6 @@ void movement::calculate_movement() {
 					player_x + char_width - 1 > current_item.x + current_item.width - 1) {
 
 				player_x = current_item.x + current_item.width;
-			}
-
-			/*
-			 * Checks if the player has collided with the underside of an object
-			 */
-			else if(player_x + char_width - 1 > current_item.x &&
-					player_x < current_item.x + current_item.width - 1 &&
-					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
-
-				player_y = current_item.y + current_item.height;
-				velocity = 10;
 			}
 		}
 	}

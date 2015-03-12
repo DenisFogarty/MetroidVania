@@ -19,7 +19,6 @@ void level::load_sprites() {
 
 void level::draw_sprites(int i) {
 	al_draw_bitmap(sprite_list_curr->at(0).at(i).item_sprite, 100, 900, 0);
-	std::cout << sprite_list_curr->at(0).at(i).sheet_pos_x << std::endl;
 }
 
 level::~level() {
