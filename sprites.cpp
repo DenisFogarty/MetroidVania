@@ -20,7 +20,7 @@ sprites::sprites() {
 
 	sprite_sheet = al_load_bitmap(file_name);
 
-	sheets = 0;
+	num_sheets = 0;
 
 	block_no[0] = 'b';
 	block_no[1] = 'l';
@@ -41,7 +41,7 @@ sprites::sprites() {
 
 
 void sprites::load_sprites() {
-	new_sprite.sheet_no = 0;
+	new_sprite.sheet_no = num_sheets;
 
 	for(i = 1; i <= std::stoi(blocks); i++) {
 

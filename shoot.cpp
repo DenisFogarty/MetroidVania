@@ -116,7 +116,7 @@ void bullets_data::calculate_movement() {
 }
 
 
-void bullets_data::draw_to_screen(ALLEGRO_DISPLAY&) {
+void bullets_data::draw_to_screen() {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {

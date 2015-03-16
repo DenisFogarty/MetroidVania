@@ -39,7 +39,7 @@ private:
 	ALLEGRO_BITMAP *sprite_sheet;
 	ALLEGRO_CONFIG *config_sprites;
 
-	int sheets;
+	int num_sheets;
 
 	std::string type;
 	std::string blocks;

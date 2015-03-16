@@ -14,14 +14,16 @@
 #include "items.h"
 #include "sprites.h"
 #include "level.h"
+#include "leveleditor.h"
 
 class draw_display {
 public:
 	draw_display();
-	~draw_display();
 
 	void game_loop();
 	void camera_update(float* camera_position, float x, float y, float width, float height);
+
+	~draw_display();
 
 private:
 	ALLEGRO_DISPLAY			*display;
@@ -62,6 +64,7 @@ private:
 	items_data add_item;
 	sprites add_sprites;
 	level load_level;
+	leveleditor level_editor;
 
 	int next;
 
