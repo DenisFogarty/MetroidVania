@@ -126,30 +126,30 @@ void draw_display::camera_update(float* camera_position, float x, float y, float
 
 void draw_display::timer() {
 	if(ev.timer.source == refresh_timer) {
-		level_editor.draw_windows();
+//		level_editor.draw_windows();
 
-//		al_clear_to_color(al_map_rgb(0, 0, 0));
-//
-//		al_draw_bitmap(foreground, 0, 0, 0);
-//
-//		add_bullets.draw_to_screen();
-//
-//		add_item.draw_items();
-//
-//		load_level.draw_sprites(next);
-//
-//		char_move.draw_character(*display);
-//
-//		char_x = char_move.get_x();
-//		char_y = char_move.get_y();
-//
-//		camera_update(camera_position, char_x, char_y, 20, 40);
-//
-//		al_identity_transform(&camera);
-//		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
-//		al_use_transform(&camera);
-//
-//		al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+
+		al_draw_bitmap(foreground, 0, 0, 0);
+
+		add_bullets.draw_to_screen();
+
+		add_item.draw_items();
+
+		load_level.draw_sprites(next);
+
+		char_move.draw_character(*display);
+
+		char_x = char_move.get_x();
+		char_y = char_move.get_y();
+
+		camera_update(camera_position, char_x, char_y, 20, 40);
+
+		al_identity_transform(&camera);
+		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
+		al_use_transform(&camera);
+
+		al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 
 		al_flip_display();
 
