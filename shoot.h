@@ -33,7 +33,7 @@ public:
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
 	void calculate_movement();
-	void draw_to_screen(ALLEGRO_DISPLAY&);
+	void draw_to_screen();
 	int get_size();
 
 	bullets_data();
