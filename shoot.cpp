@@ -8,7 +8,7 @@ bullets_data::bullets_data() {
 	bullet_start_x = 13;
 	bullet_start_y = 40/5;
 
-	bullet_bit = al_load_bitmap("sprites/bullet.png");
+	bullet_bit = al_load_bitmap("sprites/cursor.png");
 }
 
 

@@ -51,7 +51,7 @@ draw_display::draw_display() {
 	}
 
 
-	foreground = al_load_bitmap("sprites/land.png");
+	foreground = al_load_bitmap("sprites/land3.png");
 	if(!foreground) {
 		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
 	}
