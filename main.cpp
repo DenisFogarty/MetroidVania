@@ -15,7 +15,9 @@ int main() {
 		fprintf(stderr, "Failed to initialise Allegro Primitives\n");
 	}
 
-	al_init_image_addon();
+	if(!al_init_image_addon()) {
+		fprintf(stderr, "Failed to install image addon\n");
+	}
 
 	if(!al_install_keyboard()) {
 		fprintf(stderr, "Failed to install keyboard\n");
@@ -40,6 +42,7 @@ int main() {
 
 	draw.game_loop();
 }
+
 
 
 draw_display::draw_display() {

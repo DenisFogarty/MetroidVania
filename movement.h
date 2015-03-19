@@ -19,42 +19,68 @@
 
 class movement {
 public:
-	movement();
-	virtual ~movement();
+	virtual void on_up_pressed();
+	virtual void on_left_pressed();
+	virtual void on_down_pressed();
+	virtual void on_right_pressed();
 
-	void set_direction(int direction);
-	void calculate_movement();
-	void calculate_fall();
-	void draw_character(ALLEGRO_DISPLAY &display);
-	int get_x();
-	int get_y();
+	virtual void on_left_mouse_click();
+	virtual void on_right_mouse_click();
 
-private:
-	ALLEGRO_BITMAP *character;
+protected:
+	int i;
 
-	float update_speed;
 
-	uint dir;
-	enum dir_sprite {STOP_RIGHT, RIGHT, STOP_LEFT, LEFT};
-	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};
-	uint num_sprite;
-	float move_speed;
+//	movement();
+//	virtual ~movement();
+//
+//	void set_direction(int direction);
+//	void calculate_movement();
+//	void calculate_fall();
+//	void draw_character(ALLEGRO_DISPLAY &display);
+//	int get_x();
+//	int get_y();
+//
+//private:
+//	ALLEGRO_BITMAP *character;
+//
+//	float update_speed;
+//
+//	uint dir;
+//	enum dir_sprite {STOP_RIGHT, RIGHT, STOP_LEFT, LEFT};
+//	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};
+//	uint num_sprite;
+//	float move_speed;
+//
+//	float prev_time;
+//
+//	float velocity;
+//	float gravity;
+//
+//	float player_x, player_y;
+//	float movement_x;
+//	float movement_y;
+//	float char_height, char_width;
+//	bool jump;
+//	bool ground;
+//	collision detect_collision;
+//	std::vector<item>* p_items;
+//	item current_item;
+//	uint i;
+};
 
-	float prev_time;
+class editor : public movement {
+	virtual void on_up_pressed();
+	virtual void on_left_pressed();
+	virtual void on_down_pressed();
+	virtual void on_right_pressed();
 
-	float velocity;
-	float gravity;
+	virtual void on_left_mouse_click();
+	virtual void on_right_mouse_click();
+};
 
-	float player_x, player_y;
-	float movement_x;
-	float movement_y;
-	float char_height, char_width;
-	bool jump;
-	bool ground;
-	collision detect_collision;
-	std::vector<item>* p_items;
-	item current_item;
-	uint i;
+class game : public movement {
+
 };
 
 #endif /* MOVEMENT_H_ */

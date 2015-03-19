@@ -9,6 +9,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
+#include "GameScreen.h"
 #include "shoot.h"
 #include "movement.h"
 #include "items.h"

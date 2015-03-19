@@ -10,38 +10,56 @@
 std::vector<std::vector<sprite>> sprites::sprite_list;
 
 sprites::sprites() {
-	config_sprites = al_load_config_file("blocks.conf");
+	config_main = al_load_config_file("sprite_data/main.conf");
 
-	type =  al_get_config_value(config_sprites, "", "type");
+	sheets_all = new char[strlen(al_get_config_value(config_sprites, "", "sheets"))];
 
-	blocks = al_get_config_value(config_sprites, "", "blocks");
+	sheets_all =  al_get_config_value(config_sprites, "", "sheets");
 
-	const char* file_name = al_get_config_value(config_sprites, "", "file");
+	sheet_no = 0;
+	char_pos = 0;
 
-	sprite_sheet = al_load_bitmap(file_name);
+	while(sheets_all[i] != '\0') {
+		if(sheets_all[i] == ',') {
+			sheet_no++;
+			char_pos = 0;
+			sheets_split.push_back(sheet_indiv);
+		}
+		else if(sheets_all[i] != ' ') {
+			sheet_indiv[char_pos] = sheets_all[i];
+			char_pos++;
+		}
+		i++;
+	}
 
-	num_sheets = 0;
-
-	block_no[0] = 'b';
-	block_no[1] = 'l';
-	block_no[2] = 'o';
-	block_no[3] = 'c';
-	block_no[4] = 'k';
-	block_no[5] = ' ';
-
-	i = 0, j = 0, k = 0;
-
-	rows = 0, cols = 0;
-
-	sprite_offset_x = 0;
-	sprite_offset_y = 0;
-
-	curr_block = 0;
+//	blocks = al_get_config_value(config_sprites, "", "blocks");
+//
+//	const char* file_name = al_get_config_value(config_sprites, "", "file");
+//
+//	sprite_sheet = al_load_bitmap(file_name);
+//
+//	num_sheets = 0;
+//
+//	block_no[0] = 'b';
+//	block_no[1] = 'l';
+//	block_no[2] = 'o';
+//	block_no[3] = 'c';
+//	block_no[4] = 'k';
+//	block_no[5] = ' ';
+//
+//	i = 0, j = 0, k = 0;
+//
+//	rows = 0, cols = 0;
+//
+//	sprite_offset_x = 0;
+//	sprite_offset_y = 0;
+//
+//	curr_block = 0;
 }
 
 
 void sprites::load_sprites() {
-	new_sprite.sheet_no = num_sheets;
+	new_sprite.sheet_name = "Test";
 
 	for(i = 1; i <= std::stoi(blocks); i++) {
 
@@ -87,14 +105,14 @@ void sprites::load_sprites() {
 		sprite_offset_y = 0;
 	}
 	curr_block++;
-	sprite_list.push_back(sprite_block);
+	sprite_list[new_sprite.sheet_name] = new_sprite;
 }
 
 void sprites::draw_sprite() {
 	al_draw_bitmap(sprite_sheet, 200, 1000, 0);
 }
 
-std::vector<std::vector<sprite>>* sprites::get_sprite_list() {
+std::map<char*, std::vector<sprite>>* sprites::get_sprite_list() {
 	return &sprite_list;
 }
 
