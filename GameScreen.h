@@ -9,6 +9,8 @@
 #define GAMESCREEN_H_
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
 #include <stdio.h>
 
 #include "items.h"
@@ -20,6 +22,7 @@ public:
 
 	void load_level();
 	void camera_update(float* camera_position, float x, float y, float width, float height);
+	void cursor_update(float mosue_x, float mouse_y);
 
 	virtual ~GameScreen();
 
@@ -34,6 +37,11 @@ private:
 	float camera_position[2];
 	float level_width;
 	float level_height;
+
+	ALLEGRO_BITMAP *cursor;
+	float mouse_x, mouse_y;
+	float cursor_size, cursor_middle;
+	float cursor_color_r, cursor_color_g, cursor_color_b;
 
 	char file_name[20];
 

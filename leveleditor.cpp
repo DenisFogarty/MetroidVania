@@ -8,7 +8,7 @@
 #include "leveleditor.h"
 
 leveleditor::leveleditor() {
-	sprite_list_curr = sprites::get_sprite_list();
+//	sprite_list_curr = sprites::get_sprite_list();
 
 	window_main = al_create_bitmap(480, 480);
 	window_tiles = al_create_bitmap(160, 360);

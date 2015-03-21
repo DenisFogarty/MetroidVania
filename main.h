@@ -16,6 +16,7 @@
 #include "sprites.h"
 #include "level.h"
 #include "leveleditor.h"
+#include "GameScreen.h"
 
 class draw_display {
 public:
@@ -60,12 +61,12 @@ private:
 	void key_up();
 	void mouse_down();
 
-	bullets_data add_bullets;
-	movement char_move;
-	items_data add_item;
-	sprites add_sprites;
-	level load_level;
-	leveleditor level_editor;
+//	bullets_data add_bullets;
+//	movement char_move;
+//	items_data add_item;
+//	sprites add_sprites;
+//	level load_level;
+//	leveleditor level_editor;
 
 	int next;
 

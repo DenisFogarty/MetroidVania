@@ -12,7 +12,7 @@ level::level() {
 }
 
 void level::load_sprites() {
-	sprite_list_curr = sprites::get_sprite_list();
+//	sprite_list_curr = sprites::get_sprite_list();
 
 	al_draw_bitmap(sprite_list_curr->at(0).at(0).item_sprite, 0, 1020, 0);
 }

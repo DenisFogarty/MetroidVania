@@ -41,7 +41,7 @@ private:
 	ALLEGRO_CONFIG *config_main;
 	ALLEGRO_CONFIG *config_sprites;
 
-	char sheets_all[200];
+	char* sheets_all;
 	char sheet_indiv[20];
 	std::vector <char[20]> sheets_split;
 	int sheet_no;
@@ -55,18 +55,19 @@ private:
 	char block_no[10];
 	char int_string[4];
 
-	int rows;
-	int cols;
+	uint rows;
+	uint cols;
 
 	sprite new_sprite_block;
 	sprite new_sprite;
 	std::vector<sprite> sprite_block;
-	static std::map<char*, std::vector<sprite>> sprite_list;
+	static std::map<char[20], std::vector<sprite>> sprite_list;
 	float sprite_offset_x;
 	float sprite_offset_y;
-	int curr_block;
+	uint curr_sheet;
+	uint curr_block;
 
-	int i, j, k;
+	uint i, j;
 
 };
 
