@@ -30,6 +30,8 @@ int main() {
 	}
 
 	GameScreen game_screen;
+
+	sprites add_sprites;
 //
 //	uint version = al_get_allegro_version();
 //

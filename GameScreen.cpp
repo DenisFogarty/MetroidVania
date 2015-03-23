@@ -8,8 +8,8 @@
 #include "GameScreen.h"
 
 GameScreen::GameScreen() {
-	level_width = 1920;
-	level_height = 1080;
+	level_width = 640;
+	level_height = 480;
 
 	if(!al_init_primitives_addon()) {
 		fprintf(stderr, "Failed to initialise the primitives addon\n");

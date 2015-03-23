@@ -64,7 +64,7 @@ private:
 //	bullets_data add_bullets;
 //	movement char_move;
 //	items_data add_item;
-//	sprites add_sprites;
+	sprites add_sprites;
 //	level load_level;
 //	leveleditor level_editor;
 
