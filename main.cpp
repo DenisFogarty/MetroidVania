@@ -43,7 +43,7 @@ int main() {
 
 
 draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
 	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if(!display) {
@@ -51,7 +51,7 @@ draw_display::draw_display() {
 	}
 
 
-	foreground = al_load_bitmap("sprites/land3.png");
+	foreground = al_load_bitmap("sprites/land.png");
 	if(!foreground) {
 		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
 	}
