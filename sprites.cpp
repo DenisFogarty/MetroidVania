@@ -201,7 +201,7 @@ void sprites::load_sprites() {
 			sprite_offset_x = 0;
 			sprite_offset_y = 0;
 		}
-		sprite_list[sprite_conf] = sprite_block;
+		sprite_list[sheets_split.at(sheet_no)] = sprite_block;
 	}
 }
 
