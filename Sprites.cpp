@@ -5,7 +5,7 @@
  *      Author: denis2
  */
 
-#include "sprites.h"
+#include "Sprites.h"
 
 std::map<std::string, std::vector<sprite>> sprites::sprite_list;
 
@@ -21,7 +21,6 @@ sprites::sprites() {
 	sheet_no = 0;
 	char_pos = 0;
 	i = 0;
-
 
 	/*
 	 * Reads in the entire list of sprite config files, and splits them up
@@ -85,53 +84,6 @@ sprites::sprites() {
 	curr_block = 0;
 
 	load_sprites();
-
-	/*
-	 * Loads the config files referenced in sprites_main, loads them and saves the sprites
-	 */
-//	for(sheet_no = 0; sheet_no < sheets_split.size(); sheet_no++) {
-//		sprite_conf[12] = '\0';
-//		char sprite_concat[sheets_split.at(sheet_no).size()];
-//
-//		for(i = 0; i < sheets_split.at(sheet_no).length(); i++) {
-//			sprite_concat[i] = sheets_split.at(sheet_no)[i];
-//		}
-//		sprite_concat[i] = '\0';
-//		strcat(sprite_conf, sprite_concat);
-//
-//		std::cout << sprite_conf << std::endl;
-//
-//		config_sprites = al_load_config_file(sprite_conf);
-//
-//		load_sprites(config_sprites, sheet_no);
-//	}
-
-	//	blocks = al_get_config_value(config_sprites, "", "blocks");
-	//
-	//	const char* file_name = al_get_config_value(config_sprites, "", "file");
-	//
-	//	sprite_sheet = al_load_bitmap(file_name);
-	//
-	//	num_sheets = 0;
-	//
-	//	block_no[0] = 'b';
-	//	block_no[1] = 'l';
-	//	block_no[2] = 'o';
-	//	block_no[3] = 'c';
-	//	block_no[4] = 'k';
-	//	block_no[5] = ' ';
-	//	block_no[6] = '\0';
-	//
-	//	i = 0, j = 0;
-	//
-	//	rows = 0, cols = 0;
-	//
-	//	sprite_offset_x = 0;
-	//	sprite_offset_y = 0;
-	//
-	//	curr_block = 0;
-	//
-	//	std::cout << sheets_split.size();
 }
 
 
@@ -139,12 +91,12 @@ void sprites::load_sprites() {
 	/*
 	 * Goes through each sprite config file, loads the individual sprites and stores them
 	 */
-
 	for(sheet_no = 0; sheet_no < sheets_split.size(); sheet_no++) {
 		std::cout << sheets_split.at(sheet_no).size() << std::endl;
 
 		for(i = 0; i < sheets_split.at(sheet_no).size(); i++) {
 			sprite_conf[i + 12] = sheets_split.at(sheet_no)[i];
+			new_sprite.sheet_name[i] = sheets_split.at(sheet_no)[i];
 		}
 		sprite_conf[i + 12] = '\0';
 
@@ -201,7 +153,7 @@ void sprites::load_sprites() {
 			sprite_offset_x = 0;
 			sprite_offset_y = 0;
 		}
-		sprite_list[sheets_split.at(sheet_no)] = sprite_block;
+		sprite_list[new_sprite.sheet_name] = sprite_block;
 	}
 }
 

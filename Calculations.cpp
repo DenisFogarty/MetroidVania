@@ -5,7 +5,7 @@
  *      Author: denis2
  */
 
-#include "calculations.h"
+#include "Calculations.h"
 
 calculations::calculations() {
 	traj_x = 0;

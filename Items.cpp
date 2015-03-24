@@ -5,7 +5,7 @@
  *      Author: denis2
  */
 
-#include "items.h"
+#include "Items.h"
 
 std::vector<item> items_data::items;
 

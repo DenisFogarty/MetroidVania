@@ -16,13 +16,14 @@
 #include <stdlib.h>
 #include <allegro5/allegro.h>
 
-#include "items.h"
+#include "Items.h"
 
 class sprite : public item {
 public:
 	bool collision;
 	float sheet_pos_x;
 	float sheet_pos_y;
+	char sheet_name[100];
 };
 
 

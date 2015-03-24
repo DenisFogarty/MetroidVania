@@ -6,8 +6,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "collision.h"
-#include "items.h"
+#include "Collision.h"
+#include "Items.h"
 
 #define left 		0
 #define right		1

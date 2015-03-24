@@ -5,7 +5,7 @@
  *      Author: denis2
  */
 
-#include "leveleditor.h"
+#include "LevelEditor.h"
 
 leveleditor::leveleditor() {
 //	sprite_list_curr = sprites::get_sprite_list();

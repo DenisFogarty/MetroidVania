@@ -5,7 +5,7 @@
  *      Author: denis2
  */
 
-#include "collision.h"
+#include "Collision.h"
 
 collision::collision() {
 	i = 0;

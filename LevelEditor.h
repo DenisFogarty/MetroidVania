@@ -8,7 +8,7 @@
 #ifndef LEVELEDITOR_H_
 #define LEVELEDITOR_H_
 
-#include "sprites.h"
+#include "Sprites.h"
 
 class leveleditor {
 public:

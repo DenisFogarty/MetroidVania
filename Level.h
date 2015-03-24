@@ -8,7 +8,7 @@
 #ifndef LEVEL_H_
 #define LEVEL_H_
 
-#include "sprites.h"
+#include "Sprites.h"
 
 class level {
 public:

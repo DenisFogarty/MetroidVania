@@ -13,8 +13,8 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
-#include "items.h"
-#include "sprites.h"
+#include "Items.h"
+#include "Sprites.h"
 
 class GameScreen {
 public:

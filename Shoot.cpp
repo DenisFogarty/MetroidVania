@@ -1,4 +1,4 @@
-#include "shoot.h"
+#include "Shoot.h"
 
 bullets_data::bullets_data() {
 	hypotenuse = 0;

@@ -10,13 +10,13 @@
 #include <allegro5/allegro_image.h>
 
 #include "GameScreen.h"
-#include "shoot.h"
-#include "movement.h"
-#include "items.h"
-#include "sprites.h"
-#include "level.h"
-#include "leveleditor.h"
 #include "GameScreen.h"
+#include "Items.h"
+#include "Level.h"
+#include "LevelEditor.h"
+#include "Movement.h"
+#include "Shoot.h"
+#include "Sprites.h"
 
 class draw_display {
 public:

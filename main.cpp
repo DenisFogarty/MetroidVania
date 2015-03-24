@@ -45,69 +45,6 @@ int main() {
 //	draw.game_loop();
 }
 
-
-
-draw_display::draw_display() {
-//	al_set_new_display_flags(ALLEGRO_WINDOWED);
-//
-//	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-//	if(!display) {
-//		fprintf(stderr, "Failed to initialise the display/n");
-//	}
-//
-//
-//	foreground = al_load_bitmap("sprites/land3.png");
-//	if(!foreground) {
-//		fprintf(stderr, "Failed to initialise the bitmap foreground/n");
-//	}
-//
-//
-//	{//The following creates the in-game cursor
-//		mouse_x = 0;
-//		mouse_y = 0;
-//		cursor_size = 16;
-//		cursor_middle = cursor_size/2;
-//
-//		cursor_color_r = 255;
-//		cursor_color_g = 0;
-//		cursor_color_b = 0;
-//
-//		cursor = al_create_bitmap(cursor_size, cursor_size);
-//		if(!cursor) {
-//			fprintf(stderr, "Failed to initialise the bitmap cursor/n");
-//		}
-//
-//		al_set_target_bitmap(cursor);
-//
-//		al_clear_to_color(al_map_rgb(0, 0, 0));
-//		al_convert_mask_to_alpha(cursor, al_map_rgb(0, 0, 0));
-//
-//		al_draw_circle(cursor_middle, cursor_middle, cursor_middle - 1, al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b), 2);
-//
-//		al_draw_pixel(cursor_middle,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-//		al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-//		al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-//		al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-//	}
-//
-//
-//	al_set_target_bitmap(al_get_backbuffer(display));
-//
-//	char_x = 0;
-//	char_y = 0;
-//
-//
-//	left_pressed = false;
-//	right_pressed = false;
-//
-//	basic = true;
-//
-//	paused = false;
-//
-//	game_running = true;
-//
-//	next = 0;
-}
 //
 //
 //void draw_display::camera_update(float* camera_position, float x, float y, float width, float height) {

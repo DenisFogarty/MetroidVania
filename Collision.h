@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "items.h"
+#include "Items.h"
 
 class collision {
 public:

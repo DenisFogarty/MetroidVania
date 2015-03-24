@@ -9,9 +9,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
-#include "items.h"
-#include "calculations.h"
-#include "collision.h"
+#include "Calculations.h"
+#include "Collision.h"
+#include "Items.h"
 
 
 class bullet : item {
