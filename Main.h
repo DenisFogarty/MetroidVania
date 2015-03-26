@@ -17,6 +17,7 @@
 #include "Movement.h"
 #include "Shoot.h"
 #include "Sprites.h"
+#include "Display.h"
 
 class draw_display {
 public:
@@ -64,7 +65,7 @@ private:
 //	bullets_data add_bullets;
 //	movement char_move;
 //	items_data add_item;
-	sprites add_sprites;
+//	sprites add_sprites;
 //	level load_level;
 //	leveleditor level_editor;
 

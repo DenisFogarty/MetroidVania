@@ -1,4 +1,4 @@
-#include "main.h"
+#include "Main.h"
 
 float FPS = 60.0;
 float GAME_UPDATE = 500;
@@ -29,9 +29,11 @@ int main() {
 		return -1;
 	}
 
-	GameScreen game_screen;
-
 	sprites add_sprites;
+
+	Display display;
+
+//	GameScreen game_screen;
 //
 //	uint version = al_get_allegro_version();
 //

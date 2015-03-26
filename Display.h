@@ -1,12 +1,12 @@
 /*
- * GameScreen.h
+ * Display.h
  *
- *  Created on: 17 Mar 2015
+ *  Created on: 25 Mar 2015
  *      Author: denis2
  */
 
-#ifndef GAMESCREEN_H_
-#define GAMESCREEN_H_
+#ifndef DISPLAY_H_
+#define DISPLAY_H_
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -17,15 +17,15 @@
 #include "Sprites.h"
 #include "LevelEditor.h"
 
-class GameScreen {
+class Display {
 public:
-	GameScreen();
+	Display();
 
 	void load_level();
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 	void cursor_update(float mosue_x, float mouse_y);
 
-	virtual ~GameScreen();
+	virtual ~Display();
 
 private:
 	ALLEGRO_DISPLAY	*display;
@@ -34,22 +34,15 @@ private:
 	ALLEGRO_BITMAP	*background_layer_3;
 	ALLEGRO_CONFIG	*config_main;
 	ALLEGRO_CONFIG	*config_level;
+	ALLEGRO_MONITOR_INFO monitor_info;
 
 	float camera_position[2];
-	float level_width;
-	float level_height;
-
-	ALLEGRO_BITMAP *cursor;
-	float mouse_x, mouse_y;
-	float cursor_size, cursor_middle;
-	float cursor_color_r, cursor_color_g, cursor_color_b;
-
-	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
-	std::vector<std::string>* sprite_list_names;
+	float screen_width;
+	float screen_height;
 
 	char file_name[20];
 
 	items_data items;
 };
 
-#endif /* GAMESCREEN_H_ */
+#endif /* DISPLAY_H_ */

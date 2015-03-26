@@ -7,7 +7,8 @@
 
 #include "Sprites.h"
 
-std::map<std::string, std::vector<sprite>> sprites::sprite_list;
+std::map <std::string, std::vector<sprite>> sprites::sprite_list;
+std::vector <std::string> sprites::sheets_split;
 
 sprites::sprites() {
 	config_main = al_load_config_file("sprite_data/main.conf");
@@ -157,11 +158,11 @@ void sprites::load_sprites() {
 	}
 }
 
-void sprites::draw_sprite() {
-	al_draw_bitmap(sprite_sheet, 200, 1000, 0);
+std::map <std::string, std::vector<sprite>>* sprites::get_sprite_list() {
+	return &sprite_list;
 }
 
-std::map<std::string, std::vector<sprite>>* sprites::get_sprite_list() {
-	return &sprite_list;
+std::vector <std::string>* sprites::get_sprite_list_names() {
+	return &sheets_split;
 }
 

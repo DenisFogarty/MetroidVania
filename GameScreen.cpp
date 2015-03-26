@@ -8,66 +8,33 @@
 #include "GameScreen.h"
 
 GameScreen::GameScreen() {
-	level_width = 640;
-	level_height = 480;
+	//The following creates the in-game cursor
+	mouse_x = 0;
+	mouse_y = 0;
+	cursor_size = 16;
+	cursor_middle = cursor_size/2;
 
-	if(!al_init_primitives_addon()) {
-		fprintf(stderr, "Failed to initialise the primitives addon\n");
+	cursor_color_r = 255;
+	cursor_color_g = 0;
+	cursor_color_b = 0;
+
+	cursor = al_create_bitmap(cursor_size, cursor_size);
+	if(!cursor) {
+		fprintf(stderr, "Failed to initialise the bitmap cursor/n");
 	}
 
+	al_set_target_bitmap(cursor);
 
-	if(!al_init_image_addon()) {
-		fprintf(stderr, "Failed to install image addon\n");
-	}
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	al_convert_mask_to_alpha(cursor, al_map_rgb(0, 0, 0));
 
+	al_draw_circle(cursor_middle, cursor_middle, cursor_middle - 1, al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b), 2);
 
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-
-	display = al_create_display(level_width, level_height);
-	if(!display) {
-		fprintf(stderr, "Failed to initialise the display\n");
-	}
-
-
-	/*
-	 * Move this to other function in same class
-	 */
-	background_layer_1 = al_load_bitmap("sprites/land3.png");
-	if(!background_layer_1) {
-		fprintf(stderr, "Failed to initialise the bitmap foreground\n");
-	}
-
-
-	{//The following creates the in-game cursor
-		mouse_x = 0;
-		mouse_y = 0;
-		cursor_size = 16;
-		cursor_middle = cursor_size/2;
-
-		cursor_color_r = 255;
-		cursor_color_g = 0;
-		cursor_color_b = 0;
-
-		cursor = al_create_bitmap(cursor_size, cursor_size);
-		if(!cursor) {
-			fprintf(stderr, "Failed to initialise the bitmap cursor/n");
-		}
-
-		al_set_target_bitmap(cursor);
-
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-		al_convert_mask_to_alpha(cursor, al_map_rgb(0, 0, 0));
-
-		al_draw_circle(cursor_middle, cursor_middle, cursor_middle - 1, al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b), 2);
-
-		al_draw_pixel(cursor_middle,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-		al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-		al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-		al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
-	}
-
-	al_set_target_bitmap(al_get_backbuffer(display));
-}
+	al_draw_pixel(cursor_middle,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+	al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+	al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+	al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+};
 
 
 void GameScreen::load_level() {
@@ -107,8 +74,8 @@ void GameScreen::camera_update(float* camera_position, float x, float y, float w
 
 
 void GameScreen::cursor_update(float mouse_x, float mouse_y) {
-//	al_set_target_bitmap(al_get_backbuffer(display));
-//	al_draw_bitmap(cursor, mouse_x, mouse_y, 0);
+	//	al_set_target_bitmap(al_get_backbuffer(display));
+	//	al_draw_bitmap(cursor, mouse_x, mouse_y, 0);
 }
 
 

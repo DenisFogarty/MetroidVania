@@ -23,7 +23,7 @@ private:
 	ALLEGRO_BITMAP *window_tiles;
 	ALLEGRO_BITMAP *window_tile_editor;
 
-	std::vector<std::vector<sprite>>* sprite_list_curr;
+	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
 	ALLEGRO_BITMAP* sprite_sheet;
 };
 

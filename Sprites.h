@@ -35,6 +35,7 @@ public:
 	void draw_sprite();
 
 	static std::map<std::string, std::vector<sprite>>* get_sprite_list();
+	static std::vector <std::string>* get_sprite_list_names();
 
 private:
 	ALLEGRO_BITMAP *sprite_sheet;
@@ -42,7 +43,7 @@ private:
 	ALLEGRO_CONFIG *config_sprites;
 
 	char sheet_indiv[20];
-	std::vector <std::string> sheets_split;
+	static std::vector <std::string> sheets_split;
 	uint num_sheets;
 	uint sheet_no;
 	uint char_pos;
