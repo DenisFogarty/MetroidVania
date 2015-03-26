@@ -8,7 +8,9 @@
 #include "GameScreen.h"
 
 GameScreen::GameScreen() {
-	//The following creates the in-game cursor
+	/*
+	 * The following creates the in-game cursor
+	 */
 	mouse_x = 0;
 	mouse_y = 0;
 	cursor_size = 16;
@@ -34,6 +36,12 @@ GameScreen::GameScreen() {
 	al_draw_pixel(cursor_middle-1,	cursor_middle,		al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 	al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 	al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
+
+	/*
+	 * Loading sprites
+	 */
+	sprite_list_curr = sprites::get_sprite_list();
+	sprite_list_names = sprites::get_sprite_list_names();
 };
 
 
