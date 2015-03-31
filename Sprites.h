@@ -37,6 +37,8 @@ public:
 	static std::map<std::string, std::vector<sprite>>* get_sprite_list();
 	static std::vector <std::string>* get_sprite_list_names();
 
+	~sprites();
+
 private:
 	ALLEGRO_BITMAP *sprite_sheet;
 	ALLEGRO_CONFIG *config_main;

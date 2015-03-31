@@ -166,3 +166,10 @@ std::vector <std::string>* sprites::get_sprite_list_names() {
 	return &sheets_split;
 }
 
+sprites::~sprites() {
+	for(uint i = 0; i < sheets_split.size(); i++) {
+		for(uint j = 0; j < sprite_list[sheets_split.at(i)].size(); j++) {
+			al_destroy_bitmap(sprite_list[sheets_split.at(i)].at(j).item_sprite);
+		}
+	}
+}

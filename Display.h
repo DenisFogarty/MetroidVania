@@ -13,17 +13,15 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
-#include "Items.h"
-#include "Sprites.h"
-#include "LevelEditor.h"
 
 class Display {
 public:
 	Display();
 
 	void load_level();
+	void update_screen_size(float screen_width, float screen_height);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
-	void cursor_update(float mosue_x, float mouse_y);
+	void draw_bitmap(ALLEGRO_BITMAP *bitmap, float pos_x, float pos_y);
 
 	virtual ~Display();
 
@@ -39,10 +37,14 @@ private:
 	float camera_position[2];
 	float screen_width;
 	float screen_height;
+	float screen_width_full;
+	float screen_height_full;
+	float screen_width_chosen;
+	float screen_height_chosen;
+	float multiply_to_scale_width;
+	float multiply_to_scale_height;
 
 	char file_name[20];
-
-	items_data items;
 };
 
 #endif /* DISPLAY_H_ */

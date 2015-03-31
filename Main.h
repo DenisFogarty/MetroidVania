@@ -19,57 +19,88 @@
 #include "Sprites.h"
 #include "Display.h"
 
-class draw_display {
+class Control {
 public:
-	draw_display();
+	virtual void key_event() {};
+	virtual void mouse_event() {};
+	void determine_event(Display *display);
 
-	void game_loop();
+	virtual ~Control() {};
+};
+
+class ControlMenu : public Control {
+public:
+	void key_event() {};
+	void mouse_event() {};
+
+	~ControlMenu();
+
+};
+
+class ControlEditor : public Control {
+public:
+	void key_event();
+	void mouse_event();
+
+	~ControlEditor();
+
+};
+
+class ControlGame : public Control {
+public:
+	void key_event();
+	void mouse_event();
+
+	~ControlGame();
+
+};
+
+
+class MainGame {
+public:
+	void main_menu(Display *display);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 
-	~draw_display();
+	~MainGame() {};
 
 private:
-	ALLEGRO_DISPLAY			*display;
-	ALLEGRO_BITMAP			*foreground;
 	ALLEGRO_BITMAP			*cursor;
+	ALLEGRO_BITMAP			*menu_picture;
+
 	ALLEGRO_EVENT_QUEUE 	*event_queue    = NULL;
+	ALLEGRO_EVENT			event;
+
 	ALLEGRO_TIMER       	*refresh_timer	= NULL;
 	ALLEGRO_TIMER			*game_timer		= NULL;
 
 	ALLEGRO_MOUSE_STATE		mouse_state;
-	ALLEGRO_TRANSFORM		camera;
-	ALLEGRO_EVENT			ev;
+
+	ALLEGRO_KEYBOARD_EVENT	*keyboard_event;
 
 	bool game_running;
 
 	float mouse_x, mouse_y;
 	float cursor_size;
 	float cursor_middle;
-	float cursor_color_r, cursor_color_g, cursor_color_b;
-
-	float char_x, char_y;
-
-	bool left_pressed, right_pressed;
-
-	bool basic;
-
-	bool paused;
-
-	float camera_position[2];
 
 	void timer();
 	void key_down();
 	void key_up();
 	void mouse_down();
 
-//	bullets_data add_bullets;
-//	movement char_move;
-//	items_data add_item;
-//	sprites add_sprites;
-//	level load_level;
-//	leveleditor level_editor;
+	Control *control;
+	ControlEditor control_editor;
+	ControlGame control_game;
+	ControlMenu control_menu;
 
-	int next;
+	//	bullets_data add_bullets;
+	//	movement char_move;
+	//	items_data add_item;
+	//	sprites add_sprites;
+	//	level load_level;
+	//	leveleditor level_editor;
+
+	//	int next;
 
 };
 

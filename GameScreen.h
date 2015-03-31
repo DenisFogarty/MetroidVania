@@ -16,6 +16,7 @@
 #include "Items.h"
 #include "Sprites.h"
 #include "LevelEditor.h"
+#include "Display.h"
 
 class GameScreen {
 public:

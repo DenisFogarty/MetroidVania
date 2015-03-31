@@ -33,18 +33,160 @@ int main() {
 
 	Display display;
 
-//	GameScreen game_screen;
-//
-//	uint version = al_get_allegro_version();
-//
-//	int major = version >> 24;
-//	int minor = (version >> 16) &255;
-//	int revision = (version >> 8) &255;
-//	int release = version &255;
-//
-//	std::cout << major << "." << minor << "." << revision << "[" << release << "]" << std::endl;
-//
-//	draw.game_loop();
+	MainGame main_logic;
+
+	main_logic.main_menu(&display);
+}
+
+
+void MainGame::main_menu(Display *display) {
+	menu_picture = al_load_bitmap("sprites/land3.png");
+
+	control = &control_menu;
+
+	refresh_timer = al_create_timer(1.0/FPS);
+	if(!refresh_timer) {
+		fprintf(stderr, "Failed to initialise refresh timer\n");
+	}
+
+	game_timer = al_create_timer(1.0/GAME_UPDATE);
+	if(!game_timer) {
+		fprintf(stderr, "Failed to initialise game timer\n");
+	}
+
+	event_queue = al_create_event_queue();
+	if(!event_queue) {
+		fprintf(stderr, "failed to create event_queue!\n");
+		al_destroy_timer(refresh_timer);
+	}
+
+	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
+	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+
+	al_start_timer(game_timer);
+	al_start_timer(refresh_timer);
+
+	while(true) {
+		al_wait_for_event(event_queue, &event);
+
+		if(event.type == ALLEGRO_EVENT_TIMER && event.timer.source == refresh_timer) {
+			display->draw_bitmap(menu_picture, 0, 0);
+		}
+
+		if(refresh_timer) {
+			//			al_flip_display();
+		}
+
+		if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			al_get_mouse_state(&mouse_state);
+			if(al_mouse_button_down(&mouse_state, 1)) {
+
+				mouse_x = event.mouse.x;
+				mouse_y = event.mouse.y;
+
+				if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 100 && mouse_y < 350) {
+					al_stop_timer(game_timer);
+					al_stop_timer(refresh_timer);
+					control_editor.determine_event(display);
+					al_start_timer(game_timer);
+					al_start_timer(refresh_timer);
+				}
+				else if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 550 && mouse_y < 800) {
+					al_stop_timer(game_timer);
+					al_stop_timer(refresh_timer);
+					control_game.determine_event(display);
+					al_start_timer(game_timer);
+					al_start_timer(refresh_timer);
+				}
+			}
+		}
+	}
+}
+
+
+void Control::determine_event(Display *display) {
+	key_event();
+	ALLEGRO_EVENT_QUEUE		*event_queue = al_create_event_queue();
+	ALLEGRO_EVENT			event;
+
+	ALLEGRO_TIMER       	*refresh_timer = al_create_timer(1.0/GAME_UPDATE);
+	ALLEGRO_TIMER			*game_timer = al_create_timer(1.0/FPS);
+
+	ALLEGRO_MOUSE_STATE		mouse_state;
+
+	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
+	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+
+	while(true) {
+		al_wait_for_event(event_queue, &event);
+
+		switch(event.type)
+		{
+
+		case ALLEGRO_EVENT_TIMER:
+
+			break;
+
+		case ALLEGRO_EVENT_KEY_DOWN:
+
+			break;
+
+		case ALLEGRO_EVENT_KEY_UP:
+
+			break;
+
+		case ALLEGRO_EVENT_MOUSE_AXES:
+			//			mouse_x = event.mouse.x;
+			//			mouse_y = event.mouse.y;
+
+			break;
+
+		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+
+			break;
+
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			//			game_running = false;
+
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+
+ControlMenu::~ControlMenu() {
+
+}
+
+
+void ControlEditor::key_event() {
+	std::cout << "This" << std::endl;
+}
+
+void ControlEditor::mouse_event() {
+
+}
+
+ControlEditor::~ControlEditor() {
+
+}
+
+
+void ControlGame::key_event() {
+	std::cout << "Test" << std::endl;
+}
+
+void ControlGame::mouse_event() {
+
+}
+
+ControlGame::~ControlGame() {
+
 }
 
 //
@@ -68,9 +210,9 @@ int main() {
 //}
 //
 //
-//void draw_display::timer() {
+//void main_logic::timer() {
 //	if(ev.timer.source == refresh_timer) {
-////		level_editor.draw_windows();
+//		level_editor.draw_windows();
 //
 //		al_clear_to_color(al_map_rgb(0, 0, 0));
 //
@@ -114,7 +256,7 @@ int main() {
 //	}
 //	else if(ev.keyboard.keycode == ALLEGRO_KEY_D) {
 //		char_move.set_direction(right);
-//		right_pressed = true;
+//		right_pressed = true;draw_display
 //	}
 //	else if(ev.keyboard.keycode == ALLEGRO_KEY_R) {
 //		if(basic) {
@@ -180,14 +322,14 @@ int main() {
 //			}
 //		}
 //		else if(al_mouse_button_down(&mouse_state, 2)) {
-//			//			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+//			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 //			add_item.add_items(mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 //		}
 //	}
 //}
 //
 //
-//void draw_display::game_loop() {
+//void main_logic::game_loop() {
 //	refresh_timer = al_create_timer(1.0/FPS);
 //	if(!refresh_timer) {
 //		fprintf(stderr, "Failed to initialise refresh timer\n");
@@ -195,7 +337,7 @@ int main() {
 //
 //	game_timer = al_create_timer(1.0/GAME_UPDATE);
 //	if(!game_timer) {
-//		fprintf(stderr, "Failed to initialise game timer/n");
+//		fprintf(stderr, "Failed to initialise game timer\n");
 //	}
 //
 //	event_queue = al_create_event_queue();
@@ -209,21 +351,9 @@ int main() {
 //	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
 //	al_register_event_source(event_queue, al_get_keyboard_event_source());
 //	al_register_event_source(event_queue, al_get_mouse_event_source());
-//	al_register_event_source(event_queue, al_get_display_event_source(display));
-//
-//	al_set_target_bitmap(al_get_backbuffer(display));
-//
-//	al_hide_mouse_cursor(display);
 //
 //	al_start_timer(refresh_timer);
 //	al_start_timer(game_timer);
-//
-//	add_item.add_items(50, 50, 0);
-//	add_item.add_items(250, 250, 0);
-//
-//	add_sprites.load_sprites();
-//
-//	load_level.load_sprites();
 //
 //
 //	//Main game loop
@@ -234,17 +364,14 @@ int main() {
 //		{
 //
 //		case ALLEGRO_EVENT_TIMER:
-//			timer();
 //
 //			break;
 //
 //		case ALLEGRO_EVENT_KEY_DOWN:
-//			key_down();
 //
 //			break;
 //
 //		case ALLEGRO_EVENT_KEY_UP:
-//			key_up();
 //
 //			break;
 //
@@ -255,7 +382,6 @@ int main() {
 //			break;
 //
 //		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-//			mouse_down();
 //
 //			break;
 //
