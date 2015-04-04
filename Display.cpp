@@ -20,6 +20,11 @@ Display::Display() {
 		fprintf(stderr, "Failed to install image addon\n");
 	}
 
+	al_init_font_addon();
+	al_init_ttf_addon();
+
+	font = al_load_font("fonts/LiberationSerif-Regular.ttf", 20, 0);
+
 
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
@@ -55,12 +60,25 @@ void Display::draw_bitmap(ALLEGRO_BITMAP *bitmap, float pos_x, float pos_y) {
 }
 
 
+void Display::draw_text(char text[30], float pos_x, float pos_y) {
+	al_draw_text(font, al_map_rgb(0, 0, 0), pos_x, pos_y, 0, text);
+}
+
+void Display::draw_text(std::string text_string, float pos_x, float pos_y) {
+	char text[30];
+	uint i;
+	for(i = 0; i < text_string.size(); i++) {
+		text[i] = text_string[i];
+	}
+	text[i] = '\0';
+	al_draw_text(font, al_map_rgb(0, 0, 0), pos_x, pos_y, 0, text);
+}
+
+
 Display::~Display() {
 	al_destroy_display(display);
 	al_destroy_bitmap(background_layer_1);
-//	al_destroy_bitmap(background_layer_2);
-//	al_destroy_bitmap(background_layer_3);
-//	al_destroy_config(config_main);
-//	al_destroy_config(config_level);
+	//	al_destroy_config(config_main);
+	//	al_destroy_config(config_level);
 }
 

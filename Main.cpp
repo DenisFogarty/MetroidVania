@@ -29,6 +29,9 @@ int main() {
 		return -1;
 	}
 
+	al_init_font_addon();
+	al_init_ttf_addon();
+
 	sprites add_sprites;
 
 	Display display;
@@ -41,8 +44,6 @@ int main() {
 
 void MainGame::main_menu(Display *display) {
 	menu_picture = al_load_bitmap("sprites/land3.png");
-
-	control = &control_menu;
 
 	refresh_timer = al_create_timer(1.0/FPS);
 	if(!refresh_timer) {
@@ -88,6 +89,7 @@ void MainGame::main_menu(Display *display) {
 				if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 100 && mouse_y < 350) {
 					al_stop_timer(game_timer);
 					al_stop_timer(refresh_timer);
+					ControlEditor control_editor;
 					control_editor.determine_event(display);
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
@@ -99,6 +101,9 @@ void MainGame::main_menu(Display *display) {
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
 				}
+				else if(mouse_x > 1500 && mouse_y > 800) {
+					break;
+				}
 			}
 		}
 	}
@@ -106,44 +111,75 @@ void MainGame::main_menu(Display *display) {
 
 
 void Control::determine_event(Display *display) {
-	key_event();
-	ALLEGRO_EVENT_QUEUE		*event_queue = al_create_event_queue();
-	ALLEGRO_EVENT			event;
+	event_queue = al_create_event_queue();
 
-	ALLEGRO_TIMER       	*refresh_timer = al_create_timer(1.0/GAME_UPDATE);
-	ALLEGRO_TIMER			*game_timer = al_create_timer(1.0/FPS);
+	refresh_timer = al_create_timer(1.0/GAME_UPDATE);
+	game_timer = al_create_timer(1.0/FPS);
 
-	ALLEGRO_MOUSE_STATE		mouse_state;
+	mouse_x = 0;
+	mouse_y = 0;
 
 	al_register_event_source(event_queue, al_get_timer_event_source(refresh_timer));
 	al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
 	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-	while(true) {
+	al_start_timer(refresh_timer);
+	al_start_timer(game_timer);
+
+	loop_running = true;
+
+	while(loop_running) {
 		al_wait_for_event(event_queue, &event);
 
 		switch(event.type)
 		{
 
 		case ALLEGRO_EVENT_TIMER:
+			if(refresh_timer) {
+				al_flip_display();
+			}
+			if(game_timer) {
+				start(display);
+			}
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
+			key_event(&event);
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_UP:
+			key_release(&event);
 
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_AXES:
-			//			mouse_x = event.mouse.x;
-			//			mouse_y = event.mouse.y;
+			mouse_x = event.mouse.x;
+			mouse_y = event.mouse.y;
 
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+			al_get_mouse_state(&mouse_state);
+			if(al_mouse_button_down(&mouse_state, 1)) {
+				mouse_event("left");
+			}
+			else if(al_mouse_button_down(&mouse_state, 2)) {
+				mouse_event("right");
+			}
+
+			break;
+
+		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+			al_get_mouse_state(&mouse_state);
+			if(event.mouse.button == 1) {
+				mouse_event("left release");
+			}
+			else if(event.mouse.button == 2) {
+				mouse_event("right release");
+			}
 
 			break;
 
@@ -159,17 +195,26 @@ void Control::determine_event(Display *display) {
 }
 
 
-ControlMenu::~ControlMenu() {
-
+void ControlEditor::start(Display *display) {
+	level_editor.draw_windows(display);
+	level_editor.set_mouse_pos_pointers(&mouse_x, &mouse_y);
 }
 
-
-void ControlEditor::key_event() {
-	std::cout << "This" << std::endl;
+void ControlEditor::key_event(ALLEGRO_EVENT *event) {
+	level_editor.key_pressed(event);
 }
 
-void ControlEditor::mouse_event() {
+void ControlEditor::key_release(ALLEGRO_EVENT *event) {
+	level_editor.key_released(event);
+}
 
+void ControlEditor::mouse_event(std::string button) {
+	if(button == "left") {
+		level_editor.mouse_click("left");
+	}
+	else if(button == "left release") {
+		level_editor.mouse_release("left");
+	}
 }
 
 ControlEditor::~ControlEditor() {
@@ -177,11 +222,19 @@ ControlEditor::~ControlEditor() {
 }
 
 
-void ControlGame::key_event() {
-	std::cout << "Test" << std::endl;
+void ControlGame::start(Display *display) {
+
 }
 
-void ControlGame::mouse_event() {
+void ControlGame::key_event(ALLEGRO_EVENT *event) {
+	std::cout << "Testing Game" << std::endl;
+}
+
+void ControlGame::key_release(ALLEGRO_EVENT *event) {
+
+}
+
+void ControlGame::mouse_event(std::string button) {
 
 }
 

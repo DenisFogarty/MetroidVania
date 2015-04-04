@@ -11,7 +11,11 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 #include <stdio.h>
+#include <string>
 
 
 class Display {
@@ -22,17 +26,17 @@ public:
 	void update_screen_size(float screen_width, float screen_height);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 	void draw_bitmap(ALLEGRO_BITMAP *bitmap, float pos_x, float pos_y);
+	void draw_text(char text[30], float pos_x, float pos_y);
+	void draw_text(std::string text_string, float pos_x, float pos_y);
 
 	virtual ~Display();
 
 private:
 	ALLEGRO_DISPLAY	*display;
 	ALLEGRO_BITMAP	*background_layer_1;
-	ALLEGRO_BITMAP	*background_layer_2;
-	ALLEGRO_BITMAP	*background_layer_3;
-	ALLEGRO_CONFIG	*config_main;
 	ALLEGRO_CONFIG	*config_level;
 	ALLEGRO_MONITOR_INFO monitor_info;
+	ALLEGRO_FONT *font;
 
 	float camera_position[2];
 	float screen_width;

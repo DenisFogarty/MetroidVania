@@ -8,6 +8,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "GameScreen.h"
 #include "GameScreen.h"
@@ -21,37 +23,55 @@
 
 class Control {
 public:
-	virtual void key_event() {};
-	virtual void mouse_event() {};
+	virtual void key_event(ALLEGRO_EVENT *event) {};
+	virtual void key_release(ALLEGRO_EVENT *event) {};
+	virtual void mouse_event(std::string button) {};
+	virtual void start(Display *display) {};
+
 	void determine_event(Display *display);
 
+	float mouse_x, mouse_y;
+
+	bool loop_running;
+
 	virtual ~Control() {};
-};
 
-class ControlMenu : public Control {
-public:
-	void key_event() {};
-	void mouse_event() {};
+private:
+	ALLEGRO_EVENT_QUEUE		*event_queue = al_create_event_queue();
+	ALLEGRO_EVENT			event;
 
-	~ControlMenu();
+	ALLEGRO_TIMER       	*refresh_timer;
+	ALLEGRO_TIMER			*game_timer;
 
+	ALLEGRO_MOUSE_STATE		mouse_state;
 };
 
 class ControlEditor : public Control {
 public:
-	void key_event();
-	void mouse_event();
+	void key_event(ALLEGRO_EVENT *event);
+	void key_release(ALLEGRO_EVENT *event);
+	void mouse_event(std::string button);
+	void start(Display *display);
 
 	~ControlEditor();
+
+private:
+	LevelEditor level_editor;
 
 };
 
 class ControlGame : public Control {
 public:
-	void key_event();
-	void mouse_event();
+	void key_event(ALLEGRO_EVENT *event);
+	void key_release(ALLEGRO_EVENT *event);
+	void mouse_event(std::string button);
+	void start(Display *display);
+
+	void start_game();
 
 	~ControlGame();
+
+private:
 
 };
 
@@ -89,9 +109,7 @@ private:
 	void mouse_down();
 
 	Control *control;
-	ControlEditor control_editor;
 	ControlGame control_game;
-	ControlMenu control_menu;
 
 	//	bullets_data add_bullets;
 	//	movement char_move;
