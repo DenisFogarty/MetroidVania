@@ -44,6 +44,8 @@ public:
 	void key_pressed_tile(ALLEGRO_EVENT *event);
 	void key_released(ALLEGRO_EVENT *event);
 
+	void move_main_window();
+
 	void set_mouse_pos_pointers(float *mouse_x, float *mouse_y);
 
 	virtual ~LevelEditor();
@@ -60,28 +62,44 @@ private:
 	ALLEGRO_BITMAP	*level_name_bitmap;
 	ALLEGRO_BITMAP	*sprite_name_bitmap;
 
+	ALLEGRO_BITMAP	*change_tab_bitmap;
+	ALLEGRO_BITMAP	*change_page_bitmap;
+
 	ALLEGRO_FONT	*font;
 
 	/*
 	 * Used to point to bitmaps
 	 */
-	ALLEGRO_BITMAP *curr_bitmap;
+	ALLEGRO_BITMAP	*curr_bitmap;
+
+	/*
+	 * Used for saving custom sprites
+	 */
+	ALLEGRO_BITMAP	*custom_sprite;
+
+	ALLEGRO_CONFIG	*config;
 
 	bool sprite_held;
+
+	float held_sprite_width, held_sprite_height;
 
 	float *mouse_x, *mouse_y;
 
 	float x_offset, y_offset;
 
+	float sprite_offset_x, sprite_offset_y;
+
 	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
 	std::vector <std::string> *sprite_sheet_names;
 
 	sprite_info temp_sprite_info;
-	std::list<sprite_info> sprite_list_main_window;
-//	std::vector<sprite_info> sprite_list_main_window;
+	std::list<sprite_info> sprite_list_main_window_background;
+	std::list<sprite_info> sprite_list_main_window_foreground;
+	std::list<sprite_info> sprite_list_main_window_front;
+	std::list<sprite_info> *sprite_list_main_window;
+
 	std::list<sprite_info> sprite_list_editor_window;
 	std::list<sprite_info>::iterator sprite_list_iterator;
-//	std::vector <std::string> sprite_list_main_window_names;
 
 	std::vector <sprite> sprite_list_tile_editor;
 
@@ -91,10 +109,12 @@ private:
 	uint current_tab;
 	uint current_page;
 
-	char current_layer[5];
+	char current_layer[6];
 
 	char level_name[20];
+	char full_level_name[24];
 	char sprite_name[20];
+	char full_sprite_name[24];
 	int text_char_pos;
 	bool enter_name_text;
 	bool enter_sprite_name_text;
@@ -119,6 +139,16 @@ private:
 	void change_page();
 	bool change_page_open;
 	void save_custom_sprite();
+
+	char custom_sprite_data[10000];
+
+	bool move_main;
+	float orig_mouse_x, orig_mouse_y;
+	float window_x, window_y;
+
+	void draw_all_layers();
+
+	void set_bools_to_false();
 
 	KeyboardInput keyboard;
 

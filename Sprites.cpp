@@ -100,6 +100,7 @@ void sprites::load_sprites() {
 			new_sprite.sheet_name[i] = sheets_split.at(sheet_no)[i];
 		}
 		sprite_conf[i + 12] = '\0';
+		new_sprite.sheet_name[i] = '\0';
 
 		config_sprites = al_load_config_file(sprite_conf);
 
@@ -155,6 +156,7 @@ void sprites::load_sprites() {
 			sprite_offset_y = 0;
 		}
 		sprite_list[new_sprite.sheet_name] = sprite_block;
+		sprite_block.clear();
 	}
 }
 

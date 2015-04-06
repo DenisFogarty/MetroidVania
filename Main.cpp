@@ -158,6 +158,7 @@ void Control::determine_event(Display *display) {
 		case ALLEGRO_EVENT_MOUSE_AXES:
 			mouse_x = event.mouse.x;
 			mouse_y = event.mouse.y;
+			mouse_event("axis moved");
 
 			break;
 
@@ -214,6 +215,9 @@ void ControlEditor::mouse_event(std::string button) {
 	}
 	else if(button == "left release") {
 		level_editor.mouse_release("left");
+	}
+	else if(button == "axis moved") {
+		level_editor.move_main_window();
 	}
 }
 
