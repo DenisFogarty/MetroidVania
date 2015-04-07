@@ -17,6 +17,9 @@ LevelEditor::LevelEditor() {
 	window_tile_menu = al_create_bitmap(400, 100);
 	level_name_bitmap = al_create_bitmap(250, 50);
 	sprite_name_bitmap = al_create_bitmap(180, 25);
+	level_width_and_height = al_create_bitmap(200, 25);
+	exit_level_bitmap = al_create_bitmap(200, 25);
+	exit_coords_bitmap = al_create_bitmap(40, 25);
 
 	al_set_target_bitmap(window_main);
 	al_clear_to_color(al_map_rgb(255, 255, 255));
@@ -39,6 +42,15 @@ LevelEditor::LevelEditor() {
 	al_set_target_bitmap(sprite_name_bitmap);
 	al_clear_to_color(al_map_rgb(255, 255, 255));
 
+	al_set_target_bitmap(level_width_and_height);
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+
+	al_set_target_bitmap(exit_level_bitmap);
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+
+	al_set_target_bitmap(exit_coords_bitmap);
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+
 	sprite_held = false;
 
 	held_sprite_height = 0;
@@ -49,6 +61,9 @@ LevelEditor::LevelEditor() {
 
 	current_tab = 0;
 	current_page = 0;
+
+	level_width = 1600;
+	level_height = 900;
 
 	change_tab_bitmap = al_create_bitmap(400, 25 * sprite_sheet_names->size());
 	change_page_bitmap = al_create_bitmap(400, 25 * (*sprite_list_curr)[sprite_sheet_names->at(current_tab)].size() / 20);
@@ -86,8 +101,16 @@ LevelEditor::LevelEditor() {
 	change_tab_open = false;
 	change_page_open = false;
 
+	enter_exit_level = false;
+	enter_exit_x = false;
+	enter_exit_y = false;
+
 	move_main = false;
 	window_x = 300, window_y = 0;
+
+	enter_level_width = false;
+	enter_level_height = false;
+	next_char_pos = 0;
 
 	if(!al_init_image_addon()) {
 		fprintf(stderr, "Failed to initialise image addon");
@@ -273,37 +296,6 @@ void LevelEditor::tile_window_clicked() {
 }
 
 
-/*
- * Draws sprite to main window
- */
-void LevelEditor::main_window_released() {
-	if(sprite_held) {
-		temp_sprite_info.sheet_name = sprite_sheet_names->at(current_tab);
-		temp_sprite_info.x = *mouse_x - x_offset - al_get_bitmap_width(curr_bitmap) / 2 - sprite_offset_x;
-		temp_sprite_info.y = *mouse_y - y_offset - al_get_bitmap_height(curr_bitmap) / 2 - sprite_offset_y;
-		temp_sprite_info.sprite_bitmap = curr_bitmap;
-
-		al_set_target_bitmap(window_main);
-		al_draw_bitmap(curr_bitmap, temp_sprite_info.x + sprite_offset_x, temp_sprite_info.y + sprite_offset_y, 0);
-		sprite_list_main_window->push_back(temp_sprite_info);
-	}
-	else if(move_main) {
-		sprite_offset_x += (window_x - 300.0);
-		sprite_offset_y += window_y;
-
-		sprite_list_iterator->x += sprite_offset_x;
-		sprite_list_iterator->y += sprite_offset_y;
-
-		draw_all_layers();
-
-		window_x = 300;
-		window_y = 0;
-
-		move_main = false;
-	}
-}
-
-
 void LevelEditor::main_window_clicked() {
 	uint width, height;
 	int x, y;
@@ -340,6 +332,37 @@ void LevelEditor::main_window_clicked() {
 	if(move_main) {
 		orig_mouse_x = *mouse_x;
 		orig_mouse_y = *mouse_y;
+	}
+}
+
+
+/*
+ * Draws sprite to main window
+ */
+void LevelEditor::main_window_released() {
+	if(sprite_held) {
+		temp_sprite_info.sheet_name = sprite_sheet_names->at(current_tab);
+		temp_sprite_info.x = *mouse_x - x_offset - al_get_bitmap_width(curr_bitmap) / 2 - sprite_offset_x;
+		temp_sprite_info.y = *mouse_y - y_offset - al_get_bitmap_height(curr_bitmap) / 2 - sprite_offset_y;
+		temp_sprite_info.sprite_bitmap = curr_bitmap;
+
+		al_set_target_bitmap(window_main);
+		al_draw_bitmap(curr_bitmap, temp_sprite_info.x + sprite_offset_x, temp_sprite_info.y + sprite_offset_y, 0);
+		sprite_list_main_window->push_back(temp_sprite_info);
+	}
+	else if(move_main) {
+		sprite_offset_x += (window_x - 300.0);
+		sprite_offset_y += window_y;
+
+		sprite_list_iterator->x += sprite_offset_x;
+		sprite_list_iterator->y += sprite_offset_y;
+
+		draw_all_layers();
+
+		window_x = 300;
+		window_y = 0;
+
+		move_main = false;
 	}
 }
 
@@ -427,6 +450,36 @@ void LevelEditor::main_menu_clicked() {
 
 		enter_name_text = false;
 	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 275 && *mouse_y < 300) {
+		save_level();
+	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 425 && *mouse_y < 450) {
+		level_width_string[0] = ' ';
+		level_width_string[5] = ' ';
+
+		level_height_string[0] = ' ';
+		level_height_string[5] = ' ';
+
+		new_level();
+	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 500 && *mouse_y < 525) {
+
+	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 575 && *mouse_y < 600) {
+
+	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 650 && *mouse_y < 675) {
+
+	}
+	else if(*mouse_x > 30 && *mouse_x < 70 && *mouse_y > 725 && *mouse_y < 750) {
+
+	}
+	else if(*mouse_x > 80 && *mouse_x < 120 && *mouse_y > 725 && *mouse_y < 750) {
+
+	}
+	else if(*mouse_x > 30 && *mouse_x < 80 && *mouse_y > 800 && *mouse_y < 875) {
+
+	}
 	else {
 		enter_name_text = false;
 	}
@@ -465,8 +518,54 @@ void LevelEditor::key_pressed(ALLEGRO_EVENT *event) {
 	if(enter_name_text) {
 		key_pressed_main(event);
 	}
+
 	else if(enter_sprite_name_text) {
 		key_pressed_tile(event);
+	}
+
+	else if(enter_level_width || enter_level_height) {
+		char next_number = keyboard.keyboard(event);
+		if(enter_level_width) {
+			if((next_number == '1' || next_number == '2' || next_number == '3' || next_number == '4' || next_number == '5' || next_number == '6' || next_number == '7' || next_number == '8' || next_number == '9' || next_number == '0')
+					&& level_width_string[5] != '\0') {
+
+				level_width_string[next_char_pos] = next_number;
+				next_char_pos++;
+				level_width_string[next_char_pos] = '\0';
+			}
+			else if(next_number == '<') {
+				if(next_char_pos > 0) {
+					next_char_pos--;
+					level_width_string[next_char_pos] = '\0';
+					level_width_string[5] = ' ';
+				}
+			}
+			else if(next_number == '\n') {
+				enter_level_width = false;
+				level_width = atoi(level_width_string);
+			}
+		}
+
+		else if(enter_level_height) {
+			if((next_number == '1' || next_number == '2' || next_number == '3' || next_number == '4' || next_number == '5' || next_number == '6' || next_number == '7' || next_number == '8' || next_number == '9' || next_number == '0')
+					&& level_height_string[5] != '\0') {
+
+				level_height_string[next_char_pos] = next_number;
+				next_char_pos++;
+				level_height_string[next_char_pos] = '\0';
+			}
+			else if(next_number == '<') {
+				if(next_char_pos > 0) {
+					next_char_pos--;
+					level_height_string[next_char_pos] = '\0';
+					level_height_string[5] = ' ';
+				}
+			}
+			else if(next_number == '\n') {
+				enter_level_height = false;
+				level_height = atoi(level_width_string);
+			}
+		}
 	}
 }
 
@@ -575,6 +674,23 @@ void LevelEditor::move_main_window() {
 	if(move_main) {
 		window_x = 300 + (*mouse_x - orig_mouse_x);
 		window_y = *mouse_y - orig_mouse_y;
+
+		if(sprite_offset_x + (window_x - 300) > 0) {
+			sprite_offset_x = 0;
+			window_x = 300;
+		}
+		if(sprite_offset_y + window_y > 0) {
+			sprite_offset_y = 0;
+			window_y = 0;
+		}
+
+		if (sprite_offset_x + (window_x - 300) < (-1 * (level_width - 900))) {
+			window_x = 300;
+		}
+		if(window_y - sprite_offset_y < (-1 * (level_height - 900))) {
+			window_y =  0;
+		}
+		std::cout << window_x - 300 << std::endl;
 	}
 }
 
@@ -604,6 +720,7 @@ void LevelEditor::draw_all_layers() {
 			sprite_list_iterator++;
 		}
 	}
+
 	sprite_list_main_window = temp_list_holder;
 }
 
@@ -613,6 +730,41 @@ void LevelEditor::set_bools_to_false() {
 	enter_sprite_name_text = false;
 	change_tab_open = false;
 	change_page_open = false;
+	enter_level_width = false;
+	enter_level_height = false;
+	enter_exit_level = false;
+	enter_exit_x = false;
+	enter_exit_y = false;
+}
+
+
+void LevelEditor::new_level() {
+	enter_level_width = true;
+	enter_level_height = true;
+
+	/*
+	 * Clears the main window
+	 */
+	sprite_list_main_window_background.clear();
+
+	sprite_list_main_window_foreground.clear();
+
+	sprite_list_main_window_front.clear();
+
+	al_set_target_bitmap(window_main);
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+}
+
+
+void LevelEditor::save_level() {
+	if(level_name[0] != '\0') {
+
+	}
+}
+
+
+void LevelEditor::load_level() {
+
 }
 
 
@@ -634,7 +786,13 @@ void LevelEditor::draw_windows(Display *display) {
 	display->draw_text(current_layer, 200, 200);
 	display->draw_text("Save", 30, 275);
 	display->draw_text("Load", 30, 350);
-	display->draw_text("Exit", 30, 425);
+	display->draw_text("New", 30, 425);
+	display->draw_text("Set Exits", 30, 500);
+	display->draw_text("Exits", 30, 575);
+	display->draw_bitmap(exit_level_bitmap, 30, 650);
+	display->draw_bitmap(exit_coords_bitmap, 30, 725);
+	display->draw_bitmap(exit_coords_bitmap, 80, 725);
+	display->draw_text("Exit", 30, 800);
 
 	display->draw_text("Tab", 1200, 25);
 	display->draw_text(sprite_sheet_names->at(current_tab), 1200, 50);
@@ -657,6 +815,17 @@ void LevelEditor::draw_windows(Display *display) {
 			display->draw_text(std::to_string(i + 1), 1200, 100 + 25 * i);
 		}
 	}
+
+	if(enter_level_width) {
+		display->draw_text("Width", 600, 400);
+		display->draw_bitmap(level_width_and_height, 600, 425);
+		display->draw_text(level_width_string, 600, 425);
+	}
+	else if(enter_level_height) {
+		display->draw_text("Height", 600, 400);
+		display->draw_bitmap(level_width_and_height, 600, 425);
+		display->draw_text(level_height_string, 600, 425);
+	}
 }
 
 
@@ -670,6 +839,9 @@ LevelEditor::~LevelEditor() {
 	al_destroy_bitmap(sprite_name_bitmap);
 	al_destroy_bitmap(change_tab_bitmap);
 	al_destroy_bitmap(change_page_bitmap);
+	al_destroy_bitmap(level_width_and_height);
+	al_destroy_bitmap(exit_level_bitmap);
+	al_destroy_bitmap(exit_coords_bitmap);
 	al_destroy_font(font);
 	al_shutdown_font_addon();
 }

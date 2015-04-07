@@ -37,10 +37,10 @@ Display::Display() {
 	/*
 	 * Move this to other function in same class
 	 */
-	background_layer_1 = al_load_bitmap("sprites/land3.png");
-	if(!background_layer_1) {
-		fprintf(stderr, "Failed to initialise the bitmap foreground\n");
-	}
+//	background_layer_1 = al_load_bitmap("sprites/land3.png");
+//	if(!background_layer_1) {
+//		fprintf(stderr, "Failed to initialise the bitmap foreground\n");
+//	}
 
 	al_get_monitor_info(0, &monitor_info);
 

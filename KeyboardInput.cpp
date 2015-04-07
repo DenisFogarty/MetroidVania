@@ -329,6 +329,16 @@ char KeyboardInput::keyboard(ALLEGRO_EVENT *event) {
 
 		break;
 
+	case ALLEGRO_KEY_ENTER:
+		return '\n';
+
+		break;
+
+	case ALLEGRO_KEY_BACKSPACE:
+		return '<';
+
+		break;
+
 	default:
 		return ' ';
 	}

@@ -10,6 +10,16 @@
 
 #include "Sprites.h"
 
+class load_sprite_info {
+public:
+	ALLEGRO_BITMAP *sprite_bitmap;
+	float x, y;
+	std::string sheet_name;
+	int sprite_pos_list;
+	std::string layer;
+	std::vector<std::vector<int>> exit_coords;	//x1, y1, x2, y2
+};
+
 class level {
 public:
 	level();

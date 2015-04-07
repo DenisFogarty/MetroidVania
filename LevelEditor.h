@@ -25,6 +25,7 @@ public:
 	float x, y;
 	std::string sheet_name;
 	int sprite_pos_list;
+	std::string layer;
 };
 
 class LevelEditor {
@@ -76,6 +77,11 @@ private:
 	 * Used for saving custom sprites
 	 */
 	ALLEGRO_BITMAP	*custom_sprite;
+
+	ALLEGRO_BITMAP	*level_width_and_height;
+
+	ALLEGRO_BITMAP	*exit_level_bitmap;
+	ALLEGRO_BITMAP	*exit_coords_bitmap;
 
 	ALLEGRO_CONFIG	*config;
 
@@ -132,6 +138,15 @@ private:
 
 	void save_level();
 	void load_level();
+	void new_level();
+	bool set_level_size();
+	char level_width_string[6], level_height_string[6];
+	int next_char_pos;
+	float level_width, level_height;
+	bool enter_level_width, enter_level_height;
+	void set_exits();
+	bool set_exit_coords();
+	bool enter_exit_level, enter_exit_x, enter_exit_y;
 	void exit_editor();
 
 	void change_tab();
@@ -145,6 +160,10 @@ private:
 	bool move_main;
 	float orig_mouse_x, orig_mouse_y;
 	float window_x, window_y;
+
+	std::vector<std::vector<int>> exit_coords;	//x1, y1, x2, y2
+	std::vector<std::string> exit_levels;
+	std::vector<std::vector<int>> exit_to_coords;	//x1, y1, x2, y2
 
 	void draw_all_layers();
 
