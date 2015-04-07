@@ -101,7 +101,7 @@ void MainGame::main_menu(Display *display) {
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
 				}
-				else if(mouse_x > 1500 && mouse_y > 800) {
+				else if(mouse_x > 1400 && mouse_y > 700) {
 					break;
 				}
 			}
@@ -164,7 +164,11 @@ void Control::determine_event(Display *display) {
 
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 			al_get_mouse_state(&mouse_state);
-			if(al_mouse_button_down(&mouse_state, 1)) {
+			if(al_mouse_button_down(&mouse_state, 1) && mouse_x > 30 && mouse_x < 80 && mouse_y > 800 && mouse_y < 825) {
+
+				loop_running = false;
+			}
+			else if(al_mouse_button_down(&mouse_state, 1)) {
 				mouse_event("left");
 			}
 			else if(al_mouse_button_down(&mouse_state, 2)) {
@@ -221,6 +225,10 @@ void ControlEditor::mouse_event(std::string button) {
 	}
 }
 
+void ControlEditor::exit_loop() {
+	level_editor.exit_editor();
+}
+
 ControlEditor::~ControlEditor() {
 
 }
@@ -239,6 +247,10 @@ void ControlGame::key_release(ALLEGRO_EVENT *event) {
 }
 
 void ControlGame::mouse_event(std::string button) {
+
+}
+
+void ControlGame::exit_loop() {
 
 }
 

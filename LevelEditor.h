@@ -49,6 +49,8 @@ public:
 
 	void set_mouse_pos_pointers(float *mouse_x, float *mouse_y);
 
+	void exit_editor();
+
 	virtual ~LevelEditor();
 
 private:
@@ -85,7 +87,11 @@ private:
 
 	ALLEGRO_CONFIG	*config;
 
+	ALLEGRO_CONFIG	*create_config;
+
 	bool sprite_held;
+
+	int sprite_number;
 
 	float held_sprite_width, held_sprite_height;
 
@@ -147,7 +153,6 @@ private:
 	void set_exits();
 	bool set_exit_coords();
 	bool enter_exit_level, enter_exit_x, enter_exit_y;
-	void exit_editor();
 
 	void change_tab();
 	bool change_tab_open;

@@ -27,6 +27,7 @@ public:
 	virtual void key_release(ALLEGRO_EVENT *event) {};
 	virtual void mouse_event(std::string button) {};
 	virtual void start(Display *display) {};
+	virtual void exit_loop() {};
 
 	void determine_event(Display *display);
 
@@ -52,6 +53,7 @@ public:
 	void key_release(ALLEGRO_EVENT *event);
 	void mouse_event(std::string button);
 	void start(Display *display);
+	void exit_loop();
 
 	~ControlEditor();
 
@@ -66,8 +68,7 @@ public:
 	void key_release(ALLEGRO_EVENT *event);
 	void mouse_event(std::string button);
 	void start(Display *display);
-
-	void start_game();
+	void exit_loop();
 
 	~ControlGame();
 
