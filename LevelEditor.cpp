@@ -796,6 +796,8 @@ void LevelEditor::save_level() {
 		create_config = al_create_config();
 
 		al_set_config_value(create_config, "", "sprites", num_sprites_string);
+		al_set_config_value(create_config, "", "width", level_width_string);
+		al_set_config_value(create_config, "", "height", level_height_string);
 
 		uint loop = 0;
 

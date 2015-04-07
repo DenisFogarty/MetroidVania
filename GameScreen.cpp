@@ -42,6 +42,25 @@ GameScreen::GameScreen() {
 	 */
 	sprite_list_curr = sprites::get_sprite_list();
 	sprite_list_names = sprites::get_sprite_list_names();
+
+	config_main = al_load_config_file("levels/main.conf");
+
+	level_names = al_get_config_value(config_main, "", "levels");
+
+	uint j = 0;
+	std::string temp_string;
+	for(uint i = 0; i < level_names.size(); i++) {
+		if(level_names[i] == ',') {
+			level_names_split.push_back(temp_string);
+			j = 0;
+		}
+		else if(level_names[i] != ' ') {
+			temp_string[j] = level_names[i];
+			j++;
+		}
+	}
+	level_names_split.push_back(temp_string);
+	std::cout << level_names_split[0] << "\n" << level_names_split[1] << std::endl;
 };
 
 

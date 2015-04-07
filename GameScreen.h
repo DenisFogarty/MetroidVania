@@ -17,6 +17,7 @@
 #include "Sprites.h"
 #include "LevelEditor.h"
 #include "Display.h"
+#include "Level.h"
 
 class GameScreen {
 public:
@@ -35,6 +36,9 @@ private:
 	ALLEGRO_BITMAP	*background_layer_3;
 	ALLEGRO_CONFIG	*config_main;
 	ALLEGRO_CONFIG	*config_level;
+
+	std::string level_names;
+	std::vector<std::string> level_names_split;
 
 	float camera_position[2];
 	float level_width;

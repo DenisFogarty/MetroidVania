@@ -73,6 +73,7 @@ public:
 	~ControlGame();
 
 private:
+	GameScreen game_screen;
 
 };
 
@@ -110,6 +111,7 @@ private:
 	void mouse_down();
 
 	Control *control;
+	ControlEditor control_editor;
 	ControlGame control_game;
 
 	//	bullets_data add_bullets;

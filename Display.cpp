@@ -33,15 +33,6 @@ Display::Display() {
 		fprintf(stderr, "Failed to initialise the display\n");
 	}
 
-
-	/*
-	 * Move this to other function in same class
-	 */
-//	background_layer_1 = al_load_bitmap("sprites/land3.png");
-//	if(!background_layer_1) {
-//		fprintf(stderr, "Failed to initialise the bitmap foreground\n");
-//	}
-
 	al_get_monitor_info(0, &monitor_info);
 
 	screen_width_full = monitor_info.x2;
@@ -72,6 +63,10 @@ void Display::draw_text(std::string text_string, float pos_x, float pos_y) {
 	}
 	text[i] = '\0';
 	al_draw_text(font, al_map_rgb(0, 0, 0), pos_x, pos_y, 0, text);
+}
+
+void Display::set_default_display() {
+	al_set_target_bitmap(al_get_backbuffer(display));
 }
 
 

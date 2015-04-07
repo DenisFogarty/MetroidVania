@@ -17,7 +17,12 @@ public:
 	std::string sheet_name;
 	int sprite_pos_list;
 	std::string layer;
-	std::vector<std::vector<int>> exit_coords;	//x1, y1, x2, y2
+};
+
+class load_level {
+public:
+	float exit_x1, exit_y1, exit_x2, exit_y2;
+
 };
 
 class level {
@@ -30,9 +35,7 @@ public:
 	virtual ~level();
 
 private:
-	std::vector<std::vector<sprite>>* sprite_list_curr;
-
-	ALLEGRO_BITMAP* sprite_sheet_list_curr;
+	std::vector<sprite> sprite_list_curr;
 };
 
 #endif /* LEVEL_H_ */

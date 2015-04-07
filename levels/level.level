@@ -1,4 +1,16 @@
 sprites=11
+width=1600
+height=900
+exits=1
+
+[exit_1]
+x1=330
+y1=313
+x2=350
+y2=356
+level=level2.level
+dest_x=0
+dest_y=0
 
 [sprite_1]
 name=blocks_back.conf

@@ -76,7 +76,7 @@ void MainGame::main_menu(Display *display) {
 		}
 
 		if(refresh_timer) {
-			//			al_flip_display();
+			al_flip_display();
 		}
 
 		if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
@@ -89,10 +89,12 @@ void MainGame::main_menu(Display *display) {
 				if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 100 && mouse_y < 350) {
 					al_stop_timer(game_timer);
 					al_stop_timer(refresh_timer);
-					ControlEditor control_editor;
 					control_editor.determine_event(display);
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
+					display->set_default_display();
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+					al_flip_display();
 				}
 				else if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 550 && mouse_y < 800) {
 					al_stop_timer(game_timer);
@@ -164,11 +166,8 @@ void Control::determine_event(Display *display) {
 
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 			al_get_mouse_state(&mouse_state);
-			if(al_mouse_button_down(&mouse_state, 1) && mouse_x > 30 && mouse_x < 80 && mouse_y > 800 && mouse_y < 825) {
 
-				loop_running = false;
-			}
-			else if(al_mouse_button_down(&mouse_state, 1)) {
+			if(al_mouse_button_down(&mouse_state, 1)) {
 				mouse_event("left");
 			}
 			else if(al_mouse_button_down(&mouse_state, 2)) {
@@ -215,7 +214,12 @@ void ControlEditor::key_release(ALLEGRO_EVENT *event) {
 
 void ControlEditor::mouse_event(std::string button) {
 	if(button == "left") {
-		level_editor.mouse_click("left");
+		if(mouse_x > 30 && mouse_x < 80 && mouse_y > 800 && mouse_y < 825) {
+			loop_running = false;
+		}
+		else {
+			level_editor.mouse_click("left");
+		}
 	}
 	else if(button == "left release") {
 		level_editor.mouse_release("left");
