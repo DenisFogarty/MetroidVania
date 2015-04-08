@@ -152,6 +152,7 @@ void Control::determine_event(Display *display) {
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
+			std::cout << "TEst" << std::endl;
 			key_event(&event);
 
 			break;
@@ -247,7 +248,9 @@ void ControlGame::start(Display *display) {
 }
 
 void ControlGame::key_event(ALLEGRO_EVENT *event) {
-	std::cout << "Testing Game" << std::endl;
+	if(event->keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+		loop_running = false;
+	}
 }
 
 void ControlGame::key_release(ALLEGRO_EVENT *event) {

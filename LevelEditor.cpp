@@ -692,7 +692,7 @@ void LevelEditor::move_main_window() {
 		if (sprite_offset_x + (window_x - 300) < (-1 * (level_width - 900)) && *mouse_x < orig_mouse_x) {
 			window_x = 300;
 		}
-		if(sprite_offset_y - window_y < (-1 * (level_height - 900)) && *mouse_y < orig_mouse_y) {
+		if(sprite_offset_y + window_y < (-1 * (level_height - 900)) && *mouse_y < orig_mouse_y) {
 			window_y =  0;
 		}
 	}
@@ -938,11 +938,11 @@ void LevelEditor::draw_windows(Display *display) {
 	display->draw_text("Save", 30, 275);
 	display->draw_text("Load", 30, 350);
 	display->draw_text("New", 30, 425);
-	display->draw_text("Set Exits", 30, 500);
-	display->draw_text("Exits", 30, 575);
-	display->draw_bitmap(exit_level_bitmap, 30, 650);
-	display->draw_bitmap(exit_coords_bitmap, 30, 725);
-	display->draw_bitmap(exit_coords_bitmap, 80, 725);
+//	display->draw_text("Set Exits", 30, 500);
+//	display->draw_text("Exits", 30, 575);
+//	display->draw_bitmap(exit_level_bitmap, 30, 650);
+//	display->draw_bitmap(exit_coords_bitmap, 30, 725);
+//	display->draw_bitmap(exit_coords_bitmap, 80, 725);
 	display->draw_text("Exit", 30, 800);
 
 	display->draw_text("Tab", 1200, 25);

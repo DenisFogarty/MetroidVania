@@ -91,8 +91,6 @@ void GameScreen::refresh_screen(Display *display) {
 	for(uint i = 0; i < level_class.level_sprites.size(); i++) {
 		display->draw_bitmap(level_class.level_sprites.at(i).sprite_bitmap, level_class.level_sprites.at(i).x, level_class.level_sprites.at(i).y);
 	}
-	al_flip_display();
-	al_rest(5);
 
 	//	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//
