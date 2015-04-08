@@ -37,7 +37,7 @@ public:
 
 	virtual ~level();
 
-private:
+
 	ALLEGRO_CONFIG	*config_level;
 
 	load_sprite_info temp_sprite_info;

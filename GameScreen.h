@@ -25,7 +25,7 @@ public:
 	GameScreen();
 
 	void start_game(std::string start_level);
-	void load_level(std::string next_level);
+	void load_level(std::string next_level, int x, int y);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 	void cursor_update(float mosue_x, float mouse_y);
 	void refresh_screen(Display *display);
@@ -38,8 +38,10 @@ private:
 	ALLEGRO_BITMAP	*background_layer;
 	ALLEGRO_BITMAP	*foregrond_layer;
 	ALLEGRO_BITMAP	*front_layer;
+	ALLEGRO_BITMAP	*background;
 	ALLEGRO_CONFIG	*config_main;
 	ALLEGRO_CONFIG	*config_level;
+	ALLEGRO_CONFIG	*config_start;
 
 	std::string level_names;
 	std::vector<std::string> level_names_split;
@@ -56,6 +58,9 @@ private:
 	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
 	std::map<std::string, level> level_list;
 	std::vector<std::string>* sprite_list_names;
+
+	std::string start_level;
+	int start_x, start_y;
 
 	char file_name[20];
 

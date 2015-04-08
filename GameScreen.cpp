@@ -67,29 +67,33 @@ GameScreen::GameScreen() {
 	 * This loop loads the individual level files and stores them in a map
 	 */
 	for(uint i = 0; i < level_names_split.size(); i++) {
-		level_class.load_sprites(level_names_split.at(i));
+		level_list[level_names_split.at(i)] = level_class;
+		level_list[level_names_split.at(i)].load_sprites(level_names_split.at(i));
 	}
+
+	start_level = al_get_config_value(config_main, "", "start");
+	start_x = std::stoi(al_get_config_value(config_main, "", "x"));
+	start_y = std::stoi(al_get_config_value(config_main, "", "y"));
+
+	load_level(start_level, start_x, start_y);
+
+	background = al_load_bitmap("sprites/land4.png");
 };
 
 
-void GameScreen::load_level(std::string) {
-	if(!(config_main = al_load_config_file("level/main.conf"))) {
-		fprintf(stderr, "Main file not found\n");
-	}
-
-	file_name[0] = 's';
-	file_name[1] = 'p';
-	file_name[2] = 'r';
-	file_name[3] = 'i';
-	file_name[4] = 't';
-	file_name[5] = 'e';
-	file_name[6] = 's';
-	file_name[7] = '/';
-	file_name[8] = '\0';
+void GameScreen::load_level(std::string next_level, int x, int y) {
+	level_class = level_list[next_level];
 }
 
 
 void GameScreen::refresh_screen(Display *display) {
+	display->draw_bitmap(background, 0, 0);
+	for(uint i = 0; i < level_class.level_sprites.size(); i++) {
+		display->draw_bitmap(level_class.level_sprites.at(i).sprite_bitmap, level_class.level_sprites.at(i).x, level_class.level_sprites.at(i).y);
+	}
+	al_flip_display();
+	al_rest(5);
+
 	//	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//
 	//	al_draw_bitmap(foreground, 0, 0, 0);

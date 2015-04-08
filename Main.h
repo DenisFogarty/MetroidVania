@@ -114,7 +114,6 @@ private:
 	ControlEditor control_editor;
 	ControlGame control_game;
 	level this_level;
-	GameScreen game_screen;
 
 	//	bullets_data add_bullets;
 	//	movement char_move;

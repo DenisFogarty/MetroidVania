@@ -43,7 +43,7 @@ int main() {
 
 
 void MainGame::main_menu(Display *display) {
-	menu_picture = al_load_bitmap("sprites/land4.png");
+	menu_picture = al_load_bitmap("sprites/land5.png");
 
 	refresh_timer = al_create_timer(1.0/FPS);
 	if(!refresh_timer) {
@@ -243,7 +243,7 @@ ControlEditor::~ControlEditor() {
 
 
 void ControlGame::start(Display *display) {
-
+	game_screen.refresh_screen(display);
 }
 
 void ControlGame::key_event(ALLEGRO_EVENT *event) {
