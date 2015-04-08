@@ -47,24 +47,32 @@ GameScreen::GameScreen() {
 
 	level_names = al_get_config_value(config_main, "", "levels");
 
-	uint j = 0;
+	/*
+	 * This loop stores the individual level names in a vector of strings
+	 */
 	std::string temp_string;
 	for(uint i = 0; i < level_names.size(); i++) {
 		if(level_names[i] == ',') {
 			level_names_split.push_back(temp_string);
-			j = 0;
+			temp_string.clear();
 		}
-		else if(level_names[i] != ' ') {
-			temp_string[j] = level_names[i];
-			j++;
+		else if(level_names[i] != ' ' && level_names[i] != ',') {
+			temp_string += level_names[i];
 		}
 	}
 	level_names_split.push_back(temp_string);
 	std::cout << level_names_split[0] << "\n" << level_names_split[1] << std::endl;
+
+	/*
+	 * This loop loads the individual level files and stores them in a map
+	 */
+	for(uint i = 0; i < level_names_split.size(); i++) {
+		level_class.load_sprites(level_names_split.at(i));
+	}
 };
 
 
-void GameScreen::load_level() {
+void GameScreen::load_level(std::string) {
 	if(!(config_main = al_load_config_file("level/main.conf"))) {
 		fprintf(stderr, "Main file not found\n");
 	}
@@ -78,6 +86,39 @@ void GameScreen::load_level() {
 	file_name[6] = 's';
 	file_name[7] = '/';
 	file_name[8] = '\0';
+}
+
+
+void GameScreen::refresh_screen(Display *display) {
+	//	al_clear_to_color(al_map_rgb(0, 0, 0));
+	//
+	//	al_draw_bitmap(foreground, 0, 0, 0);
+	//
+	//	add_bullets.draw_to_screen();
+	//
+	//	add_item.draw_items();
+	//
+	//	load_level.draw_sprites(next);
+	//
+	//	char_move.draw_character(*display);
+	//
+	//	char_x = char_move.get_x();
+	//	char_y = char_move.get_y();
+	//
+	//	camera_update(camera_position, char_x, char_y, 20, 40);
+	//
+	//	al_identity_transform(&camera);
+	//	al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
+	//	al_use_transform(&camera);
+	//
+	//	al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
+	//
+	//	al_flip_display();
+}
+
+void GameScreen::update_game() {
+	//	add_bullets.calculate_movement();
+	//	char_move.calculate_movement();
 }
 
 

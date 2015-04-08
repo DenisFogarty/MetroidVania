@@ -19,68 +19,51 @@
 
 class movement {
 public:
-	virtual void on_up_pressed();
-	virtual void on_left_pressed();
-	virtual void on_down_pressed();
-	virtual void on_right_pressed();
+	movement();
 
-	virtual void on_left_mouse_click();
-	virtual void on_right_mouse_click();
+	void on_up_pressed();
+	void on_left_pressed();
+	void on_down_pressed();
+	void on_right_pressed();
 
-protected:
-	int i;
+	void on_left_mouse_click();
+	void on_right_mouse_click();
 
+	virtual ~movement();
 
-//	movement();
-//	virtual ~movement();
-//
-//	void set_direction(int direction);
-//	void calculate_movement();
-//	void calculate_fall();
-//	void draw_character(ALLEGRO_DISPLAY &display);
-//	int get_x();
-//	int get_y();
-//
-//private:
-//	ALLEGRO_BITMAP *character;
-//
-//	float update_speed;
-//
-//	uint dir;
-//	enum dir_sprite {STOP_RIGHT, RIGHT, STOP_LEFT, LEFT};
-//	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};
-//	uint num_sprite;
-//	float move_speed;
-//
-//	float prev_time;
-//
-//	float velocity;
-//	float gravity;
-//
-//	float player_x, player_y;
-//	float movement_x;
-//	float movement_y;
-//	float char_height, char_width;
-//	bool jump;
-//	bool ground;
-//	collision detect_collision;
-//	std::vector<item>* p_items;
-//	item current_item;
-//	uint i;
-};
+private:
+	void set_direction(int direction);
+	void calculate_movement();
+	void calculate_fall();
+	void draw_character(ALLEGRO_DISPLAY &display);
+	int get_x();
+	int get_y();
 
-class editor : public movement {
-	virtual void on_up_pressed();
-	virtual void on_left_pressed();
-	virtual void on_down_pressed();
-	virtual void on_right_pressed();
+	ALLEGRO_BITMAP *character;
 
-	virtual void on_left_mouse_click();
-	virtual void on_right_mouse_click();
-};
+	float update_speed;
 
-class game : public movement {
+	uint dir;
+	enum dir_sprite {STOP_RIGHT, RIGHT, STOP_LEFT, LEFT};
+	float pos_sprite[4][10] = {{0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}, {0}, {0, 35, 70, 105, 140, 175, 210, 245, 280, 315}};
+	uint num_sprite;
+	float move_speed;
 
+	float prev_time;
+
+	float velocity;
+	float gravity;
+
+	float player_x, player_y;
+	float movement_x;
+	float movement_y;
+	float char_height, char_width;
+	bool jump;
+	bool ground;
+	collision detect_collision;
+	std::vector<item>* p_items;
+	item current_item;
+	uint i;
 };
 
 #endif /* MOVEMENT_H_ */

@@ -1,14 +1,23 @@
 sprites=5
 width=1600
 height=900
-exits=1
+exits=2
 
 [exit_1]
 x1=213
 y1=203
 x2=256
 y2=246
-level=level2.level
+level=fall_level.level
+dest_x=0
+dest_y=0
+
+[exit_2]
+x1=0
+y1=456
+x2=50
+y2=499
+level=level.level
 dest_x=0
 dest_y=0
 

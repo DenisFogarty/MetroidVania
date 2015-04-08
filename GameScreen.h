@@ -18,22 +18,26 @@
 #include "LevelEditor.h"
 #include "Display.h"
 #include "Level.h"
+#include "Shoot.h"
 
 class GameScreen {
 public:
 	GameScreen();
 
-	void load_level();
+	void start_game(std::string start_level);
+	void load_level(std::string next_level);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 	void cursor_update(float mosue_x, float mouse_y);
+	void refresh_screen(Display *display);
+	void update_game();
 
 	virtual ~GameScreen();
 
 private:
 	ALLEGRO_DISPLAY	*display;
-	ALLEGRO_BITMAP	*background_layer_1;
-	ALLEGRO_BITMAP	*background_layer_2;
-	ALLEGRO_BITMAP	*background_layer_3;
+	ALLEGRO_BITMAP	*background_layer;
+	ALLEGRO_BITMAP	*foregrond_layer;
+	ALLEGRO_BITMAP	*front_layer;
 	ALLEGRO_CONFIG	*config_main;
 	ALLEGRO_CONFIG	*config_level;
 
@@ -50,11 +54,14 @@ private:
 	float cursor_color_r, cursor_color_g, cursor_color_b;
 
 	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
+	std::map<std::string, level> level_list;
 	std::vector<std::string>* sprite_list_names;
 
 	char file_name[20];
 
-	items_data items;
+	level level_class;
+
+//	items_data items;
 };
 
 #endif /* GAMESCREEN_H_ */

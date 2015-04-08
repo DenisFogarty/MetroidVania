@@ -43,7 +43,7 @@ int main() {
 
 
 void MainGame::main_menu(Display *display) {
-	menu_picture = al_load_bitmap("sprites/land3.png");
+	menu_picture = al_load_bitmap("sprites/land4.png");
 
 	refresh_timer = al_create_timer(1.0/FPS);
 	if(!refresh_timer) {
@@ -89,9 +89,11 @@ void MainGame::main_menu(Display *display) {
 				if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 100 && mouse_y < 350) {
 					al_stop_timer(game_timer);
 					al_stop_timer(refresh_timer);
+					al_unregister_event_source(event_queue, al_get_mouse_event_source());
 					control_editor.determine_event(display);
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
+					al_register_event_source(event_queue, al_get_mouse_event_source());
 					display->set_default_display();
 					al_clear_to_color(al_map_rgb(0, 0, 0));
 					al_flip_display();
@@ -99,9 +101,11 @@ void MainGame::main_menu(Display *display) {
 				else if(mouse_x > 100 && mouse_x < 1500 && mouse_y > 550 && mouse_y < 800) {
 					al_stop_timer(game_timer);
 					al_stop_timer(refresh_timer);
+					al_unregister_event_source(event_queue, al_get_mouse_event_source());
 					control_game.determine_event(display);
 					al_start_timer(game_timer);
 					al_start_timer(refresh_timer);
+					al_register_event_source(event_queue, al_get_mouse_event_source());
 				}
 				else if(mouse_x > 1400 && mouse_y > 700) {
 					break;

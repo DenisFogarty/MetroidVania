@@ -830,6 +830,8 @@ void LevelEditor::save_level() {
 
 			al_set_config_value(create_config, section, "layer", "back");
 
+			al_set_config_value(create_config, section, "damage", "0");
+
 			section[7] = '\0';
 			sprite_list_iterator++;
 		}
@@ -863,6 +865,8 @@ void LevelEditor::save_level() {
 
 			al_set_config_value(create_config, section, "layer", "fore");
 
+			al_set_config_value(create_config, section, "damage", "0");
+
 			section[7] = '\0';
 			sprite_list_iterator++;
 		}
@@ -895,6 +899,8 @@ void LevelEditor::save_level() {
 			al_set_config_value(create_config, section, "y", temp_num);
 
 			al_set_config_value(create_config, section, "layer", "front");
+
+			al_set_config_value(create_config, section, "damage", "0");
 
 			section[7] = '\0';
 			sprite_list_iterator++;
