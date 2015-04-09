@@ -41,7 +41,7 @@ void movement::set_width_height(float width, float height) {
 
 
 void movement::set_direction(int direction) {
-	if(direction == 1){
+	if(direction == 1) {
 		movement_x = move_speed/update_speed;
 		dir = RIGHT;
 		num_sprite = 0;
