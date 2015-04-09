@@ -25,8 +25,8 @@ void level::load_sprites(std::string level_name) {
 
 	num_sprites = std::stoi(al_get_config_value(config_level, "", "sprites"));
 	num_exits = std::stoi(al_get_config_value(config_level, "", "exits"));
-	width = std::stoi(al_get_config_value(config_level, "", "width"));
-	height = std::stoi(al_get_config_value(config_level, "", "height"));
+	temp_sprite_info.width = std::stoi(al_get_config_value(config_level, "", "width"));
+	temp_sprite_info.height = std::stoi(al_get_config_value(config_level, "", "height"));
 
 	char current_sprite[15] = {'s', 'p', 'r', 'i', 't', 'e', '_', '\0'};
 	char current_num[4];
@@ -43,7 +43,7 @@ void level::load_sprites(std::string level_name) {
 
 		current_sprite[7] = '\0';
 
-		if(temp_sprite_info.x <= width && temp_sprite_info.y <= height) {
+		if(temp_sprite_info.x <= temp_sprite_info.width && temp_sprite_info.y <= height) {
 			level_sprites.push_back(temp_sprite_info);
 		}
 	}

@@ -830,8 +830,6 @@ void LevelEditor::save_level() {
 
 			al_set_config_value(create_config, section, "layer", "back");
 
-			al_set_config_value(create_config, section, "damage", "0");
-
 			section[7] = '\0';
 			sprite_list_iterator++;
 		}
@@ -864,8 +862,6 @@ void LevelEditor::save_level() {
 			al_set_config_value(create_config, section, "y", temp_num);
 
 			al_set_config_value(create_config, section, "layer", "fore");
-
-			al_set_config_value(create_config, section, "damage", "0");
 
 			section[7] = '\0';
 			sprite_list_iterator++;
@@ -900,8 +896,6 @@ void LevelEditor::save_level() {
 
 			al_set_config_value(create_config, section, "layer", "front");
 
-			al_set_config_value(create_config, section, "damage", "0");
-
 			section[7] = '\0';
 			sprite_list_iterator++;
 		}
@@ -911,11 +905,6 @@ void LevelEditor::save_level() {
 
 		sprite_list_iterator = temp_iterator;
 	}
-}
-
-
-void LevelEditor::load_level() {
-
 }
 
 
@@ -929,6 +918,11 @@ void LevelEditor::draw_windows(Display *display) {
 	display->draw_bitmap(level_name_bitmap, 25, 100);
 	if(sprite_held && held_sprite_width < 200 && held_sprite_height < 200) {
 		display->draw_bitmap(curr_bitmap, *mouse_x - held_sprite_width, *mouse_y - held_sprite_height);
+		char temp[10];
+		sprintf(temp, "%d", (int)(*mouse_x - 300 - held_sprite_width));
+		display->draw_text(temp, 1100, 850);
+		sprintf(temp, "%d", (int)(*mouse_y - held_sprite_height));
+		display->draw_text(temp, 1100, 875);
 	}
 
 	display->draw_text("Level name", 30, 75);
@@ -936,13 +930,13 @@ void LevelEditor::draw_windows(Display *display) {
 	display->draw_text("Layer", 30, 200);
 	display->draw_text(current_layer, 200, 200);
 	display->draw_text("Save", 30, 275);
-	display->draw_text("Load", 30, 350);
+	//	display->draw_text("Load", 30, 350);
 	display->draw_text("New", 30, 425);
-//	display->draw_text("Set Exits", 30, 500);
-//	display->draw_text("Exits", 30, 575);
-//	display->draw_bitmap(exit_level_bitmap, 30, 650);
-//	display->draw_bitmap(exit_coords_bitmap, 30, 725);
-//	display->draw_bitmap(exit_coords_bitmap, 80, 725);
+	//	display->draw_text("Set Exits", 30, 500);
+	//	display->draw_text("Exits", 30, 575);
+	//	display->draw_bitmap(exit_level_bitmap, 30, 650);
+	//	display->draw_bitmap(exit_coords_bitmap, 30, 725);
+	//	display->draw_bitmap(exit_coords_bitmap, 80, 725);
 	display->draw_text("Exit", 30, 800);
 
 	display->draw_text("Tab", 1200, 25);

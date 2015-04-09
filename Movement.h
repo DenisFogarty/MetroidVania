@@ -8,6 +8,7 @@
 
 #include "Collision.h"
 #include "Items.h"
+#include "Display.h"
 
 #define left 		0
 #define right		1
@@ -18,8 +19,12 @@
 #define stop_jump	6
 
 class movement {
+	friend class GameScreen;
 public:
 	movement();
+
+	void set_start_pos(float x, float y);
+	void set_width_height(float width, float height);
 
 	void on_up_pressed();
 	void on_left_pressed();
@@ -29,16 +34,22 @@ public:
 	void on_left_mouse_click();
 	void on_right_mouse_click();
 
-	virtual ~movement();
-
-private:
 	void set_direction(int direction);
-	void calculate_movement();
+	void calculate_movement(std::vector<load_sprite_info> *sprite_info);
+
+	void set_update_speed(float new_speed);
+
 	void calculate_fall();
-	void draw_character(ALLEGRO_DISPLAY &display);
+	void draw_character(Display *display);
+	void next_character_sprite();
 	int get_x();
 	int get_y();
 
+	virtual ~movement();
+
+private:
+
+	ALLEGRO_BITMAP *character_sheet;
 	ALLEGRO_BITMAP *character;
 
 	float update_speed;
@@ -54,15 +65,19 @@ private:
 	float velocity;
 	float gravity;
 
+	float level_width, level_height;
+
 	float player_x, player_y;
 	float movement_x;
 	float movement_y;
 	float char_height, char_width;
 	bool jump;
 	bool ground;
+
+	std::vector <load_sprite_info> *p_sprites;
+
 	collision detect_collision;
-	std::vector<item>* p_items;
-	item current_item;
+	load_sprite_info *current_item;
 	uint i;
 };
 

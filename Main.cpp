@@ -134,6 +134,7 @@ void Control::determine_event(Display *display) {
 	al_start_timer(game_timer);
 
 	loop_running = true;
+	paused = false;
 
 	while(loop_running) {
 		al_wait_for_event(event_queue, &event);
@@ -142,17 +143,17 @@ void Control::determine_event(Display *display) {
 		{
 
 		case ALLEGRO_EVENT_TIMER:
-			if(refresh_timer) {
-				al_flip_display();
-			}
-			if(game_timer) {
+			if(event.timer.source == game_timer) {
 				start(display);
+			}
+			else if(event.timer.source == refresh_timer) {
+				al_flip_display();
 			}
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
-			std::cout << "TEst" << std::endl;
+			std::cout << "Test" << std::endl;
 			key_event(&event);
 
 			break;
@@ -244,21 +245,34 @@ ControlEditor::~ControlEditor() {
 
 
 void ControlGame::start(Display *display) {
+	if(!paused) {
+		game_screen.update_game();
+	}
 	game_screen.refresh_screen(display);
 }
 
 void ControlGame::key_event(ALLEGRO_EVENT *event) {
 	if(event->keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-		loop_running = false;
+		if(!paused) {
+			paused = true;
+		}
+		else if(paused) {
+			paused = false;
+		}
+	}
+	else {
+		game_screen.key_down(event);
 	}
 }
 
 void ControlGame::key_release(ALLEGRO_EVENT *event) {
-
+	game_screen.key_up(event);
 }
 
 void ControlGame::mouse_event(std::string button) {
-
+	if(button == "right") {
+		game_screen.load_level("level2.level", 0, 0);
+	}
 }
 
 void ControlGame::exit_loop() {

@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "Items.h"
+#include "Level.h"
 
 class collision {
 public:
@@ -24,14 +25,16 @@ public:
 	float get_item_width();
 	float get_item_height();
 
+	void set_sprite_list(std::vector <load_sprite_info> *sprite_list);
+
 	virtual ~collision();
 
 private:
 	uint i;
 
-	std::vector<item>* p_items;
+	std::vector<load_sprite_info> *p_sprites;	//Points to all sprites drawn in the level
 
-	item current_item;
+	load_sprite_info *current_item;
 };
 
 #endif /* COLLISION_H_ */

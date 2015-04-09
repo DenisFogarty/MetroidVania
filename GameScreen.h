@@ -15,7 +15,7 @@
 
 #include "Items.h"
 #include "Sprites.h"
-#include "LevelEditor.h"
+#include "Movement.h"
 #include "Display.h"
 #include "Level.h"
 #include "Shoot.h"
@@ -29,6 +29,8 @@ public:
 	void camera_update(float* camera_position, float x, float y, float width, float height);
 	void cursor_update(float mosue_x, float mouse_y);
 	void refresh_screen(Display *display);
+	void key_down(ALLEGRO_EVENT *event);
+	void key_up(ALLEGRO_EVENT *event);
 	void update_game();
 
 	virtual ~GameScreen();
@@ -45,13 +47,14 @@ private:
 
 	std::string level_names;
 	std::vector<std::string> level_names_split;
+	std::string current_level;
 
 	float camera_position[2];
 	float level_width;
 	float level_height;
 
 	ALLEGRO_BITMAP *cursor;
-	float mouse_x, mouse_y;
+	float *mouse_x, *mouse_y;
 	float cursor_size, cursor_middle;
 	float cursor_color_r, cursor_color_g, cursor_color_b;
 
@@ -59,12 +62,14 @@ private:
 	std::map<std::string, level> level_list;
 	std::vector<std::string>* sprite_list_names;
 
-	std::string start_level;
 	int start_x, start_y;
+
+	bool moving_left, moving_right;
 
 	char file_name[20];
 
 	level level_class;
+	movement calculate_movement;
 
 //	items_data items;
 };

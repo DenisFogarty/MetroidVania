@@ -20,6 +20,8 @@ public:
 	std::string sheet_name;	//Name of sprite config files, used to identify the block of sprites
 	int sprite_pos_list;
 	std::string layer;
+	float width, height;
+
 };
 
 class exits {

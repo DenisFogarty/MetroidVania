@@ -14,7 +14,7 @@ movement::movement() {
 	player_y = 1080-43;
 	movement_x = 0;
 	movement_y = 0;
-	move_speed = 300.0/update_speed;	//300 pixels/s
+	move_speed = 300.0;	//300 pixels/s
 
 	velocity = 400.0;
 	gravity = 1400.0;
@@ -25,19 +25,29 @@ movement::movement() {
 	jump = false;
 	ground = true;
 
-//	p_items = items_data::get_item_vector();
 	i = 0;
+}
+
+
+void movement::set_start_pos(float x, float y) {
+	player_x = x;
+	player_y = y;
+}
+
+void movement::set_width_height(float width, float height) {
+	level_width = width;
+	level_height = height;
 }
 
 
 void movement::set_direction(int direction) {
 	if(direction == 0) {
-		movement_x = -move_speed;
+		movement_x = -move_speed/update_speed;
 		dir = LEFT;
 		num_sprite = 0;
 	}
 	else if(direction == 1){
-		movement_x = move_speed;
+		movement_x = move_speed/update_speed;
 		dir = RIGHT;
 		num_sprite = 0;
 	}
@@ -68,7 +78,7 @@ void movement::set_direction(int direction) {
 }
 
 
-void movement::calculate_movement() {
+void movement::calculate_movement(std::vector<load_sprite_info> *sprite_info) {
 	calculate_fall();
 
 	player_x += movement_x;
@@ -87,51 +97,51 @@ void movement::calculate_movement() {
 	}
 
 
-	for(i = 0; i < p_items->size(); i++) {
+	for(i = 0; i < sprite_info->size(); i++) {
 
-		current_item = (*p_items)[i];
-		if(detect_collision.detect_collision(player_x, player_y, char_width, char_height, current_item.x, current_item.y, current_item.width, current_item.height)) {
+		current_item = &(*sprite_info)[i];
+		if(detect_collision.detect_collision(player_x, player_y, char_width, char_height, current_item->x, current_item->y, current_item->width, current_item->height)) {
 			/*
 			 * Checks if the player has hit ground
 			 */
-			if(player_x + char_width - 1 > current_item.x &&
-					player_x < current_item.x + current_item.width - 1 &&
-					player_y < current_item.y) {
+			if(player_x + char_width - 1 > current_item->x &&
+					player_x < current_item->x + current_item->width - 1 &&
+					player_y < current_item->y) {
 
 				jump = false;
-				player_y = current_item.y - char_height;
+				player_y = current_item->y - char_height;
 				velocity = 400;
 			}
 
 			/*
 			 * Checks if the player has collided with the underside of an object
 			 */
-			else if(player_x + char_width - 1 > current_item.x &&
-					player_x < current_item.x + current_item.width - 1 &&
-					player_y + char_height - 1 > current_item.y + current_item.height - 1) {
+			else if(player_x + char_width - 1 > current_item->x &&
+					player_x < current_item->x + current_item->width - 1 &&
+					player_y + char_height - 1 > current_item->y + current_item->height - 1) {
 
-				player_y = current_item.y + current_item.height;
+				player_y = current_item->y + current_item->height;
 				velocity = 10;
 			}
 
 			/*
 			 * Checks if the player has collided with the left side of an object
 			 */
-			else if(player_y + char_height - 1 > current_item.y &&
-					player_y < current_item.y + current_item.height - 1 &&
-					player_x < current_item.x) {
+			else if(player_y + char_height - 1 > current_item->y &&
+					player_y < current_item->y + current_item->height - 1 &&
+					player_x < current_item->x) {
 
-				player_x = current_item.x - char_width;
+				player_x = current_item->x - char_width;
 			}
 
 			/*
 			 * Checks if the player has collided with the right side of an object
 			 */
-			else if(player_y + char_height - 1 > current_item.y &&
-					player_y < current_item.y + current_item.height - 1 &&
-					player_x + char_width - 1 > current_item.x + current_item.width - 1) {
+			else if(player_y + char_height - 1 > current_item->y &&
+					player_y < current_item->y + current_item->height - 1 &&
+					player_x + char_width - 1 > current_item->x + current_item->width - 1) {
 
-				player_x = current_item.x + current_item.width;
+				player_x = current_item->x + current_item->width;
 			}
 		}
 	}
@@ -151,10 +161,9 @@ void movement::calculate_fall() {
 }
 
 
-void movement::draw_character(ALLEGRO_DISPLAY &display) {
-	al_draw_bitmap_region(character, pos_sprite[dir][num_sprite], dir*43, 35, 43, player_x, player_y, 0);
-
-	if(al_get_time() - prev_time > .05) {
+void movement::draw_character(Display *display) {
+	display->draw_bitmap(al_create_sub_bitmap(character, pos_sprite[dir][num_sprite], dir*43, 35, 43), player_x, player_y);
+	if(al_get_time() - prev_time > 25/update_speed) {
 		prev_time = al_get_time();
 		num_sprite++;
 	}
@@ -162,6 +171,21 @@ void movement::draw_character(ALLEGRO_DISPLAY &display) {
 	if(num_sprite > 9) {
 		num_sprite = 0;
 	}
+}
+
+void movement::next_character_sprite() {
+	if(al_get_time() - prev_time > 25/update_speed) {
+		prev_time = al_get_time();
+		num_sprite++;
+	}
+
+	if(num_sprite > 9) {
+		num_sprite = 0;
+	}
+}
+
+void movement::set_update_speed(float new_speed) {
+	update_speed = new_speed;
 }
 
 

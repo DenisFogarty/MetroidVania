@@ -37,6 +37,9 @@ GameScreen::GameScreen() {
 	al_draw_pixel(cursor_middle,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 	al_draw_pixel(cursor_middle-1,	cursor_middle+1,	al_map_rgb(cursor_color_r, cursor_color_g, cursor_color_b));
 
+	moving_left = false;
+	moving_right = false;
+
 	/*
 	 * Loading sprites
 	 */
@@ -71,18 +74,22 @@ GameScreen::GameScreen() {
 		level_list[level_names_split.at(i)].load_sprites(level_names_split.at(i));
 	}
 
-	start_level = al_get_config_value(config_main, "", "start");
+	current_level = al_get_config_value(config_main, "", "start");
 	start_x = std::stoi(al_get_config_value(config_main, "", "x"));
 	start_y = std::stoi(al_get_config_value(config_main, "", "y"));
 
-	load_level(start_level, start_x, start_y);
+	load_level(current_level, start_x, start_y);
 
 	background = al_load_bitmap("sprites/land4.png");
 };
 
 
 void GameScreen::load_level(std::string next_level, int x, int y) {
+//	level::level_sprites.clear();
+
 	level_class = level_list[next_level];
+
+	calculate_movement.set_start_pos(x, y);
 }
 
 
@@ -91,6 +98,8 @@ void GameScreen::refresh_screen(Display *display) {
 	for(uint i = 0; i < level_class.level_sprites.size(); i++) {
 		display->draw_bitmap(level_class.level_sprites.at(i).sprite_bitmap, level_class.level_sprites.at(i).x, level_class.level_sprites.at(i).y);
 	}
+
+	calculate_movement.draw_character(display);
 
 	//	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//
@@ -118,8 +127,55 @@ void GameScreen::refresh_screen(Display *display) {
 	//	al_flip_display();
 }
 
+void GameScreen::key_down(ALLEGRO_EVENT *event) {
+	if(event->keyboard.keycode == ALLEGRO_KEY_W) {
+		calculate_movement.set_direction(up);
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_A) {
+		calculate_movement.set_direction(left);
+		moving_left = true;
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_S) {
+		calculate_movement.set_direction(down);
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_D) {
+		calculate_movement.set_direction(right);
+		moving_right = true;
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
+		calculate_movement.set_update_speed(100.0);
+	}
+}
+
+void GameScreen::key_up(ALLEGRO_EVENT *event) {
+	if(event->keyboard.keycode == ALLEGRO_KEY_W) {
+		calculate_movement.set_direction(stop_y);
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_A) {
+		calculate_movement.set_direction(stop_x);
+		moving_left = false;
+		if(moving_right) {
+			calculate_movement.set_direction(right);
+		}
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_S) {
+		calculate_movement.set_direction(down);
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_D) {
+		calculate_movement.set_direction(stop_x);
+		moving_right = false;
+		if(moving_left) {
+			calculate_movement.set_direction(left);
+		}
+	}
+	if(event->keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
+		calculate_movement.set_update_speed(500.0);
+	}
+}
+
 void GameScreen::update_game() {
-	//	add_bullets.calculate_movement();
+	calculate_movement.calculate_movement(&level_list[current_level].level_sprites);
+	//	add_bullets.calculate_movement();w
 	//	char_move.calculate_movement();
 }
 

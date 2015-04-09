@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <list>
+#include <string>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -34,6 +35,7 @@ public:
 	float mouse_x, mouse_y;
 
 	bool loop_running;
+	bool paused;
 
 	virtual ~Control() {};
 
