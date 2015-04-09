@@ -43,7 +43,7 @@ int main() {
 
 
 draw_display::draw_display() {
-	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
 
 	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if(!display) {
