@@ -25,8 +25,8 @@ void level::load_sprites(std::string level_name) {
 
 	num_sprites = std::stoi(al_get_config_value(config_level, "", "sprites"));
 	num_exits = std::stoi(al_get_config_value(config_level, "", "exits"));
-	temp_sprite_info.width = std::stoi(al_get_config_value(config_level, "", "width"));
-	temp_sprite_info.height = std::stoi(al_get_config_value(config_level, "", "height"));
+	width = std::stoi(al_get_config_value(config_level, "", "width"));
+	height = std::stoi(al_get_config_value(config_level, "", "height"));
 
 	char current_sprite[15] = {'s', 'p', 'r', 'i', 't', 'e', '_', '\0'};
 	char current_num[4];
@@ -40,10 +40,13 @@ void level::load_sprites(std::string level_name) {
 		temp_sprite_info.sprite_pos_list = std::stoi(al_get_config_value(config_level, current_sprite, "num"));
 		temp_sprite_info.layer = al_get_config_value(config_level, current_sprite, "layer");
 		temp_sprite_info.sprite_bitmap = (*sprite_list_pointer)[temp_sprite_info.sheet_name].at(temp_sprite_info.sprite_pos_list).item_sprite;
+		temp_sprite_info.width = al_get_bitmap_width(temp_sprite_info.sprite_bitmap);
+		temp_sprite_info.height = al_get_bitmap_height(temp_sprite_info.sprite_bitmap);
+
 
 		current_sprite[7] = '\0';
 
-		if(temp_sprite_info.x <= temp_sprite_info.width && temp_sprite_info.y <= height) {
+		if(temp_sprite_info.x <= width && temp_sprite_info.y <= height) {
 			level_sprites.push_back(temp_sprite_info);
 		}
 	}

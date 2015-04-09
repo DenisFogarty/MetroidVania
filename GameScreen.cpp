@@ -64,7 +64,6 @@ GameScreen::GameScreen() {
 		}
 	}
 	level_names_split.push_back(temp_string);
-	std::cout << level_names_split[0] << "\n" << level_names_split[1] << std::endl;
 
 	/*
 	 * This loop loads the individual level files and stores them in a map
@@ -90,6 +89,11 @@ void GameScreen::load_level(std::string next_level, int x, int y) {
 	level_class = level_list[next_level];
 
 	calculate_movement.set_start_pos(x, y);
+
+	level_width = level_class.width;
+	level_height = level_class.height;
+
+	calculate_movement.set_width_height(level_class.width, level_class.height);
 }
 
 
@@ -113,14 +117,14 @@ void GameScreen::refresh_screen(Display *display) {
 	//
 	//	char_move.draw_character(*display);
 	//
-	//	char_x = char_move.get_x();
-	//	char_y = char_move.get_y();
-	//
-	//	camera_update(camera_position, char_x, char_y, 20, 40);
-	//
-	//	al_identity_transform(&camera);
-	//	al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
-	//	al_use_transform(&camera);
+		char_x = calculate_movement.get_x();
+		char_y = calculate_movement.get_y();
+
+		camera_update(camera_position, char_x, char_y, 20, 40);
+
+		al_identity_transform(&camera);
+		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
+		al_use_transform(&camera);
 	//
 	//	al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 	//
@@ -143,7 +147,7 @@ void GameScreen::key_down(ALLEGRO_EVENT *event) {
 		moving_right = true;
 	}
 	if(event->keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
-		calculate_movement.set_update_speed(100.0);
+		calculate_movement.set_update_speed(500.0);
 	}
 }
 
@@ -169,37 +173,39 @@ void GameScreen::key_up(ALLEGRO_EVENT *event) {
 		}
 	}
 	if(event->keyboard.keycode == ALLEGRO_KEY_LSHIFT) {
-		calculate_movement.set_update_speed(500.0);
+		calculate_movement.set_update_speed(100.0);
 	}
 }
 
 void GameScreen::update_game() {
-	calculate_movement.calculate_movement(&level_list[current_level].level_sprites);
+	calculate_movement.calculate_movement(&level_class.level_sprites);
 	//	add_bullets.calculate_movement();w
 	//	char_move.calculate_movement();
 }
 
 
 void GameScreen::camera_update(float* camera_position, float x, float y, float width, float height) {
-	camera_position[0] = -(level_width / 2) + (x + width / 2);
-	camera_position[1] = -(level_height / 2) + (y + height / 2);
+	camera_position[0] = -(1600 / 2) + (x + width / 2);
+	camera_position[1] = -(900 / 2) + (y + height / 2);
+	std::cout << level_width << " " << level_height << std::endl;
 
 	if(camera_position[0] < 0) {
 		camera_position[0] = 0;
 	}
-	else if(camera_position[0] > 1280) {
-		camera_position[0] = 1280;
+	if(camera_position[0] > level_width) {
+		camera_position[0] = level_width;
 	}
 	if(camera_position[1] < 0) {
 		camera_position[1] = 0;
 	}
-	else if(camera_position[1] > 600) {
-		camera_position[1] = 600;
+	if(camera_position[1] > level_height) {
+		camera_position[1] = level_height;
 	}
 }
 
 
 void GameScreen::cursor_update(float mouse_x, float mouse_y) {
+	al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
 	//	al_set_target_bitmap(al_get_backbuffer(display));
 	//	al_draw_bitmap(cursor, mouse_x, mouse_y, 0);
 }

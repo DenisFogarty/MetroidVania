@@ -27,7 +27,7 @@ public:
 	void start_game(std::string start_level);
 	void load_level(std::string next_level, int x, int y);
 	void camera_update(float* camera_position, float x, float y, float width, float height);
-	void cursor_update(float mosue_x, float mouse_y);
+	void cursor_update(float mouse_x, float mouse_y);
 	void refresh_screen(Display *display);
 	void key_down(ALLEGRO_EVENT *event);
 	void key_up(ALLEGRO_EVENT *event);
@@ -45,6 +45,8 @@ private:
 	ALLEGRO_CONFIG	*config_level;
 	ALLEGRO_CONFIG	*config_start;
 
+	ALLEGRO_TRANSFORM camera;
+
 	std::string level_names;
 	std::vector<std::string> level_names_split;
 	std::string current_level;
@@ -57,6 +59,8 @@ private:
 	float *mouse_x, *mouse_y;
 	float cursor_size, cursor_middle;
 	float cursor_color_r, cursor_color_g, cursor_color_b;
+
+	float char_x, char_y;
 
 	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
 	std::map<std::string, level> level_list;

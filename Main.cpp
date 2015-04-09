@@ -249,6 +249,7 @@ void ControlGame::start(Display *display) {
 		game_screen.update_game();
 	}
 	game_screen.refresh_screen(display);
+	game_screen.cursor_update(mouse_x, mouse_y);
 }
 
 void ControlGame::key_event(ALLEGRO_EVENT *event) {
@@ -286,7 +287,7 @@ ControlGame::~ControlGame() {
 //
 //
 //void draw_display::camera_update(float* camera_position, float x, float y, float width, float height) {
-//	camera_position[0] = -(SCREEN_WIDTH / 2) + (x + width / 2);
+//	camera_position[0] = -(SCREEN_WIDTHlevel_height / 2) + (x + width / 2);
 //	camera_position[1] = -(SCREEN_HEIGHT / 2) + (y + height / 2);
 //
 //	if(camera_position[0] < 0) {

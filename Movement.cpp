@@ -3,7 +3,7 @@
 movement::movement() {
 	character = al_load_bitmap("sprites/running.png");
 
-	update_speed = 500.0;
+	update_speed = 100.0;
 
 	dir = STOP_RIGHT;
 
@@ -14,7 +14,7 @@ movement::movement() {
 	player_y = 1080-43;
 	movement_x = 0;
 	movement_y = 0;
-	move_speed = 300.0;	//300 pixels/s
+	move_speed = 300.0;
 
 	velocity = 400.0;
 	gravity = 1400.0;
@@ -41,14 +41,14 @@ void movement::set_width_height(float width, float height) {
 
 
 void movement::set_direction(int direction) {
-	if(direction == 0) {
-		movement_x = -move_speed/update_speed;
-		dir = LEFT;
-		num_sprite = 0;
-	}
-	else if(direction == 1){
+	if(direction == 1){
 		movement_x = move_speed/update_speed;
 		dir = RIGHT;
+		num_sprite = 0;
+	}
+	else if(direction == 0) {
+		movement_x = -move_speed/update_speed;
+		dir = LEFT;
 		num_sprite = 0;
 	}
 
@@ -65,7 +65,7 @@ void movement::set_direction(int direction) {
 		movement_x = 0;
 		if(dir == RIGHT) {
 			dir = STOP_RIGHT;
-		} else {
+		} else if(dir == LEFT) {
 			dir = STOP_LEFT;
 		}
 	}
@@ -84,18 +84,19 @@ void movement::calculate_movement(std::vector<load_sprite_info> *sprite_info) {
 	player_x += movement_x;
 	player_y += movement_y;
 
-	if(player_x <= 0 || player_x >= 1920 - char_width) {
+	if(player_x <= 0 || player_x >= level_width - char_width) {
 		set_direction(stop_x);
 		player_x = 1920 - char_width - 1;
 	}
 
-	if(player_y <= 0 || player_y >= 1080 - char_height) {
+	if(player_y <= 0 || player_y >= level_height - char_height) {
 		set_direction(stop_y);
 		player_y = 1080 - char_height;
 		velocity = 400;
 		jump = false;
 	}
 
+	detect_collision.set_sprite_list(sprite_info);
 
 	for(i = 0; i < sprite_info->size(); i++) {
 
@@ -163,18 +164,7 @@ void movement::calculate_fall() {
 
 void movement::draw_character(Display *display) {
 	display->draw_bitmap(al_create_sub_bitmap(character, pos_sprite[dir][num_sprite], dir*43, 35, 43), player_x, player_y);
-	if(al_get_time() - prev_time > 25/update_speed) {
-		prev_time = al_get_time();
-		num_sprite++;
-	}
-
-	if(num_sprite > 9) {
-		num_sprite = 0;
-	}
-}
-
-void movement::next_character_sprite() {
-	if(al_get_time() - prev_time > 25/update_speed) {
+	if(al_get_time() - prev_time > .0005 * update_speed) {
 		prev_time = al_get_time();
 		num_sprite++;
 	}
@@ -186,6 +176,7 @@ void movement::next_character_sprite() {
 
 void movement::set_update_speed(float new_speed) {
 	update_speed = new_speed;
+	set_direction(dir);
 }
 
 
