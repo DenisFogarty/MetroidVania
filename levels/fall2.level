@@ -9,8 +9,8 @@ y1=1541
 x2=896
 y2=1600
 level=fall_level.level
-dest_x=0
-dest_y=0
+dest_x=10
+dest_y=150
 
 [sprite_1]
 name=blocks_stack.conf

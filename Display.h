@@ -28,6 +28,8 @@ public:
 	void draw_bitmap(ALLEGRO_BITMAP *bitmap, float pos_x, float pos_y);
 	void draw_text(char text[30], float pos_x, float pos_y);
 	void draw_text(std::string text_string, float pos_x, float pos_y);
+	void hide_mouse_pointer();
+	void show_mouse_pointer();
 	void set_default_display();
 
 	virtual ~Display();

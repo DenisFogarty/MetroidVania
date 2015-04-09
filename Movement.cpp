@@ -55,7 +55,7 @@ void movement::set_direction(int direction) {
 	/*
 	 * The bool 'jump' will be false when the ground is hit
 	 */
-	if(direction == 2 && jump == false) {
+	if(direction == 2 && jump == false && velocity == 400) {
 		velocity = -600;
 		movement_y = (1.0/update_speed) * velocity;
 		jump = true;
@@ -86,12 +86,12 @@ void movement::calculate_movement(std::vector<load_sprite_info> *sprite_info) {
 
 	if(player_x <= 0 || player_x >= level_width - char_width) {
 		set_direction(stop_x);
-		player_x = 1920 - char_width - 1;
+		player_x = level_width - char_width - 1;
 	}
 
 	if(player_y <= 0 || player_y >= level_height - char_height) {
 		set_direction(stop_y);
-		player_y = 1080 - char_height;
+		player_y = level_height - char_height;
 		velocity = 400;
 		jump = false;
 	}
@@ -102,6 +102,7 @@ void movement::calculate_movement(std::vector<load_sprite_info> *sprite_info) {
 
 		current_item = &(*sprite_info)[i];
 		if(detect_collision.detect_collision(player_x, player_y, char_width, char_height, current_item->x, current_item->y, current_item->width, current_item->height)) {
+
 			/*
 			 * Checks if the player has hit ground
 			 */
@@ -113,7 +114,6 @@ void movement::calculate_movement(std::vector<load_sprite_info> *sprite_info) {
 				player_y = current_item->y - char_height;
 				velocity = 400;
 			}
-
 			/*
 			 * Checks if the player has collided with the underside of an object
 			 */

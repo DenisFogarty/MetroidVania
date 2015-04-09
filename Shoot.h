@@ -12,6 +12,7 @@
 #include "Calculations.h"
 #include "Collision.h"
 #include "Items.h"
+#include "Display.h"
 
 
 class bullet : item {
@@ -32,8 +33,10 @@ public:
 	void add_basic(float player_x, float player_y, float cursor_x, float cursor_y);
 	void remove_bullet(uint pos);
 	void remove_bullet(std::list<bullet>::iterator bullet);
+	void remove_all_bullets();
 	void calculate_movement();
-	void draw_to_screen();
+	void draw_to_screen(Display *display);
+	void set_level_size(float width, float height);
 	int get_size();
 
 	bullets_data();
@@ -53,6 +56,7 @@ private:
 	float hypotenuse;
 	float traj_x, traj_y;
 	float bullet_start_x, bullet_start_y;
+	float level_width, level_height;
 
 	calculations calculate;
 

@@ -84,7 +84,7 @@ GameScreen::GameScreen() {
 
 
 void GameScreen::load_level(std::string next_level, int x, int y) {
-//	level::level_sprites.clear();
+	//	level::level_sprites.clear();
 
 	level_class = level_list[next_level];
 
@@ -105,30 +105,16 @@ void GameScreen::refresh_screen(Display *display) {
 
 	calculate_movement.draw_character(display);
 
-	//	al_clear_to_color(al_map_rgb(0, 0, 0));
-	//
-	//	al_draw_bitmap(foreground, 0, 0, 0);
-	//
-	//	add_bullets.draw_to_screen();
-	//
-	//	add_item.draw_items();
-	//
-	//	load_level.draw_sprites(next);
-	//
-	//	char_move.draw_character(*display);
-	//
-		char_x = calculate_movement.get_x();
-		char_y = calculate_movement.get_y();
+	char_x = calculate_movement.get_x();
+	char_y = calculate_movement.get_y();
 
-		camera_update(camera_position, char_x, char_y, 20, 40);
+	camera_update(camera_position, char_x, char_y, 20, 40);
 
-		al_identity_transform(&camera);
-		al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
-		al_use_transform(&camera);
-	//
-	//	al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
-	//
-	//	al_flip_display();
+	add_bullets.draw_to_screen(display);
+
+	al_identity_transform(&camera);
+	al_translate_transform(&camera, -camera_position[0], -camera_position[1]);		//Moves objects as the screen moves
+	al_use_transform(&camera);
 }
 
 void GameScreen::key_down(ALLEGRO_EVENT *event) {
@@ -153,7 +139,7 @@ void GameScreen::key_down(ALLEGRO_EVENT *event) {
 
 void GameScreen::key_up(ALLEGRO_EVENT *event) {
 	if(event->keyboard.keycode == ALLEGRO_KEY_W) {
-		calculate_movement.set_direction(stop_y);
+		calculate_movement.set_direction(stop_jump);
 	}
 	if(event->keyboard.keycode == ALLEGRO_KEY_A) {
 		calculate_movement.set_direction(stop_x);
@@ -177,17 +163,21 @@ void GameScreen::key_up(ALLEGRO_EVENT *event) {
 	}
 }
 
+
+void GameScreen::mouse_down(float mouse_x, float mouse_y, std::string button) {
+
+}
+
+
 void GameScreen::update_game() {
 	calculate_movement.calculate_movement(&level_class.level_sprites);
-	//	add_bullets.calculate_movement();w
-	//	char_move.calculate_movement();
+	add_bullets.calculate_movement();
 }
 
 
 void GameScreen::camera_update(float* camera_position, float x, float y, float width, float height) {
 	camera_position[0] = -(1600 / 2) + (x + width / 2);
 	camera_position[1] = -(900 / 2) + (y + height / 2);
-	std::cout << level_width << " " << level_height << std::endl;
 
 	if(camera_position[0] < 0) {
 		camera_position[0] = 0;
@@ -204,14 +194,18 @@ void GameScreen::camera_update(float* camera_position, float x, float y, float w
 }
 
 
-void GameScreen::cursor_update(float mouse_x, float mouse_y) {
+void GameScreen::cursor_update(float mouse_x, float mouse_y, Display *display) {
+	display->set_default_display();
 	al_draw_bitmap(cursor, mouse_x + camera_position[0], mouse_y + camera_position[1], 0);
-	//	al_set_target_bitmap(al_get_backbuffer(display));
-	//	al_draw_bitmap(cursor, mouse_x, mouse_y, 0);
+	display->hide_mouse_pointer();
 }
 
 
 GameScreen::~GameScreen() {
-	// TODO Auto-generated destructor stub
+	al_destroy_config(config_main);
+	al_destroy_bitmap(cursor);
+	al_destroy_bitmap(foregrond_layer);
+	al_destroy_bitmap(background);
+	al_destroy_bitmap(front_layer);
 }
 

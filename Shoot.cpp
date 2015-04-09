@@ -8,7 +8,10 @@ bullets_data::bullets_data() {
 	bullet_start_x = 13;
 	bullet_start_y = 40/5;
 
-	bullet_bit = al_load_bitmap("sprites/cursor.png");
+	bullet_bit = al_load_bitmap("sprites/bullet.png");
+
+	level_width = 1600;
+	level_height = 900;
 }
 
 
@@ -25,6 +28,11 @@ void bullets_data::add_basic(float player_x, float player_y, float cursor_x, flo
 	new_bullet.damage = 20;
 	new_bullet.blast_radius = 0;
 	add_bullet(player_x, player_y, cursor_x, cursor_y);
+}
+
+void bullets_data::set_level_size(float width, float height) {
+	level_width = width;
+	level_height = height;
 }
 
 
@@ -87,6 +95,14 @@ void bullets_data::remove_bullet(std::list<bullet>::iterator bullet) {
 }
 
 
+void bullets_data::remove_all_bullets() {
+	for(uint i = 0; i < bullets.size(); i++) {
+		bullet_iter = bullets.begin();
+		bullets.erase(bullet_iter);
+	}
+}
+
+
 void bullets_data::calculate_movement() {
 	if(bullets.size() > 0) {
 		bullet_iter = bullets.begin();
@@ -100,7 +116,7 @@ void bullets_data::calculate_movement() {
 			bullet_iter->x4 += bullet_iter->direction_x;
 			bullet_iter->y4 += bullet_iter->direction_y;
 
-			if(bullet_iter->x > 1920 || bullet_iter->y > 1080 || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
+			if(bullet_iter->x > level_width || bullet_iter->y > level_height || bullet_iter->x2 < 0 || bullet_iter->y2 < 0 ||
 					detect_collision.detect_rotated_collision(bullet_iter->x, bullet_iter->y,
 							bullet_iter->x2, bullet_iter->y2,
 							bullet_iter->x3, bullet_iter->y3,
@@ -116,8 +132,9 @@ void bullets_data::calculate_movement() {
 }
 
 
-void bullets_data::draw_to_screen() {
+void bullets_data::draw_to_screen(Display *display) {
 	if(bullets.size() > 0) {
+		display->set_default_display();
 		bullet_iter = bullets.begin();
 		while(bullet_iter != bullets.end()) {
 			al_draw_rotated_bitmap(bullet_bit, 0, 0, bullet_iter->x, bullet_iter->y, bullet_iter->angle, 0);

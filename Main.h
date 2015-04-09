@@ -101,6 +101,8 @@ private:
 
 	ALLEGRO_KEYBOARD_EVENT	*keyboard_event;
 
+	ALLEGRO_FONT			*menu_font;
+
 	bool game_running;
 
 	float mouse_x, mouse_y;
@@ -116,15 +118,6 @@ private:
 	ControlEditor control_editor;
 	ControlGame control_game;
 	level this_level;
-
-	//	bullets_data add_bullets;
-	//	movement char_move;
-	//	items_data add_item;
-	//	sprites add_sprites;
-	//	level load_level;
-	//	leveleditor level_editor;
-
-	//	int next;
 
 };
 
