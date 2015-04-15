@@ -56,12 +56,18 @@ void bullets_data::add_bullet(float player_x, float player_y, float cursor_x, fl
 	 */
 	new_bullet.x2 = new_bullet.x + new_bullet.width * cos(new_bullet.angle);
 	new_bullet.y2 = new_bullet.y + new_bullet.width * sin(new_bullet.angle);
+	std::cout << new_bullet.x << " " << new_bullet.width << " " << new_bullet.angle << " " << cos(new_bullet.angle) << std::endl;
+	std::cout << new_bullet.y << " " << new_bullet.width << " " << new_bullet.angle << " " << sin(new_bullet.angle) << "\n" << std::endl;
 
 	new_bullet.x3 = new_bullet.x + new_bullet.height * cos(new_bullet.angle + 1.57);	//1.57 rads = 90 degrees, need to add this for calculation of lower points
 	new_bullet.y3 = new_bullet.y + new_bullet.height * sin(new_bullet.angle + 1.57);
+	std::cout << new_bullet.x << " " << new_bullet.height << " " << new_bullet.angle + 1.57 << " " << cos(new_bullet.angle + 1.57) << std::endl;
+	std::cout << new_bullet.y << " " << new_bullet.height << " " << new_bullet.angle + 1.57 << " " << sin(new_bullet.angle + 1.57) << "\n" << std::endl;
 
 	new_bullet.x4 = new_bullet.x2 + new_bullet.height * cos(new_bullet.angle + 1.57);
 	new_bullet.y4 = new_bullet.y2 + new_bullet.height * sin(new_bullet.angle + 1.57);
+	std::cout << new_bullet.x2 << " " << new_bullet.height << " " << new_bullet.angle + 1.57 << " " << cos(new_bullet.angle + 1.57) << std::endl;
+	std::cout << new_bullet.y2 << " " << new_bullet.height << " " << new_bullet.angle + 1.57 << " " << sin(new_bullet.angle + 1.57) << "\n" << "\n" << std::endl;
 
 	bullets.push_back(new_bullet);
 }

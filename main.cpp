@@ -126,7 +126,6 @@ void draw_display::camera_update(float* camera_position, float x, float y, float
 
 void draw_display::timer() {
 	if(ev.timer.source == refresh_timer) {
-		std::cout << "Refresh" << std::endl;
 //		level_editor.draw_windows();
 
 		al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -155,7 +154,6 @@ void draw_display::timer() {
 		al_flip_display();
 
 	} else if (ev.timer.source == game_timer && !paused){	//game_timer
-		std::cout << "Game" << std::endl;
 
 		add_bullets.calculate_movement();
 		char_move.calculate_movement();
