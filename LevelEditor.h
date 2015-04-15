@@ -101,7 +101,7 @@ private:
 
 	float sprite_offset_x, sprite_offset_y;
 
-	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
+	std::map <std::string, std::vector<sprite> >* sprite_list_curr;
 	std::vector <std::string> *sprite_sheet_names;
 
 	sprite_info temp_sprite_info;
@@ -166,9 +166,9 @@ private:
 	float orig_mouse_x, orig_mouse_y;
 	float window_x, window_y;
 
-	std::vector<std::vector<int>> exit_coords;	//x1, y1, x2, y2
+	std::vector<std::vector<int> > exit_coords;	//x1, y1, x2, y2
 	std::vector<std::string> exit_levels;
-	std::vector<std::vector<int>> exit_to_coords;	//x1, y1, x2, y2
+	std::vector<std::vector<int> > exit_to_coords;	//x1, y1, x2, y2
 
 	void draw_all_layers();
 

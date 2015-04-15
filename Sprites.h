@@ -34,7 +34,7 @@ public:
 	void load_sprites();
 	void draw_sprite();
 
-	static std::map<std::string, std::vector<sprite>>* get_sprite_list();
+	static std::map<std::string, std::vector<sprite> >* get_sprite_list();
 	static std::vector <std::string>* get_sprite_list_names();
 
 	~sprites();
@@ -64,7 +64,7 @@ private:
 	sprite new_sprite_block;
 	sprite new_sprite;
 	std::vector<sprite> sprite_block;
-	static std::map<std::string, std::vector<sprite>> sprite_list;
+	static std::map<std::string, std::vector<sprite> > sprite_list;
 	float sprite_offset_x;
 	float sprite_offset_y;
 	uint curr_sheet;

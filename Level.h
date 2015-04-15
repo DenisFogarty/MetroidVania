@@ -44,7 +44,7 @@ public:
 
 	load_sprite_info temp_sprite_info;
 
-	std::map <std::string, std::vector<sprite>>* sprite_list_pointer = sprites::get_sprite_list();
+	std::map <std::string, std::vector<sprite> >* sprite_list_pointer = sprites::get_sprite_list();
 
 	uint num_sprites;
 	uint num_exits;

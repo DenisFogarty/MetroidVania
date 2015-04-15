@@ -71,7 +71,7 @@ private:
 
 	float char_x, char_y;
 
-	std::map <std::string, std::vector<sprite>>* sprite_list_curr;
+	std::map <std::string, std::vector<sprite> >* sprite_list_curr;
 	std::map<std::string, level> level_list;
 	std::vector<std::string>* sprite_list_names;
 

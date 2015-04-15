@@ -7,7 +7,7 @@
 
 #include "Sprites.h"
 
-std::map <std::string, std::vector<sprite>> sprites::sprite_list;
+std::map <std::string, std::vector<sprite> > sprites::sprite_list;
 std::vector <std::string> sprites::sheets_split;
 
 sprites::sprites() {
@@ -160,7 +160,7 @@ void sprites::load_sprites() {
 	}
 }
 
-std::map <std::string, std::vector<sprite>>* sprites::get_sprite_list() {
+std::map <std::string, std::vector<sprite> >* sprites::get_sprite_list() {
 	return &sprite_list;
 }
 

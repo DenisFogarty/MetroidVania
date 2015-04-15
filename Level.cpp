@@ -24,7 +24,7 @@ void level::load_sprites(std::string level_name) {
 	config_level = al_load_config_file(level_full_name);
 
 	num_sprites = std::stoi(al_get_config_value(config_level, "", "sprites"));
-	num_exits = std::stoi(al_get_config_value(config_level, "", "exits"));
+//	num_exits = std::stoi(al_get_config_value(config_level, "", "exits"));
 	width = std::stoi(al_get_config_value(config_level, "", "width"));
 	height = std::stoi(al_get_config_value(config_level, "", "height"));
 
