@@ -165,7 +165,7 @@ void GameScreen::key_up(ALLEGRO_EVENT *event) {
 
 
 void GameScreen::mouse_down(float mouse_x, float mouse_y, std::string button) {
-
+	add_bullets.add_basic(char_x, char_y, mouse_x, mouse_y);
 }
 
 

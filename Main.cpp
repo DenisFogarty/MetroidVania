@@ -159,7 +159,6 @@ void Control::determine_event(Display *display) {
 			break;
 
 		case ALLEGRO_EVENT_KEY_DOWN:
-			std::cout << "Test" << std::endl;
 			key_event(&event);
 
 			break;

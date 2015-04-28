@@ -70,4 +70,3 @@ float calculations::calculate_angle(float adjacent, float hypotenuse, float play
 calculations::~calculations() {
 
 }
-
